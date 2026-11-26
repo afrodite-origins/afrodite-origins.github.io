@@ -1,5 +1,10 @@
 # Últimas atualizações
 
+## Alpha 0.11.28 (experimental) · 26/11/2026
+
+- O jogo agora se chama Afrodite Origins, com ícone e prévia de link.
+- No celular, use “Adicionar à tela inicial” para abrir como aplicativo, em tela cheia.
+
 ## Alpha 0.11.27 (experimental) · 26/11/2026
 
 - Errar a sequência ao conjurar agora gasta os PA da habilidade, e Afrodite dá uma bronca: “Presta atenção! Seja mais rápido!”.

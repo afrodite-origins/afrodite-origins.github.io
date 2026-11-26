@@ -1,7 +1,30 @@
 <!DOCTYPE html>
 <html lang="pt-BR"><head><meta charset="utf-8">
-<title>Afrodite × Hefesto — protótipo de combate</title>
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Afrodite Origins</title>
+<meta name="description" content="RPG tático por turnos: Afrodite contra Hefesto, o deus da forja. Jogue no navegador, no PC ou no celular.">
+<meta name="theme-color" content="#0b0a09">
+<link rel="icon" type="image/png" sizes="64x64" href="favicon-64.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Afrodite">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Afrodite Origins">
+<meta property="og:title" content="Afrodite Origins">
+<meta property="og:description" content="RPG tático por turnos contra Hefesto, o deus da forja. Jogue no navegador, no PC ou no celular.">
+<meta property="og:url" content="https://isaacbcampos.github.io/afrodite-alpha/">
+<meta property="og:image" content="https://isaacbcampos.github.io/afrodite-alpha/og-preview.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Afrodite, de vestido vermelho e cetro de coração, ao lado do título Afrodite Origins">
+<meta property="og:locale" content="pt_BR">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Afrodite Origins">
+<meta name="twitter:description" content="RPG tático por turnos contra Hefesto, o deus da forja.">
+<meta name="twitter:image" content="https://isaacbcampos.github.io/afrodite-alpha/og-preview.jpg">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <style>
 /* VOICE: severo e mítico, estilo souls-like
    IDEA: um altar de pedra e ferro dentro da forja, iluminado só onde importa
@@ -1428,6 +1451,7 @@ const TPS={};function tpSprite(d,st){const key=d+st;if(TPS[key])return TPS[key];
  x.rotate(QANG[d]);x.fillStyle=st==='pr'?'#2a1a0e':'#ffe2a0';x.beginPath();x.moveTo(20,0);x.lineTo(-10,-17);x.lineTo(-4,0);x.lineTo(-10,17);x.closePath();x.fill();return TPS[key]=c}
 function drawTouchPad(mode,want){if(INPUT!=='touch')return;S.tpT=S.tpT||{};const ga=g.globalAlpha;['left','right','up','down'].forEach(d=>{const[x,y]=tpPos(mode,d),pr=S.tpT[d]&&S.t-S.tpT[d]<.18,w=want===d;
  if(w&&!pr){g.globalAlpha=ga*(.75+.25*Math.sin(S.t*8))}g.drawImage(tpSprite(d,pr?'pr':w?'w':'n'),Math.round(x-50),Math.round(y-50));g.globalAlpha=ga})}
+function isApp(){try{return matchMedia('(display-mode: fullscreen)').matches||matchMedia('(display-mode: standalone)').matches||navigator.standalone===true}catch(e){return false}}
 function showFsAsk(){scr='fsask';try{TEL.screen('Tela cheia')}catch(e){}$('fsAsk').hidden=false;$('nickS').hidden=true;$('modeS').hidden=true}
 function fsAskDone(go){try{TEL.ev(go?'tela_cheia_aceita':'tela_cheia_recusada')}catch(e){}$('fsAsk').hidden=true;if(go)goFull();showNick()}
 
@@ -1461,7 +1485,7 @@ function drawGear(){const gx=912+OX;iconBtn([gx,8,40,36],'gear','Configurações
 /* aviso da última atualização */
 function updAgo(){const d=Date.now()-new Date(BUILD_TS).getTime();if(!(d>=0))return '';const m=Math.max(1,Math.round(d/60000));if(m<60)return 'Última atualização há '+m+(m===1?' minuto.':' minutos.');const h=Math.floor(m/60);if(h<24)return 'Última atualização há '+h+(h===1?' hora.':' horas.');const dd=Math.floor(h/24);return 'Última atualização há '+dd+(dd===1?' dia.':' dias.')}
 function showModeAsk(){const sv=getSave(),br=$('bResume');if(br){br.hidden=!sv;if(sv){br.textContent='Continuar a luta de onde parou (rodada '+((sv.snap&&sv.snap.round)||1)+')';br.onclick=()=>{setInput(INPUT);restoreSave(sv)}}}scr='mode';try{TEL.screen('Modo de jogo')}catch(e){}['nickS','fsAsk','pick','build','game'].forEach(i=>{const e=$(i);if(e)e.hidden=true});$('modeS').hidden=false;inputUI();document.querySelectorAll('.upd').forEach(e=>e.textContent=updAgo()+'  ·  '+VERSION)}
-function modeChosen(m){setInput(m);beep(600,.05,'triangle',.05);$('modeS').hidden=true;if(m==='touch'&&(document.documentElement.requestFullscreen||document.documentElement.webkitRequestFullscreen)&&!isFull())showFsAsk();else showNick()}
+function modeChosen(m){setInput(m);beep(600,.05,'triangle',.05);$('modeS').hidden=true;if(m==='touch'&&(document.documentElement.requestFullscreen||document.documentElement.webkitRequestFullscreen)&&!isFull()&&!isApp())showFsAsk();else showNick()}
 
 /* ---------- v0.10.7: destravar o jogo, voltar ao início do turno, continuar depois de fechar ---------- */
 let LASTFRAME=performance.now(),CRASHED=false,WDSIG='',WDT=performance.now();
@@ -2586,8 +2610,9 @@ function drawTears(){if(!S.tears||S.t>S.tears||S.over)return;if(S.t>(S.tearT||0)
 
 
 /* versão, últimas atualizações e reporte de bug */
-const VERSION='Alpha 0.11.27 (experimental)';const BUILD_TS='2026-11-26T21:44:55Z';
+const VERSION='Alpha 0.11.28 (experimental)';const BUILD_TS='2026-11-26T22:04:18Z';
 const PATCH=[
+ {v:'Alpha 0.11.28 (experimental)',d:'26/11/2026',it:['O jogo agora se chama Afrodite Origins, com ícone e prévia de link.','No celular, use “Adicionar à tela inicial” para abrir como aplicativo, em tela cheia.']},
  {v:'Alpha 0.11.27 (experimental)',d:'26/11/2026',it:['Errar a sequência ao conjurar agora gasta os PA da habilidade, e Afrodite dá uma bronca: “Presta atenção! Seja mais rápido!”.']},
  {v:'Alpha 0.11.26 (experimental)',d:'26/11/2026',it:['Relatório do GM mais limpo, com abas Manual e Automático.','O observador do GM também acompanha a abertura do baú, a lojinha e a mochila.']},
  {v:'Alpha 0.11.25 (experimental)',d:'26/11/2026',it:['Venceu Hefesto sem o automático? Depois da cena final, Afrodite abre um Baú da Forja e mostra o que você ganhou.','Quem vence no automático continua ganhando moedas e pode comprar baús na loja.']},
@@ -3134,4 +3159,5 @@ setTimeout(()=>{$('consYes').onclick=()=>setConsent('sim');$('consNo').onclick=(
 setTimeout(()=>{$('recGo').onclick=unstick;$('recBack').onclick=()=>{if(!restoreSave())unstick()};$('recNew').onclick=()=>{hideRecover();CRASHED=false;try{newGame();buildBar()}catch(e){showPick()}};$('recX').onclick=()=>{hideRecover();CRASHED=false}});
 setTimeout(()=>{$('fsGo').onclick=()=>fsAskDone(true);$('fsNo').onclick=()=>fsAskDone(false)});
 }
-</script></body></html>
+</script><script>if('serviceWorker' in navigator&&/github\.io$/.test(location.hostname))addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}));</script>
+</body></html>

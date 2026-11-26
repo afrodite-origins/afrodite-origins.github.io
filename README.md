@@ -1,10 +1,15 @@
-# Afrodite Alpha
+# Afrodite Origins
 
 Protótipo de RPG tático por turnos, de tom sombrio: Afrodite enfrenta Hefesto, o deus da forja.
 
-**[Jogar](https://isaacbcampos.github.io/afrodite-alpha/)** · funciona no PC e no celular (na horizontal).
+**[Jogar](https://isaacbcampos.github.io/afrodite-alpha/)** · funciona no PC e no celular (na horizontal). No celular, abra o link e use “Adicionar à tela inicial” para jogar como aplicativo.
 
 ## Últimas atualizações
+
+**Alpha 0.11.28 (experimental) · 26/11/2026**
+
+- O jogo agora se chama Afrodite Origins, com ícone e prévia de link.
+- No celular, use “Adicionar à tela inicial” para abrir como aplicativo, em tela cheia.
 
 **Alpha 0.11.27 (experimental) · 26/11/2026**
 
@@ -19,10 +24,6 @@ Protótipo de RPG tático por turnos, de tom sombrio: Afrodite enfrenta Hefesto,
 
 - Venceu Hefesto sem o automático? Depois da cena final, Afrodite abre um Baú da Forja e mostra o que você ganhou.
 - Quem vence no automático continua ganhando moedas e pode comprar baús na loja.
-
-**Alpha 0.11.24 (experimental) · 26/11/2026**
-
-- O relatório do GM mostra moedas, itens e baús abertos por jogador.
 
 ## Controles
 | | PC | Controle |
