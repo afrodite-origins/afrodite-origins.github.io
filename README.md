@@ -29,6 +29,11 @@ Protótipo de RPG tático por turnos, de tom sombrio: Afrodite enfrenta Hefesto,
 **Alpha 0.11.19 (experimental) · 26/11/2026**
 
 - Moedas da lojinha em escala nova: vitória sem o automático vale 🪙10 (no pódio, 🪙20), vitória no automático vale 🪙2. Cada visual custa 🪙20. Quem já tinha moedas teve o saldo convertido.
+### Alpha 0.11.23 (experimental) — 26/11/2026
+- Ícones para cada visual e para o baú na loja.
+- Loja troca a cada 30 minutos, com barrinha de progresso.
+- Prévia de um set completo quando nenhum item é escolhido.
+- Rankings mostram DPS e tempo em segundos.
 
 ## Controles
 | | PC | Controle |

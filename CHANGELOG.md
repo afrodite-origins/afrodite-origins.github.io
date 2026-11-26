@@ -1,5 +1,11 @@
 # Últimas atualizações
 
+## Alpha 0.11.23 (experimental) — 26/11/2026
+- Cada visual e o baú ganharam ícone na loja e na mochila.
+- A loja troca a cada 30 minutos, com uma barrinha mostrando quanto falta.
+- Sem item escolhido, a loja mostra um set completo na Afrodite.
+- Rankings com a métrica: DPS no Dano e tempo em segundos no Intocável e no Automático.
+
 ## Alpha 0.11.22 (experimental) · 26/11/2026
 
 - 🎁 Baú da Forja: sorteia visuais Comuns (50%), Incomuns (30%), Raros (14%), Épicos (5%) e Lendários (1%). Toda vitória sem o automático dá um baú, e dá para comprar baús com moedas.
