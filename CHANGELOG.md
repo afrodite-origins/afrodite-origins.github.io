@@ -1,6 +1,7 @@
 # Últimas atualizações
 
-## Alpha 0.11.23 (experimental) — 26/11/2026
+## Alpha 0.11.23 (experimental) · 26/11/2026
+
 - Cada visual e o baú ganharam ícone na loja e na mochila.
 - A loja troca a cada 30 minutos, com uma barrinha mostrando quanto falta.
 - Sem item escolhido, a loja mostra um set completo na Afrodite.

@@ -6,6 +6,13 @@ Protótipo de RPG tático por turnos, de tom sombrio: Afrodite enfrenta Hefesto,
 
 ## Últimas atualizações
 
+**Alpha 0.11.23 (experimental) · 26/11/2026**
+
+- Cada visual e o baú ganharam ícone na loja e na mochila.
+- A loja troca a cada 30 minutos, com uma barrinha mostrando quanto falta.
+- Sem item escolhido, a loja mostra um set completo na Afrodite.
+- Rankings com a métrica: DPS no Dano e tempo em segundos no Intocável e no Automático.
+
 **Alpha 0.11.22 (experimental) · 26/11/2026**
 
 - 🎁 Baú da Forja: sorteia visuais Comuns (50%), Incomuns (30%), Raros (14%), Épicos (5%) e Lendários (1%). Toda vitória sem o automático dá um baú, e dá para comprar baús com moedas.
@@ -25,15 +32,6 @@ Protótipo de RPG tático por turnos, de tom sombrio: Afrodite enfrenta Hefesto,
 - Visuais por classe: cada caminho tem os próprios visuais. Compre e equipe para cada classe e colecione todos.
 - 🎒 Mochila na tela inicial: veja suas moedas e equipe os visuais que já conquistou.
 - Árvore de habilidades da Personalizada refeita com os emblemas novos e as descrições atualizadas.
-
-**Alpha 0.11.19 (experimental) · 26/11/2026**
-
-- Moedas da lojinha em escala nova: vitória sem o automático vale 🪙10 (no pódio, 🪙20), vitória no automático vale 🪙2. Cada visual custa 🪙20. Quem já tinha moedas teve o saldo convertido.
-### Alpha 0.11.23 (experimental) — 26/11/2026
-- Ícones para cada visual e para o baú na loja.
-- Loja troca a cada 30 minutos, com barrinha de progresso.
-- Prévia de um set completo quando nenhum item é escolhido.
-- Rankings mostram DPS e tempo em segundos.
 
 ## Controles
 | | PC | Controle |
