@@ -1,5 +1,18 @@
 # Últimas atualizações
 
+## Alpha 0.11.30 (experimental) · 26/11/2026
+
+- Celular: ao conjurar, toque direto na pista da nota (sem as setas nas laterais).
+- Corrida da Forja: toque numa casa verde e confirme; Afrodite anda sozinha até lá.
+- Controle: DualSense/PlayStation mostra ✕ ○ □ △; controle de Xbox mostra A B X Y. A pausa e as janelas dão para navegar pelo controle.
+- No PC a luta ocupa a tela inteira e a seção “Controles” embaixo sumiu.
+- Engrenagem de configurações na tela das classes (trocar o modo de jogo, gráfico leve, FPS).
+- Cenas mais calmas: o texto espera o tempo de leitura antes de seguir.
+- Minitutoriais na primeira reação, na primeira Corrida da Forja e na primeira fuga (teste de Destreza no d20).
+- Reações com cores: APARAR azul, PULAR verde; “ACERTOU 1/3 · MAIS 2 GOLPES VINDO!” e aviso de tecla errada.
+- A Ninfa da Água age sozinha e alterna: um turno ataca com água (deixa Hefesto molhado), no outro grava o Glifo de Cura.
+- O ranking da tela inicial diz que é um ranking; a opção escolhida em Lutar / Voltar fica destacada; “Trocar de classe” virou “Menu principal”; a navegação entre as classes segue a posição delas.
+
 ## Alpha 0.11.29 (experimental) · 26/11/2026
 
 - O título Afrodite Origins aparece na primeira tela.
