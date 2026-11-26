@@ -1,5 +1,10 @@
 # Últimas atualizações
 
+## Alpha 0.11.29 (experimental) · 26/11/2026
+
+- O título Afrodite Origins aparece na primeira tela.
+- Novo texto da prévia do link: teste o potencial de Afrodite contra Hefesto em mais uma provação enviada por Atena.
+
 ## Alpha 0.11.28 (experimental) · 26/11/2026
 
 - O jogo agora se chama Afrodite Origins, com ícone e prévia de link.

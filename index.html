@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="pt-BR"><head><meta charset="utf-8">
 <title>Afrodite Origins</title>
-<meta name="description" content="RPG tático por turnos: Afrodite contra Hefesto, o deus da forja. Jogue no navegador, no PC ou no celular.">
+<meta name="description" content="Teste o potencial de Afrodite contra Hefesto em mais uma provação enviada por Atena. Divirta-se abrindo baús e ganhando skins raras.">
 <meta name="theme-color" content="#0b0a09">
 <link rel="icon" type="image/png" sizes="64x64" href="favicon-64.png">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
@@ -13,17 +13,17 @@
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Afrodite Origins">
 <meta property="og:title" content="Afrodite Origins">
-<meta property="og:description" content="RPG tático por turnos contra Hefesto, o deus da forja. Jogue no navegador, no PC ou no celular.">
+<meta property="og:description" content="Teste o potencial de Afrodite contra Hefesto em mais uma provação enviada por Atena. Divirta-se abrindo baús e ganhando skins raras.">
 <meta property="og:url" content="https://isaacbcampos.github.io/afrodite-alpha/">
-<meta property="og:image" content="https://isaacbcampos.github.io/afrodite-alpha/og-preview.jpg">
+<meta property="og:image" content="https://isaacbcampos.github.io/afrodite-alpha/og-origins.jpg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="Afrodite, de vestido vermelho e cetro de coração, ao lado do título Afrodite Origins">
 <meta property="og:locale" content="pt_BR">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Afrodite Origins">
-<meta name="twitter:description" content="RPG tático por turnos contra Hefesto, o deus da forja.">
-<meta name="twitter:image" content="https://isaacbcampos.github.io/afrodite-alpha/og-preview.jpg">
+<meta name="twitter:description" content="Teste o potencial de Afrodite contra Hefesto em mais uma provação enviada por Atena. Divirta-se abrindo baús e ganhando skins raras.">
+<meta name="twitter:image" content="https://isaacbcampos.github.io/afrodite-alpha/og-origins.jpg">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <style>
 /* VOICE: severo e mítico, estilo souls-like
@@ -339,10 +339,11 @@ body p,body li,body small,body label,body span,body i,body em,body td,body th{le
 .shPN small{display:block;font-size:10px;color:#8f8578;letter-spacing:.1em}
 #hof{width:200px}#hof li .hn{flex:1;overflow:hidden;text-overflow:ellipsis}#hof li .hv{font:600 10.5px Cinzel,serif;color:#b8a888;white-space:nowrap}@media (max-height:520px){#hof{width:176px}}
 @media (max-width:640px),(max-height:520px){.itc .ii{width:40px;height:40px}.itc{min-height:52px}}
+.gtit{font:700 clamp(26px,5vw,44px)/1.1 Cinzel,serif;letter-spacing:.14em;color:#ffd27a;text-shadow:0 0 22px #ff9a3a66;margin:0 0 14px;text-align:center}@media (max-height:520px){.gtit{font-size:24px;margin-bottom:6px}}
 </style></head><body><div class="w">
 <div id="cons" hidden role="dialog" aria-modal="true" aria-labelledby="consT"><div class="mbox recb"><h2 id="consT">Antes de jogar</h2><div class="constx"><p>Este jogo está em teste. Para melhorá-lo, registramos <b>como você joga</b>: o apelido que você escolher, o modelo do aparelho e o navegador, o tempo em cada tela, as escolhas, os acertos e erros na luta, onde você toca ou clica na tela e o desempenho (FPS).</p><p>Não pedimos nome real, e-mail, telefone nem localização. Os dados ficam num banco do desenvolvedor e servem <b>só para ajustar o jogo</b>; nada é vendido nem compartilhado.</p><p class="consm">Você pode mudar isso a qualquer momento na engrenagem, dentro da luta. Para pedir que seus dados sejam apagados, use <b>Reportar bug</b> e informe o código <b id="consId"></b>.</p></div><div class="recbtns"><button id="consYes" class="rec1">Aceitar e jogar</button><button id="consNo">Jogar sem enviar dados</button></div></div></div>
 <div id="rec" hidden role="dialog" aria-modal="true" aria-labelledby="recT"><div class="mbox recb"><h2 id="recT">O jogo travou?</h2><p id="recWhy"></p><div class="recbtns"><button id="recGo" class="rec1">Destravar e continuar</button><button id="recBack">Voltar ao início do turno</button><button id="recNew">Recomeçar a luta</button><button id="recX" class="lnk">fechar</button></div></div></div>
-<section id="modeS" hidden><div class="nk"><p class="nkq">Como você vai jogar?</p><div class="inp" role="group" aria-label="Como você vai jogar?"><button type="button" data-m="touch">Celular<small>toque na tela</small><i></i></button><button type="button" data-m="kb">PC<small>teclado</small><i></i></button><button type="button" data-m="pad">PC<small>controle</small><i></i></button></div><button id="bResume" class="rec" type="button" hidden></button><p class="upd"></p></div></section>
+<section id="modeS" hidden><div class="nk"><h1 class="gtit">Afrodite Origins</h1><p class="nkq">Como você vai jogar?</p><div class="inp" role="group" aria-label="Como você vai jogar?"><button type="button" data-m="touch">Celular<small>toque na tela</small><i></i></button><button type="button" data-m="kb">PC<small>teclado</small><i></i></button><button type="button" data-m="pad">PC<small>controle</small><i></i></button></div><button id="bResume" class="rec" type="button" hidden></button><p class="upd"></p></div></section>
 <section id="fsAsk" hidden><div class="nk"><p class="nkq">Coloque em tela cheia</p><p class="fsq">No celular, a luta só fica confortável em tela cheia e com o aparelho deitado. Os botões e as setas ficam grandes e nada fica escondido.</p><button id="fsGo" type="button" class="rec big">⛶ Entrar em tela cheia</button><button id="fsNo" type="button" class="lnk">continuar sem tela cheia (não recomendado)</button></div></section>
 <section id="nickS">
 <div class="nk"><p class="nkq">Qual o nome do servo de Afrodite que vai comandá-la?</p>
@@ -2610,8 +2611,9 @@ function drawTears(){if(!S.tears||S.t>S.tears||S.over)return;if(S.t>(S.tearT||0)
 
 
 /* versão, últimas atualizações e reporte de bug */
-const VERSION='Alpha 0.11.28 (experimental)';const BUILD_TS='2026-11-26T22:04:18Z';
+const VERSION='Alpha 0.11.29 (experimental)';const BUILD_TS='2026-11-26T22:09:52Z';
 const PATCH=[
+ {v:'Alpha 0.11.29 (experimental)',d:'26/11/2026',it:['O título Afrodite Origins aparece na primeira tela.','Novo texto da prévia: teste o potencial de Afrodite em mais uma provação enviada por Atena.']},
  {v:'Alpha 0.11.28 (experimental)',d:'26/11/2026',it:['O jogo agora se chama Afrodite Origins, com ícone e prévia de link.','No celular, use “Adicionar à tela inicial” para abrir como aplicativo, em tela cheia.']},
  {v:'Alpha 0.11.27 (experimental)',d:'26/11/2026',it:['Errar a sequência ao conjurar agora gasta os PA da habilidade, e Afrodite dá uma bronca: “Presta atenção! Seja mais rápido!”.']},
  {v:'Alpha 0.11.26 (experimental)',d:'26/11/2026',it:['Relatório do GM mais limpo, com abas Manual e Automático.','O observador do GM também acompanha a abertura do baú, a lojinha e a mochila.']},
