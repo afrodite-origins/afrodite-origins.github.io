@@ -21,6 +21,10 @@ table{width:100%;border-collapse:collapse;font-variant-numeric:tabular-nums}th,t
 .pill{display:inline-block;padding:1px 7px;border-radius:999px;font-size:12px}.pill.ok{background:#1f3a2c;color:#8ee0b3}.pill.bad{background:#3d2220;color:#f0a093}.pill.mid{background:#2a2f3a;color:#c6ccd6}
 .note{color:var(--mut);font-size:12px;margin:8px 0 0}.empty{color:var(--mut);padding:14px 0}
 .hist{display:flex;align-items:flex-end;gap:6px;height:120px;padding-top:6px}.hist div{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;height:100%;justify-content:flex-end}.hist s{display:block;width:100%;background:var(--blue);border-radius:4px 4px 0 0;text-decoration:none}.hist s.bad{background:var(--bad)}.hist em{font-style:normal;font-size:11px;color:var(--mut)}.hist b{font-size:11px;font-weight:500;color:var(--tx)}
+.prof{display:grid;grid-template-columns:repeat(auto-fill,minmax(360px,1fr));gap:14px}
+.pc{background:radial-gradient(ellipse at 50% 38%,#231c26 0%,var(--pan2) 70%);border:1px solid var(--line);border-radius:10px;padding:10px 12px 14px;text-align:center}
+.pc svg{width:100%;height:auto;display:block}.pc .arch{font-size:17px;font-weight:700;color:var(--acc);letter-spacing:.02em;margin-top:2px}.pc .why{color:var(--mut);font-size:12px;margin:3px 0 8px}
+.tag{display:inline-block;margin:2px 3px;padding:2px 9px;border-radius:999px;font-size:11.5px;border:1px solid #3a3340;color:#d9cfe0;background:#1d1a22}.tag.hot{border-color:#7a5a2a;color:#f0cf8e;background:#2a2116}
 </style></head><body><div class="w">
 <header><h1>Afrodite Alpha <small>análise dos testes</small></h1><span class="src" id="src">carregando…</span></header>
 <div class="filters"><label>Período <select id="fp"><option value="0">tudo</option><option value="1">últimas 24 h</option><option value="7">últimos 7 dias</option><option value="30">últimos 30 dias</option></select></label>
@@ -29,6 +33,7 @@ table{width:100%;border-collapse:collapse;font-variant-numeric:tabular-nums}th,t
 <span style="flex:1"></span><button id="reload">Atualizar</button><button id="csv">CSV (lutas)</button><button id="json">JSON</button></div>
 <div class="kpis" id="kpis"></div>
 <div class="grid"><div class="box"><h2>Ranking de jogadores</h2><div class="tw" id="rank"></div></div><div class="box"><h2>Classes</h2><div id="cls"></div></div></div>
+<div class="box" style="margin-bottom:14px"><h2>Perfis de jogador</h2><div id="arch" style="margin-bottom:12px"></div><div class="prof" id="prof"></div><p class="note">Cada perfil reúne todas as lutas do jogador no período. Em volta do nome ficam as escolhas que mais se repetem; quanto maior a palavra, mais forte o hábito. O estilo principal é o traço mais marcante entre os critérios abaixo de cada cartão.</p></div>
 <div class="box" style="margin-bottom:14px"><h2>Combate automático</h2><div id="auto"></div></div>
 <div class="box" style="margin-bottom:14px"><h2>Quando os jogadores fecham o jogo</h2><div id="quit"></div></div>
 <div class="grid"><div class="box"><h2>Funil</h2><div id="funnel"></div></div><div class="box"><h2>Tempo por turno</h2><div id="turns"></div></div></div>
@@ -107,6 +112,59 @@ function render(){const days=+$('fp').value,dev=$('fd').value,noAuto=$('fa').che
  $('quit').innerHTML=Object.keys(last).length?`<div class="grid" style="margin:0"><div><h2 style="margin-top:0">Último evento antes de sair</h2>${bars(Object.entries(last).sort((a,b)=>b[1]-a[1]).map(([n,v])=>[n,v,'bad']),'',v=>v+' sessões')}<h2 style="margin-top:14px">Tela em que saíram</h2>${bars(Object.entries(lastScr).sort((a,b)=>b[1]-a[1]).map(([n,v])=>[n,v,'blue']),'',v=>v+' sessões')}</div>
   <div><h2 style="margin-top:0">Chance de sair logo depois do evento</h2>${tbl(['Evento','Ocorrências','Saíram em até 60 s','Taxa'],RT.map(([n,o,q])=>[esc(n),o,q,pill(Math.round(100*q/o),101,-1)]),[1,2,3])}<p class="note">Eventos com taxa alta são candidatos a frustração (ou a um bom ponto de parada, como a vitória). Compare "morte" com "vitória" e "tempo esgotado" com os demais. Poucas ocorrências ainda não dizem muito.</p></div></div>`:'<div class="empty">Sem eventos registrados. Os eventos começam a ser gravados a partir desta versão do jogo.</div>';
  $('bugs').innerHTML=tbl(['Quando','Jogador','Versão','Aparelho','Onde','Relato','Contexto'],BUGS.map(b=>{const c=b.context||{};return[esc((b.created_at||'').replace('T',' ').slice(0,16)),esc(b.nick||'(sem apelido)'),esc(b.version||''),esc(b.device||''),esc(c.tela==='fight'?'luta'+(c.rodada?' · rodada '+c.rodada:'')+(c.fase>1?' · fase 2':''):c.tela||''),`<div style="white-space:normal;min-width:260px;max-width:460px">${esc(b.text)}</div>`,`<div style="white-space:normal;min-width:220px;max-width:360px;color:var(--mut);font-size:12px">${esc([c.classe,c.estado,c.vida&&'vida '+c.vida,c.ataque,c.auto?'Automático ligado':'',(c.ultimas||[]).join(' · ')].filter(Boolean).join(' · '))}</div>`]}),[])+(BSRC?`<p class="note">${esc(BSRC)}</p>`:'');
+
+ // ---- perfis de jogador
+ const RW={aparar:'aparar',pular:'pular',desviar:'desviar'},PF={};
+ S.forEach(s=>{const n=who(s),p=PF[n]=PF[n]||{n,F:[],ses:0,dev:{},quitAfterDeath:0};p.ses++;p.dev[s.device]=(p.dev[s.device]||0)+1;
+  const E=s.events||[],end=(+s.total_ms||0)/1000,lastDeath=[...E].reverse().find(e=>e.e==='morte');if(lastDeath&&end-lastDeath.t<=60)p.quitAfterDeath++;
+  s.fights.forEach(f=>p.F.push(f))});
+ const PL=Object.values(PF).filter(p=>p.F.length).map(p=>{const F=p.F,d=F.filter(f=>f.res==='vitória'||f.res==='derrota'),w=F.filter(f=>f.res==='vitória');
+  const cc={};F.forEach(f=>cc[f.cls]=(cc[f.cls]||0)+1);const cls=Object.entries(cc).sort((a,b)=>b[1]-a[1]);
+  const sk={};F.forEach(f=>Object.entries(f.skills||{}).forEach(([k,v])=>sk[k]=(sk[k]||0)+v));const skl=Object.entries(sk).sort((a,b)=>b[1]-a[1]);
+  const rr={};F.forEach(f=>Object.entries(f.react||{}).forEach(([k,v])=>{const x=rr[k]=rr[k]||{ok:0,all:0,pf:0};x.ok+=v.ok||0;x.all+=(v.ok||0)+(v.fail||0);x.pf+=v.perfect||0}));
+  const rOk=Object.values(rr).reduce((a,x)=>a+x.ok,0),rAll=Object.values(rr).reduce((a,x)=>a+x.all,0),rBest=Object.entries(rr).filter(([,x])=>x.all>=3).sort((a,b)=>b[1].ok/b[1].all-a[1].ok/a[1].all)[0];
+  const T=F.flatMap(f=>f.turns||[]),D=F.flatMap(f=>f.dists||[]),to=F.reduce((a,f)=>a+(f.timeouts||0),0),au=F.filter(f=>f.auto).length,abn=F.filter(f=>f.res==='abandono').length;
+  const clutch=w.filter(f=>(+f.hp_left||100)<=20).length,esc0=F.reduce((a,f)=>a+(+f.escapes||0),0);
+  const x={...p,fights:F.length,w:w.length,l:d.length-w.length,wr:d.length?w.length/d.length:null,cls,skl,rr,acc:rAll?rOk/rAll:null,rAll,rBest,tMed:med(T),toR:T.length?to/T.length:0,dist:D.length?avg(D):null,autoR:au/F.length,abR:abn/F.length,clutch,esc:esc0/F.length,dmgR:avg(d.map(f=>(+f.dmg_out||0)/Math.max(1,+f.rounds||1))),p2:F.filter(f=>f.phase2).length};
+  // critérios de estilo: [rótulo, força 0-1, explicação]
+  const C=[];
+  if(x.autoR>=.5)C.push(['Delegadora',x.autoR,'deixa o Automático lutar em '+pct(au,F.length)+' das lutas']);
+  if(clutch)C.push(['Clutch',.6+.15*clutch,clutch+(clutch>1?' vitórias':' vitória')+' com 20% de vida ou menos']);
+  if(x.acc!=null&&rAll>=6&&x.acc>=.75)C.push(['Reflexo de aço',x.acc,'acerta '+pct(rOk,rAll)+' das reações']);
+  if(x.acc!=null&&rAll>=6&&x.acc<.4)C.push(['Encaixa tudo',1-x.acc,'erra '+pct(rAll-rOk,rAll)+' das reações']);
+  if(x.dist!=null&&x.dist<=1.6)C.push(['Corpo a corpo',.5+(1.6-x.dist)/2,'termina o turno a '+r1(x.dist)+' casa de Hefesto, em média']);
+  if(x.dist!=null&&x.dist>=3)C.push(['Atiradora de longe',.5+(x.dist-3)/4,'mantém '+r1(x.dist)+' casas de distância']);
+  if(T.length>=6&&x.tMed>=22)C.push(['Estrategista',.45+x.tMed/90,'pensa '+r1(x.tMed)+' s por turno (mediana)']);
+  if(T.length>=6&&x.tMed<=7)C.push(['Relâmpago',.45+(7-x.tMed)/14,'decide em '+r1(x.tMed)+' s por turno']);
+  if(x.toR>=.15)C.push(['Perdida no relógio',.4+x.toR,'deixa o tempo esgotar em '+Math.round(100*x.toR)+'% dos turnos']);
+  if(x.abR>=.4&&F.length>=2)C.push(['Desistente',.4+x.abR/2,'abandona '+Math.round(100*x.abR)+'% das lutas']);
+  if(x.l>=3&&x.l>=x.w*2)C.push(['Persistente',.45+Math.min(.5,x.l/12),x.l+' derrotas e continuou tentando']);
+  if(cls.length>=3)C.push(['Exploradora',.4+cls.length/10,'testou '+cls.length+' classes']);
+  if(F.length>=4&&cls[0][1]/F.length>=.85)C.push(['Fiel à '+cls[0][0],.5,'joga quase sempre de '+cls[0][0]]);
+  if(x.wr!=null&&d.length>=3&&x.wr>=.6)C.push(['Carrasca de deuses',.5+x.wr/2,'vence '+Math.round(100*x.wr)+'% das lutas terminadas']);
+  if(x.esc>=1.5)C.push(['Esquiva',.4+x.esc/8,r1(x.esc)+' fugas por luta']);
+  C.sort((a,b)=>b[1]-a[1]);x.C=C;x.arch=C[0]?C[0][0]:(F.length<2?'Recém-chegada':'Equilibrada');x.why=C[0]?C[0][2]:(F.length<2?'só uma luta até agora':'nenhum hábito se destaca');
+  return x}).sort((a,b)=>b.fights-a.fights||b.w-a.w);
+ const AC={};PL.forEach(p=>AC[p.arch]=(AC[p.arch]||0)+1);
+ $('arch').innerHTML=PL.length?`<div style="display:flex;flex-wrap:wrap;gap:6px;align-items:center"><span style="color:var(--mut);font-size:12px;margin-right:4px">Estilos no período:</span>${Object.entries(AC).sort((a,b)=>b[1]-a[1]).map(([n,v])=>`<span class="tag hot">${esc(n)} · ${v}</span>`).join('')}</div>`:'';
+ const cloud=p=>{const W=[];const add=(t,wt,col)=>W.push({t,wt,col});
+  p.cls.slice(0,2).forEach(([c,v],i)=>add(c,i?.45:1,'#f0cf8e'));
+  p.skl.slice(0,3).forEach(([k,v],i)=>add(k,.75-.15*i,'#e7b9d6'));
+  if(p.rBest)add(RW[p.rBest[0]]+' '+Math.round(100*p.rBest[1].ok/p.rBest[1].all)+'%',.7,'#8ec9f0');
+  if(p.dist!=null)add(p.dist<=1.6?'colada nele':p.dist>=3?'de longe':'meia distância',.55,'#c6ccd6');
+  if(p.tMed)add(r1(p.tMed)+' s/turno',.45,'#c6ccd6');
+  if(p.w)add(p.w+(p.w>1?' vitórias':' vitória'),.85,'#8ee0b3');else if(p.l)add(p.l+(p.l>1?' derrotas':' derrota'),.6,'#f0a093');
+  if(p.autoR>=.25)add('Automático',.5,'#9aa3b2');if(p.clutch)add('CLUTCH',.9,'#ffd36b');
+  if(p.p2)add('fase 2 ×'+p.p2,.4,'#f0a093');
+  const N=W.length,cx=190,cy=132,B=[{x:cx-62,y:cy-26,w:124,h:52}];let o='';
+  W.sort((a,b)=>b.wt-a.wt);const ord=[];W.forEach((w,i)=>ord[i%2?N-1-(i>>1):(i>>1)]=w);
+  ord.forEach((w,i)=>{const a=-Math.PI/2+i*2*Math.PI/N,fs=11+w.wt*8,tw=w.t.length*fs*.56,th=fs*1.15;let k=1,x,y,bb;
+   for(let it=0;it<30;it++){x=cx+Math.cos(a)*118*k;y=cy+Math.sin(a)*78*k;x=Math.max(tw/2+4,Math.min(380-tw/2-4,x));y=Math.max(th/2+2,Math.min(264-th/2,y));bb={x:x-tw/2-3,y:y-th/2,w:tw+6,h:th};
+    if(!B.some(q=>bb.x<q.x+q.w&&bb.x+bb.w>q.x&&bb.y<q.y+q.h&&bb.y+bb.h>q.y))break;k+=.06}
+   B.push(bb);o+=`<line x1="${cx}" y1="${cy}" x2="${r1(x)}" y2="${r1(y)}" stroke="${w.col}" stroke-opacity=".13"/><text x="${r1(x)}" y="${r1(y)}" font-size="${r1(fs)}" fill="${w.col}" fill-opacity="${r1(.55+w.wt*.45)}" font-weight="${w.wt>.7?700:500}" text-anchor="middle" dominant-baseline="central" paint-order="stroke" stroke="#1b1820" stroke-width="4">${esc(w.t)}</text>`});
+  const nm=p.n.length>14?p.n.slice(0,13)+'…':p.n,nfs=nm.length>9?24:30;
+  return `<svg viewBox="0 0 380 266" role="img" aria-label="${esc(p.n)}"><circle cx="${cx}" cy="${cy}" r="54" fill="#1b1820"/><circle cx="${cx}" cy="${cy}" r="54" fill="#d4a85a" fill-opacity=".07" stroke="#d4a85a" stroke-opacity=".35"/>${o}<circle cx="${cx}" cy="${cy}" r="54" fill="#1b1820" fill-opacity=".85" stroke="#d4a85a" stroke-opacity=".45"/><text x="${cx}" y="${cy-4}" font-size="${nfs}" font-weight="800" fill="#fff" text-anchor="middle" dominant-baseline="middle" letter-spacing=".5">${esc(nm)}</text><text x="${cx}" y="${cy+22}" font-size="10.5" fill="#8b93a1" text-anchor="middle">${p.fights} ${p.fights>1?'lutas':'luta'} · ${p.ses} ${p.ses>1?'sessões':'sessão'}</text></svg>`};
+ $('prof').innerHTML=PL.length?PL.slice(0,24).map(p=>`<div class="pc">${cloud(p)}<div class="arch">${esc(p.arch)}</div><div class="why">${esc(p.why)}</div><div>${p.C.slice(1,5).map(c=>`<span class="tag" title="${esc(c[2])}">${esc(c[0])}</span>`).join('')}</div></div>`).join(''):'<div class="empty">Sem lutas no período.</div>';
  window.__F=F}
 function dl(name,txt,type){const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([txt],{type}));a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000)}
 $('json').onclick=()=>dl('afrodite-sessoes.json',JSON.stringify(SES,null,2),'application/json');

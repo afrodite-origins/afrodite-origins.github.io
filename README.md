@@ -5,11 +5,12 @@ Protótipo de RPG tático por turnos, de tom sombrio: Afrodite enfrenta Hefesto,
 **[Jogar](https://isaacbcampos.github.io/afrodite-alpha/)** · funciona no PC e no celular (na horizontal).
 
 ## Últimas atualizações
-**Alpha 0.9.5** · 26/11/2026
-- Desviar, pular e aparar agora têm um momento de destaque, com som próprio e contador de reações seguidas.
-- Ao levar dano, Afrodite sangra, chora e murmura, e a tela pulsa em vermelho.
-- Novo botão para reportar bugs, dentro e fora da luta.
-- Atalho para as últimas atualizações na tela inicial.
+
+**Alpha 0.9.6 · 26/11/2026**
+
+- No menu de ações, um toque na habilidade já leva direto para a mira.
+- Encerrar o turno pelo menu agora pede confirmação, mostrando quantos PA e PM ainda sobram.
+- Na mira, um aviso discreto indica como confirmar, e o botão Confirmar aparece no lugar de Passar turno.
 
 [Ver todas as atualizações](CHANGELOG.md) · achou um bug? Use o botão **Reportar bug** dentro do jogo.
 
