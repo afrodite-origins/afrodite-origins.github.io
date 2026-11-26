@@ -6,6 +6,14 @@ Protótipo de RPG tático por turnos, de tom sombrio: Afrodite enfrenta Hefesto,
 
 ## Últimas atualizações
 
+**Alpha 0.11.22 (experimental) · 26/11/2026**
+
+- 🎁 Baú da Forja: sorteia visuais Comuns (50%), Incomuns (30%), Raros (14%), Épicos (5%) e Lendários (1%). Toda vitória sem o automático dá um baú, e dá para comprar baús com moedas.
+- Loja do dia: ofertas novas todo dia, com preço pela raridade.
+- Visuais novos em 5 sets (Solar, Abissal, Rosa Negra, Bosque e Gelo Eterno): botas, roupinhas, chapéus, armas épicas e asas lendárias.
+- Ranking com cara de Dark Souls e o ícone da classe ao lado de cada nome.
+- O som começa em 25% e o painel de volume vira um ícone depois de ajustado.
+
 **Alpha 0.11.21 (experimental) · 26/11/2026**
 
 - Ranking mais limpo, com menos texto.
@@ -21,11 +29,6 @@ Protótipo de RPG tático por turnos, de tom sombrio: Afrodite enfrenta Hefesto,
 **Alpha 0.11.19 (experimental) · 26/11/2026**
 
 - Moedas da lojinha em escala nova: vitória sem o automático vale 🪙10 (no pódio, 🪙20), vitória no automático vale 🪙2. Cada visual custa 🪙20. Quem já tinha moedas teve o saldo convertido.
-
-**Alpha 0.11.18 (experimental) · 26/11/2026**
-
-- Glifo da Maré apaga as brasas do Hefesto: onde a água encontra o fogo, os dois somem (o glifo perde aquela casa). Agora com ondulações na água e vapor.
-- O Ataque do Mar da Ninfa deixa Hefesto molhado: o próximo Glifo da Maré causa +50% nele.
 
 ## Controles
 | | PC | Controle |

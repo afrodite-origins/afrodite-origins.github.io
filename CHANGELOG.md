@@ -1,5 +1,13 @@
 # Últimas atualizações
 
+## Alpha 0.11.22 (experimental) · 26/11/2026
+
+- 🎁 Baú da Forja: sorteia visuais Comuns (50%), Incomuns (30%), Raros (14%), Épicos (5%) e Lendários (1%). Toda vitória sem o automático dá um baú, e dá para comprar baús com moedas.
+- Loja do dia: ofertas novas todo dia, com preço pela raridade.
+- Visuais novos em 5 sets (Solar, Abissal, Rosa Negra, Bosque e Gelo Eterno): botas, roupinhas, chapéus, armas épicas e asas lendárias.
+- Ranking com cara de Dark Souls e o ícone da classe ao lado de cada nome.
+- O som começa em 25% e o painel de volume vira um ícone depois de ajustado.
+
 ## Alpha 0.11.21 (experimental) · 26/11/2026
 
 - Ranking mais limpo, com menos texto.
