@@ -1,5 +1,14 @@
 # Últimas atualizações
 
+## Alpha 0.11.19 (experimental) · 26/11/2026
+
+- Moedas da lojinha em escala nova: vitória sem o automático vale 🪙10 (no pódio, 🪙20), vitória no automático vale 🪙2. Cada visual custa 🪙20. Quem já tinha moedas teve o saldo convertido.
+
+## Alpha 0.11.18 (experimental) · 26/11/2026
+
+- Glifo da Maré apaga as brasas do Hefesto: onde a água encontra o fogo, os dois somem (o glifo perde aquela casa). Agora com ondulações na água e vapor.
+- O Ataque do Mar da Ninfa deixa Hefesto molhado: o próximo Glifo da Maré causa +50% nele.
+
 ## Alpha 0.11.17 (experimental) · 26/11/2026
 
 - Visual mais limpo: todos os textos do jogo agora em maiúsculas, na mesma fonte do título.

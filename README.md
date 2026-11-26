@@ -6,6 +6,15 @@ Protótipo de RPG tático por turnos, de tom sombrio: Afrodite enfrenta Hefesto,
 
 ## Últimas atualizações
 
+**Alpha 0.11.19 (experimental) · 26/11/2026**
+
+- Moedas da lojinha em escala nova: vitória sem o automático vale 🪙10 (no pódio, 🪙20), vitória no automático vale 🪙2. Cada visual custa 🪙20. Quem já tinha moedas teve o saldo convertido.
+
+**Alpha 0.11.18 (experimental) · 26/11/2026**
+
+- Glifo da Maré apaga as brasas do Hefesto: onde a água encontra o fogo, os dois somem (o glifo perde aquela casa). Agora com ondulações na água e vapor.
+- O Ataque do Mar da Ninfa deixa Hefesto molhado: o próximo Glifo da Maré causa +50% nele.
+
 **Alpha 0.11.17 (experimental) · 26/11/2026**
 
 - Visual mais limpo: todos os textos do jogo agora em maiúsculas, na mesma fonte do título.
@@ -13,18 +22,6 @@ Protótipo de RPG tático por turnos, de tom sombrio: Afrodite enfrenta Hefesto,
 **Alpha 0.11.16 (experimental) · 26/11/2026**
 
 - Brasões novos para as quatro classes e emblemas novos para todas as habilidades, com cores fortes de cada caminho.
-
-**Alpha 0.11.15 (experimental) · 26/11/2026**
-
-- Luta rebalanceada para quem está começando: Hefesto tem menos vida e bate mais fraco, Afrodite bate mais forte e aguenta mais. O Martelo do Fim não mata mais de uma vez.
-- Corrida da Forja: casas seguras em verde, caminho até elas, setas na tela no celular, toque ou clique na casa ao lado para fugir, e desviar dela não gasta PM.
-- Ninfa da Água com animações novas: gêiser ao surgir, serpente de água no Ataque do Mar e um fio de água desenhando o Glifo de Cura.
-
-**Alpha 0.11.14 (experimental) · 26/11/2026**
-
-- 🛍 Lojinha da Forja: cada vitória sem o automático vale 🪙1 (no pódio, 🪙2). Troque por cores de cabelo, penteados, chapéus, roupinhas e armas alternativas para cada classe (só visual).
-- Abertura: “A disputa pelo poder”, e o golpe de Cronos agora acerta Urano bem onde dói.
-- Quem fica mais de 2 minutos parado (fora do automático) não conta tempo de jogo.
 
 ## Controles
 | | PC | Controle |

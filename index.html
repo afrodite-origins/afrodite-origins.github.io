@@ -293,7 +293,7 @@ body p,body li,body small,body label,body span,body i,body em,body td,body th{le
 </div>
 <div id="podB" hidden></div>
 <div id="shopP" hidden role="dialog" aria-modal="true" aria-labelledby="shT"><div class="shb"><div class="shH"><h2 id="shT">Lojinha da Forja</h2><span class="shCoins" id="shCoins">🪙 0</span><button type="button" id="shX" aria-label="Fechar">✕</button></div>
-<div class="shBody"><div class="shPrev"><canvas id="shCv" width="220" height="250"></canvas><div id="shPN" class="shPN"></div><div class="shNote">Só estética: não muda a luta. Cada vitória sem o automático dá 🪙1 (no pódio, 🪙2). Cada item custa 🪙2.</div></div>
+<div class="shBody"><div class="shPrev"><canvas id="shCv" width="220" height="250"></canvas><div id="shPN" class="shPN"></div><div class="shNote">Só estética: não muda a luta. Vitória sem o automático: 🪙10 (no pódio, 🪙20). Com o automático: 🪙2. Cada item custa 🪙20.</div></div>
 <div class="shR"><div id="shTabs"></div><div id="shGrid"></div><div class="shAct"><button type="button" id="shBuy" disabled>Escolha um item</button></div></div></div></div></div><div id="rankP" hidden role="dialog" aria-modal="true" aria-labelledby="rkT"><canvas id="rkCf" aria-hidden="true"></canvas><div class="rkb"><div id="rkPod"></div><h2 id="rkT">Ranking da Forja</h2><p class="rkS">Três jeitos de brilhar contra Hefesto</p><div id="rkMe"></div><div id="rkTabs"><button type="button" data-k="ded">⏳ Dedicação</button><button type="button" data-k="dev">🔥 Devastação</button><button type="button" data-k="int">🛡 Intocável</button></div><div id="rkL"><p class="rkS">carregando…</p></div><p class="rkTy">Obrigado por testar <b>A Ascensão e o Triunfo de Afrodite</b>! Cada luta sua ajuda a deixar o jogo melhor. Se algo estranho aconteceu, use o botão de bug.</p><div class="rkBt"><button id="rkAgain" type="button">Jogar de novo</button><button id="rkHome" type="button">Escolher outro caminho</button></div></div></div>
 <div id="modal" hidden role="dialog" aria-modal="true" aria-labelledby="mt"><div class="mbox"><h2 id="mt">Confirmar distribuição?</h2><div id="msum"></div><div class="bar"><button id="mok">Confirmar <small>A / Enter</small></button><button id="mno">Voltar <small>Esc</small></button></div></div></div>
 <div id="fx" aria-hidden="true"></div>
@@ -350,9 +350,9 @@ const SKL={
  chicote:{n:'Chicotada',pa:2,sc:['car','dex'],tg:'he',r:()=>[1,3],d:()=>`Até 3 casas: ${Math.round((8+2*A.car)*AFRO_DMG)} de dano, +1 Masoquismo e sangramento de ${2+A.dex} por 2 turnos (teste DEX × CON). Uma vez por turno.`},
  extase:{n:'Êxtase',pa:3,sc:['car','sab'],tg:'he',r:()=>[1,4],d:()=>`Até 4 casas. Teste CAR × SAB: o inimigo fica extasiado. No próximo turno ele só caminha até Afrodite e ataca com a própria arma, sem usar poderes nem habilidades. +1 Masoquismo.`},
  masoq:{n:'Masoquismo',pa:4,sc:['car'],tg:'he',r:()=>[1,3],d:()=>`Até 3 casas. Consome todos os acúmulos: ${8+2*A.car} + ${7+A.car} por acúmulo. Contra um inimigo extasiado, o dano é 50% maior. Afrodite ganha acúmulos ao usar Chicotada e Êxtase e ao receber dano.`},
- glifob:{n:'Glifo da Maré',pa:3,sc:['int'],tg:'cell',r:()=>[1,5],d:()=>`Marca no chão uma área 3×3 (centro a até 5 casas). No começo do próximo turno inimigo, a maré explode: inimigos dentro dela sofrem ${Math.round((12+3*A.int)*AFRO_DMG)} de dano e ficam encharcados, com água pesada nas pernas (−1 PM, teste INT × CON). A água também apaga o fogo do chão. Não atinge aliados.`},
+ glifob:{n:'Glifo da Maré',pa:3,sc:['int'],tg:'cell',r:()=>[1,5],d:()=>`Marca no chão uma área 3×3 (centro a até 5 casas). No começo do próximo turno inimigo, a maré explode: inimigos dentro dela sofrem ${Math.round((12+3*A.int)*AFRO_DMG)} de dano (+50% se estiverem molhados pela Ninfa) e ficam com água pesada nas pernas (−1 PM, teste INT × CON). Onde a maré toca uma brasa, a água apaga o fogo, mas perde aquela casa. Não atinge aliados.`},
  glifod:{n:'Glifo do Desejo',pa:2,sc:['int','sab'],tg:'cell',r:()=>[1,5],d:()=>`Marca no chão uma área 2×2. No começo do próximo turno inimigo, os inimigos dentro dela ficam marcados (+40% de dano por 2 turnos) e podem ficar presos no lugar (teste INT × SAB).`},
- aracne:{n:'Invocar Ninfa da Água',pa:4,sc:['int'],tg:'cell',r:()=>[1,2],d:()=>`Chama a Ninfa da Água, envolta numa aura de água, numa casa livre a até 2 casas. Ela tem ${20+5*A.int} de vida e age sozinha depois de Afrodite. Quando alguém está ferido, grava um Glifo de Cura 2×2 que restaura ${6+A.int} de vida aos aliados dentro dele. Senão, usa o Ataque do Mar (até 4 casas): a água circula o inimigo e explode, causando ${Math.round((8+2*A.int)*AFRO_DMG)} de dano e encharcando-o, o que apaga o próximo ataque de fogo dele.`},
+ aracne:{n:'Invocar Ninfa da Água',pa:4,sc:['int'],tg:'cell',r:()=>[1,2],d:()=>`Chama a Ninfa da Água, envolta numa aura de água, numa casa livre a até 2 casas. Ela tem ${20+5*A.int} de vida e age sozinha depois de Afrodite. Quando alguém está ferido, grava um Glifo de Cura 2×2 que restaura ${6+A.int} de vida aos aliados dentro dele. Senão, usa o Ataque do Mar (até 4 casas): a água circula o inimigo e explode, causando ${Math.round((6+2*A.int)*AFRO_DMG)} de dano e deixando-o molhado: o próximo ataque de fogo dele falha e o Glifo da Maré causa +50% nele.`},
  voo:{n:'Voo Rasante',pa:2,sc:['dex'],tg:'voo',r:()=>[1,2+A.dex],d:()=>`Voa até ${2+A.dex} casas. Se mirar num inimigo, cai ao lado dele e causa ${11+3*A.dex}; aí pode voar de novo neste turno (1 PA) para se reposicionar. Numa casa vazia, só voa uma vez.`},
  recuo:{n:'Recuo em Voo',pa:1,sc:['dex'],tg:'cell',r:()=>[1,2+A.dex],d:()=>`Depois de acertar o Voo Rasante: voa para uma casa livre a até ${2+A.dex} casas.`},
  corte:{n:'Corte Duplo Envenenado',pa:3,sc:['dex','con'],tg:'he',r:()=>[1,1],d:()=>`Corpo a corpo: dois cortes de ${6+2*A.dex}; o veneno escorre e envenena o inimigo por 2 turnos, ${Math.round((4+A.dex)*AFRO_DMG)} de dano por turno (teste DEX × CON).`},
@@ -406,7 +406,7 @@ function doAct(a,cell){const f=actInfo(a);if(!f)return false;const u=unavail(f);
  case 'chicote':ska('chicote');skaSnd('chicote');after(.35,()=>{dmgE(8+2*A.car,'Chicotada');addMaso(1);if(!S.over&&save('dex','con','sangramento'))S.bleed={t:Math.max(2,(S.bleed||{}).t||0),d:Math.max(2+A.dex,(S.bleed||{}).d||0)}});break;
  case 'extase':{ska('extase');skaSnd('extase');addMaso(1);const ch=save('car','sab','extasiado');if(ch)S.charm=1;after(.6,()=>{if(ch){say('Hefesto fica extasiado.');heLine('“...que perfume é esse?”')}});break}
  case 'masoq':{const st=S.maso,dm=Math.round((8+2*A.car+(7+A.car)*st)*(S.charm||S.charmNow?1.5:1));ska('masoq');skaSnd('masoq');S.maso=0;after(.55,()=>dmgE(dm,'Masoquismo ×'+st));break}
- case 'glifob':case 'glifod':{const k=id==='glifob'?'b':'d',cs=glyphCells(k,cell.c,cell.r);S.glyphs.push({k,cells:cs,c:cell.c,r:cell.r,t:S.t});ska(id,pt,{cells:cs});skaSnd(id);say(inCells(cs,S.he)?'O glifo cobre Hefesto: ativa no turno dele.':'O glifo marca o chão: ativa no turno dele.');break}
+ case 'glifob':case 'glifod':{const k=id==='glifob'?'b':'d',cs=glyphCells(k,cell.c,cell.r);S.glyphs.push({k,cells:cs,c:cell.c,r:cell.r,t:S.t});if(k==='b')after(.5,()=>{const q=S.glyphs.find(x=>x.cells===cs);if(q)glyphDouse(q)});ska(id,pt,{cells:cs});skaSnd(id);say(inCells(cs,S.he)?'O glifo cobre Hefesto: ativa no turno dele.':'O glifo marca o chão: ativa no turno dele.');break}
  case 'aracne':S.ally={c:cell.c,r:cell.r,hp:20+5*A.int,mhp:20+5*A.int,t0:S.t,hf:-9};AL=pt.slice();ska('aracne',pt);skaSnd('aracne');say('A Ninfa da Água ergue-se das ondas.');logA('A Ninfa da Água entra na luta','#8fd0ff');douse(cell);break;
  case 'voo':if(onHe){const t=landNear(S.me);ska('voo');startFly('dash');S.me=t;skaSnd('voo');after(.4,()=>dmgE(11+3*A.dex,'Voo Rasante'));S.recuo=true;logA('Afrodite · Voo Rasante (pode recuar)','#e0c27a');say('Acertou! Pode voar de novo.')}else{ska('recuo',null,{miss:1});startFly('dash');S.me={...cell};S.cd.voo=CD.voo;logA('Afrodite · Voo Rasante','#e0c27a')}break;
  case 'recuo':ska('recuo',null,{miss:1});startFly('dash');S.me={...cell};S.recuo=false;S.cd.voo=CD.voo;logA('Afrodite · Recuo em Voo','#e0c27a');break;
@@ -785,8 +785,8 @@ function shopRender(){$('shCoins').textContent='🪙 '+LOJA.coins;
  else{bb.disabled=true;bb.textContent='Faltam 🪙 '+(SHOP_PRICE-LOJA.coins)+' (vença Hefesto sem o automático)'}}
 setTimeout(()=>{$('bShop').onclick=shopOpen;$('shX').onclick=shopClose;$('shopP').addEventListener('keydown',e=>{if(e.key==='Escape'){e.stopPropagation();shopClose()}});shopBtn()});
 // moedas da vitória (chamado pelo ranking)
-function lojaPremio(me,pod){if(!me||me.auto||me._pago)return '';me._pago=true;const g=pod?2:1,first=!LOJA.unlocked;LOJA.coins+=g;LOJA.wins=(LOJA.wins||0)+1;LOJA.unlocked=true;lojaSave();setTimeout(()=>{try{for(let i=0;i<g;i++)setTimeout(()=>coin(0,1568+i*200,.07),i*180)}catch(e){}},900);try{TEL.ev('moedas',{ganhou:g,total:LOJA.coins})}catch(e){}
- return`<div class="rkCoin">+<b>${g}</b> 🪙 moeda${g>1?'s':''} da forja${pod?' (pódio dobra!)':''} · você tem <b>${LOJA.coins}</b>${first?'<br><span style="font:15px \'EB Garamond\',serif;color:#f0e2c4">🛍 Lojinha desbloqueada! Abra na tela de escolher o caminho.</span>':LOJA.coins>=SHOP_PRICE?'<br><span style="font:14px \'EB Garamond\',serif;color:#f0e2c4">Já dá para comprar um visual na lojinha.</span>':''}</div>`}
+function lojaPremio(me,pod){if(!me||me._pago)return '';me._pago=true;const au=!!me.auto,g=au?COIN_AUTO:pod?COIN_POD:COIN_WIN,first=!LOJA.unlocked;LOJA.coins+=g;LOJA.wins=(LOJA.wins||0)+1;LOJA.unlocked=true;lojaSave();setTimeout(()=>{try{for(let i=0;i<Math.min(5,Math.ceil(g/4));i++)setTimeout(()=>coin(0,1568+i*200,.07),i*180)}catch(e){}},900);try{TEL.ev('moedas',{ganhou:g,total:LOJA.coins,auto:au})}catch(e){}
+ return`<div class="rkCoin">+<b>${g}</b> 🪙 moeda${g>1?'s':''} da forja${au?' (com o automático rende menos: vença sem ele para ganhar 🪙'+COIN_WIN+')':pod?' (pódio dobra!)':''} · você tem <b>${LOJA.coins}</b>${first?'<br><span style="font:15px \'EB Garamond\',serif;color:#f0e2c4">🛍 Lojinha desbloqueada! Abra na tela de escolher o caminho.</span>':LOJA.coins>=SHOP_PRICE?'<br><span style="font:14px \'EB Garamond\',serif;color:#f0e2c4">Já dá para comprar um visual na lojinha.</span>':''}</div>`}
 function podBadge(){try{const v=JSON.parse(localStorage.getItem('afroPodio2')||'{}')||{},b=$('podB');if(!b)return;const best=RKS.filter(R=>v[R.k]>=1&&v[R.k]<=3).sort((a,c)=>v[a.k]-v[c.k]);if(best.length&&scr==='pick'){b.hidden=false;b.innerHTML=best.map(R=>['👑','🥈','🥉'][v[R.k]-1]+' <b>'+v[R.k]+'º</b> '+R.n).join(' · ')+' <span style="color:#a89a84">no Ranking da Forja</span>'}else b.hidden=true}catch(e){}}
 setTimeout(podBadge,100);
 setTimeout(()=>{document.querySelectorAll('#rkTabs button').forEach(b=>b.onclick=()=>rankTab(b.dataset.k));$('rkAgain').onclick=()=>{rankHide();newGame();buildBar()};$('rkHome').onclick=()=>{rankHide();showPick()}});
@@ -1315,7 +1315,7 @@ document.addEventListener('visibilitychange',()=>{if(!document.hidden&&(scr==='f
 setInterval(()=>{if((scr==='fight'||scr==='origin')&&!document.hidden)wakeOn();else if(WAKE&&scr!=='fight'&&scr!=='origin')wakeOff()},5000);
 
 /* ===== v0.11.14: Lojinha da Forja — moedas e visuais (só estética) ===== */
-const SHOP_PRICE=2;
+const SHOP_PRICE=20,COIN_WIN=10,COIN_POD=20,COIN_AUTO=2;
 const SHOP=[
  {id:'h_prata',cat:'cabelo',n:'Prata Lunar',hair:['#d9dde8','#ffffff','#8a90a8']},
  {id:'h_ninfa',cat:'cabelo',n:'Verde Ninfa',hair:['#2fb07a','#8ff0c0','#167a50']},
@@ -1330,6 +1330,8 @@ const SHOP=[
  {id:'a_paixao',cat:'arma',cls:'paixao',n:'Cajado do Abismo',W:{glow:'#20e0c0',blade:'#d0fff4',core:'#10a890',heart:'#20e0c0',heartF:'#4af0d0'}}];
 const SHOP_CATS=[['cabelo','Cor do cabelo'],['penteado','Penteado'],['chapeu','Chapéu'],['roupa','Roupinha'],['arma','Armas']];
 let LOJA=(()=>{try{return Object.assign({coins:0,own:[],eq:{},wins:0,unlocked:false},JSON.parse(localStorage.getItem('afroLoja')||'{}'))}catch(e){return{coins:0,own:[],eq:{},wins:0,unlocked:false}}})();
+// v0.11.19: moedas em escala ×10 (para o automático render uma fração)
+if(LOJA.v!==2){LOJA.coins=(LOJA.coins||0)*10;LOJA.v=2;try{localStorage.setItem('afroLoja',JSON.stringify(LOJA))}catch(e){}}
 function lojaSave(){try{localStorage.setItem('afroLoja',JSON.stringify(LOJA))}catch(e){}}
 const SHOPI=id=>SHOP.find(x=>x.id===id);
 function cosEq(over){const eq=Object.assign({},LOJA.eq,over||{}),h=SHOPI(eq.cabelo),r=SHOPI(eq.roupa);return{hair:h&&h.hair,pent:eq.penteado||'',hat:eq.chapeu||'',roupa:r&&r.col,arma:eq}}
@@ -1708,7 +1710,8 @@ function hitAlly(){S.atkA={t0:S.t};say('Hefesto ergue o martelo contra a Ninfa d
 function endTurn(m){TEL.turnEnd(!!S.timedOut,dist(S.me,S.he),S.pa);S.tl=null;S.lastTap=null;if(m)say(m);S.mode=null;S.aim=null;if(S.recuo){S.recuo=false;S.cd.voo=CD.voo}S.st='wait';after(.7,S.ally?allyTurn:enemyTurn)}
 function afStates(){const st=[];if(hasTree('protecao'))st.push({k:S.stance==='off'?'investida':'escudo',n:S.stance==='off'?'Postura ofensiva':'Postura defensiva'});if(S.wall>0)st.push({k:'muralha',n:'Muralha de Afeto',v:S.wall});
  if(hasTree('persuasao')&&S.maso>0)st.push({k:'masoq',n:'Masoquismo',v:S.maso});if(S.recuo)st.push({k:'recuo',n:'Pode recuar em voo'});if(S.free)st.push({k:'voo',n:'Livre para escapar'});return st}
-function hefIcons(){const st=[];if(S.stun)st.push({k:'tonto',n:'Atordoado'});if(S.charm||S.charmNow)st.push({k:'extase',n:'Extasiado'});if(S.bleed)st.push({k:'sangue',n:'Sangramento',v:S.bleed.t});if(S.poison)st.push({k:'veneno',n:'Envenenado ('+S.poison.d+' por turno)',v:S.poison.t});
+function wetOn(){return S&&S.wetR&&S.round<=S.wetR}
+function hefIcons(){const st=[];if(wetOn())st.push({k:'dreno',n:'Molhado (+50% do Glifo da Maré)'});if(S.stun)st.push({k:'tonto',n:'Atordoado'});if(S.charm||S.charmNow)st.push({k:'extase',n:'Extasiado'});if(S.bleed)st.push({k:'sangue',n:'Sangramento',v:S.bleed.t});if(S.poison)st.push({k:'veneno',n:'Envenenado ('+S.poison.d+' por turno)',v:S.poison.t});
  if(S.burn>0)st.push({k:'chama',n:'Ardor',v:S.burn});if(S.mark>0)st.push({k:'marca',n:'Marcado (+40% de dano)',v:S.mark});if(S.hslow)st.push({k:'raiz',n:'PM perdidos',v:S.hslow});return st}
 /* IA da luta automática para as classes novas */
 function sidOf(i,st){let id=build[i];if(!id)return null;if(ALT[id]&&st.stance==='off')id=ALT[id];if(id==='voo'&&st.recuo)id='recuo';return id}
@@ -1829,7 +1832,10 @@ function iconAct2(k,s,B,St,F){const hrt=(x,y,r)=>{B();g.moveTo(x,y+r*.9);g.bezie
 /* ---------- v9: Hefesto — corrida pela borda, fase 2 apocalíptica, golpe mortal, cutscene ---------- */
 const PERIM=(()=>{const p=[];for(let c=0;c<N;c++)p.push({c,r:0});for(let r=1;r<N;r++)p.push({c:N-1,r});for(let c=N-2;c>=0;c--)p.push({c,r:N-1});for(let r=N-2;r>0;r--)p.push({c:0,r});return p})();
 function fireAt(c,r){return(S.fire||[]).some(f=>f.c===c&&f.r===r)}
-function addFire(c,r,ttl){if(!inB(c,r)||anvAt(c,r))return;S.fire=(S.fire||[]).filter(f=>!(f.c===c&&f.r===r));S.fire.push({c,r,ttl,t:S.t})}
+function steamAt(c,r){(S.steam=S.steam||[]).push({c,r,t:S.t});try{nz(.5,2600,1.4,.07,1200)}catch(e){}}
+function waterMeetsFire(c,r){const q=(S.glyphs||[]).find(q=>q.k==='b'&&inCells(q.cells,{c,r}));if(!q)return false;q.cells=q.cells.filter(x=>!(x.c===c&&x.r===r));if(!q.cells.length)S.glyphs=S.glyphs.filter(x=>x!==q);steamAt(c,r);return true}
+function glyphDouse(q){let n=0;q.cells=q.cells.filter(cl=>{if(fireAt(cl.c,cl.r)){S.fire=S.fire.filter(f=>!(f.c===cl.c&&f.r===cl.r));steamAt(cl.c,cl.r);n++;return false}return true});if(n){logA('A maré apaga '+n+(n>1?' brasas':' brasa')+' (e perde essas casas)','#8fd0ff');pop(...P(q.c,q.r).map((v,i)=>i?v-60:v),'TSSSS!','#d8eeff')}if(!q.cells.length)S.glyphs=S.glyphs.filter(x=>x!==q)}
+function addFire(c,r,ttl){if(!inB(c,r)||anvAt(c,r))return;if(waterMeetsFire(c,r)){logA('A água do glifo apaga a brasa (e perde a casa)','#8fd0ff');return}S.fire=(S.fire||[]).filter(f=>!(f.c===c&&f.r===r));S.fire.push({c,r,ttl,t:S.t})}
 function corridaPos(k){const f=Math.min(1,Math.max(0,(S.t-k.t0-.5)/(k.dur-.5))),L=k.path.length-1,x=f*L,i=Math.min(L-1,Math.floor(x)),u=x-i,a=P(k.path[i].c,k.path[i].r),b=P(k.path[i+1].c,k.path[i+1].r);return{pt:[a[0]+(b[0]-a[0])*u,a[1]+(b[1]-a[1])*u],i}}
 /* fase 2: meteoros com aviso (caem no início do turno seguinte de Hefesto) */
 function meteorMark(){const n=2+(Math.random()<.5?1:0),cand=[];for(let c=0;c<N;c++)for(let r=0;r<N;r++)if(!anvAt(c,r)&&!(c===S.he.c&&r===S.he.r))cand.push({c,r});
@@ -1950,9 +1956,15 @@ const inCells=(cs,p)=>!!p&&cs.some(q=>q.c===p.c&&q.r===p.r);
 function resolveGlyphs(){if(!S.glyphs||!S.glyphs.length)return false;const gs=S.glyphs;S.glyphs=[];let root=false;
  gs.forEach(q=>{const cs=q.cells;S.gfx=(S.gfx||[]).concat([{cells:cs,k:q.k,t:S.t}]);S.shake=S.t+.3;
   if(q.k==='b'){nz(.7,1600,1.2,.18,500);sw(300,90,.5,'sine',.1);logA('Glifo da Maré explode','#8fd0ff');S.fire=(S.fire||[]).filter(f=>!inCells(cs,f));
-   if(inCells(cs,S.he)&&!S.over){dmgE(12+3*A.int,'Glifo da Maré');S.cool=true;if(!S.over&&save('int','con','água pesada (−1 PM)'))S.hslow=Math.max(S.hslow||0,1)}}
+   if(inCells(cs,S.he)&&!S.over){const wet=wetOn();dmgE((12+3*A.int)*(wet?1.5:1),wet?'Glifo da Maré (molhado ×1,5)':'Glifo da Maré');if(wet){pop(HE[0],HE[1]-190,'MOLHADO: +50%','#9ad8ff');S.wetR=0}S.cool=true;if(!S.over&&save('int','con','água pesada (−1 PM)'))S.hslow=Math.max(S.hslow||0,1)}}
   else{beep(880,.3,'triangle',.05);logA('Glifo do Desejo pulsa','#ff7ac8');if(inCells(cs,S.he)){S.mark=Math.max(S.mark,2);logA('Hefesto marcado (+40% de dano)','#d6a8ff');if(save('int','sab','preso no glifo')){root=true;say('O glifo prende Hefesto no lugar.')}}}});return root}
-function drawGlyphs(){const pu=.6+.4*Math.sin(S.t*3);(S.glyphs||[]).forEach(q=>{const col=q.k==='b'?'90,180,255':'255,90,180',born=Math.min(1,(S.t-q.t)/.6);
+function drawWaterFx(){
+ (S.glyphs||[]).forEach(q=>{if(q.k!=='b')return;q.cells.forEach((cl,j)=>{const[x,y]=P(cl.c,cl.r);g.save();for(let i=0;i<3;i++){const ph=((S.t*.55+i/3+j*.13)%1);g.strokeStyle=`rgba(170,225,255,${.55*(1-ph)})`;g.lineWidth=1.6;g.beginPath();g.ellipse(x+SKX/4,y,6+30*ph,2.5+11*ph,0,0,7);g.stroke()}
+  g.strokeStyle='rgba(220,245,255,.35)';g.lineWidth=1;g.beginPath();for(let k=-1;k<=1;k++){g.moveTo(x-22,y+k*7);for(let xx=-22;xx<=22;xx+=4)g.lineTo(x+xx,y+k*7+Math.sin(xx*.35+S.t*3+k+j)*1.6)}g.stroke();g.restore()})});
+ S.steam=(S.steam||[]).filter(e=>S.t-e.t<1.6);S.steam.forEach(e=>{const[x,y]=P(e.c,e.r),f=(S.t-e.t)/1.6;g.save();for(let i=0;i<7;i++){const q=(f+i*.09)%1;g.fillStyle=`rgba(235,240,245,${.55*(1-q)*(1-f*.5)})`;g.beginPath();g.arc(x-18+i*6+Math.sin(i*1.7+S.t*2)*6,y-6-q*70,6+q*12,0,7);g.fill()}
+  if(f<.6){g.globalAlpha=1-f/.6;g.textAlign='center';g.font='900 15px Cinzel,serif';g.lineWidth=4;g.strokeStyle='rgba(8,18,30,.9)';g.strokeText('TSSS',x,y-40-f*30);g.fillStyle='#d8eeff';g.fillText('TSSS',x,y-40-f*30)}g.restore()});
+ if(wetOn()&&!S.over){g.save();for(let i=0;i<6;i++){const ph=(S.t*.9+i/6)%1,xx=HE[0]-26+i*10+Math.sin(i*2.1)*4;g.fillStyle=`rgba(150,210,255,${.8*(1-ph)})`;g.beginPath();g.moveTo(xx,HE[1]-150+ph*130);g.quadraticCurveTo(xx+3,HE[1]-144+ph*130,xx,HE[1]-140+ph*130);g.quadraticCurveTo(xx-3,HE[1]-144+ph*130,xx,HE[1]-150+ph*130);g.fill()}g.fillStyle='rgba(120,190,255,.18)';g.beginPath();g.ellipse(HE[0],HE[1]+6,34,10,0,0,7);g.fill();g.restore()}}
+function drawGlyphs(){try{drawWaterFx()}catch(e){}const pu=.6+.4*Math.sin(S.t*3);(S.glyphs||[]).forEach(q=>{const col=q.k==='b'?'90,180,255':'255,90,180',born=Math.min(1,(S.t-q.t)/.6);
   q.cells.forEach(cl=>{poly(cl.c,cl.r,`rgba(${col},${(.12+.1*pu)*born})`,2);polyLine(cl.c,cl.r,`rgba(${col},${(.5+.4*pu)*born})`,1.5)});
   const cx=q.cells.reduce((a,b)=>a+P(b.c,b.r)[0],0)/q.cells.length,cy=q.cells.reduce((a,b)=>a+P(b.c,b.r)[1],0)/q.cells.length;
   g.save();g.globalAlpha=born;g.translate(cx,cy);g.scale(1,.36);g.shadowColor=`rgb(${col})`;g.shadowBlur=18*pu;g.strokeStyle=`rgba(${col},.9)`;g.lineWidth=3;const R=q.k==='b'?86:52;g.beginPath();g.arc(0,0,R,0,7);g.stroke();g.lineWidth=1.5;g.beginPath();g.arc(0,0,R*.75,0,7);g.stroke();
@@ -2133,7 +2145,7 @@ function allyTurn(){if(!S.ally||S.over)return enemyTurn();S.st='ally';say('A Nin
  after(.7,()=>{if(!S.ally||S.over)return after(.3,enemyTurn);
   if(needHeal){let best=null,bs=-1;for(let c=-1;c<N;c++)for(let r=-1;r<N;r++){const cs=glyphCells('d',c,r);if(!cs.length)continue;const sc=(inCells(cs,S.me)?2:0)+(inCells(cs,S.ally)?1:0);if(sc>bs){bs=sc;best=cs}}
    S.hglyph={cells:best,t:S.t};al.hcd=3;al.act={k:'heal',t0:S.t,cells:best};pop(AL[0],AL[1]-140,'GLIFO DE CURA','#9cffc0');vfx('glifo',P(best[0].c,best[0].r));logA('Ninfa da Água: Glifo de Cura','#8fe0b0');say('A Ninfa grava um Glifo de Cura.');beep(660,.6,'sine',.05)}
-  else if(dist(S.ally,S.he)<=4){S.seaT=S.t;S.ally.act={k:'sea',t0:S.t};pop(AL[0],AL[1]-140,'ATAQUE DO MAR','#bfe8ff');nz(.9,1400,1.2,.1,600);try{sw(200,900,.5,'sine',.06);setTimeout(()=>{try{nz(.6,900,1,.14,300);sw(600,120,.6,'triangle',.06)}catch(e){}},900)}catch(e){}after(.95,()=>{if(S.over)return;vfx('splash');dmgE(6+2*A.int,'Ataque do Mar');douse(S.he);S.cool=true;logA('Hefesto encharcado: o próximo fogo dele falha','#8fd0ff')})}
+  else if(dist(S.ally,S.he)<=4){S.seaT=S.t;S.ally.act={k:'sea',t0:S.t};pop(AL[0],AL[1]-140,'ATAQUE DO MAR','#bfe8ff');nz(.9,1400,1.2,.1,600);try{sw(200,900,.5,'sine',.06);setTimeout(()=>{try{nz(.6,900,1,.14,300);sw(600,120,.6,'triangle',.06)}catch(e){}},900)}catch(e){}after(.95,()=>{if(S.over)return;vfx('splash');dmgE(6+2*A.int,'Ataque do Mar');douse(S.he);S.cool=true;S.wetR=S.round+1;S.wetT=S.t;logA('Hefesto molhado: o Glifo da Maré causa +50% nele','#9ad8ff');logA('Hefesto encharcado: o próximo fogo dele falha','#8fd0ff')})}
   else{logA('A Ninfa da Água avança','#8fd0ff');pop(AL[0],AL[1]-140,'avança','#8fd0ff')}
   if(!S.over)after(1.6,enemyTurn)})}
 function healGlyphTick(){const G=S.hglyph;if(!G)return;S.hglyph=null;const n=6+A.int;if(inCells(G.cells,S.me)){heal(n)}if(S.ally&&inCells(G.cells,S.ally)){S.ally.hp=Math.min(S.ally.mhp,S.ally.hp+n);pop(AL[0],AL[1]-110,'+'+n,'#8cffb0');logA('Ninfa da Água: cura +'+n,'#8cffb0')}}
@@ -2345,8 +2357,10 @@ function drawTears(){if(!S.tears||S.t>S.tears||S.over)return;if(S.t>(S.tearT||0)
 
 
 /* versão, últimas atualizações e reporte de bug */
-const VERSION='Alpha 0.11.17 (experimental)';const BUILD_TS='2026-11-26T19:45:31Z';
+const VERSION='Alpha 0.11.19 (experimental)';const BUILD_TS='2026-11-26T20:07:20Z';
 const PATCH=[
+ {v:'Alpha 0.11.19 (experimental)',d:'26/11/2026',it:['Moedas da lojinha em escala nova: vitória sem o automático vale 🪙10 (no pódio, 🪙20), vitória no automático vale 🪙2. Cada visual custa 🪙20. Quem já tinha moedas teve o saldo convertido.']},
+ {v:'Alpha 0.11.18 (experimental)',d:'26/11/2026',it:['Glifo da Maré apaga as brasas do Hefesto: onde a água encontra o fogo, os dois somem (o glifo perde aquela casa). Agora com ondulações na água e vapor.','O Ataque do Mar da Ninfa deixa Hefesto molhado: o próximo Glifo da Maré causa +50% nele.']},
  {v:'Alpha 0.11.17 (experimental)',d:'26/11/2026',it:['Visual mais limpo: todos os textos do jogo agora em maiúsculas, na mesma fonte do título.']},
  {v:'Alpha 0.11.16 (experimental)',d:'26/11/2026',it:['Brasões novos para as quatro classes e emblemas novos para todas as habilidades, com cores fortes de cada caminho: azul e ouro da Paladina, violeta e carmim da Sedutora, água e carmim da Maga, esmeralda da Malandra.']},
  {v:'Alpha 0.11.15 (experimental)',d:'26/11/2026',it:['Luta rebalanceada para quem está começando: Hefesto tem menos vida e bate mais fraco, Afrodite bate mais forte e aguenta mais. O Martelo do Fim não mata mais de uma vez.','Corrida da Forja: casas seguras em verde, caminho até elas, setas na tela no celular, toque ou clique na casa ao lado para fugir, e desviar dela não gasta PM.','Ninfa da Água com animações novas: ergue-se num gêiser, gira água ao agir, lança uma serpente de água que quebra em Hefesto e desenha o Glifo de Cura com um fio de água.']},
