@@ -4,7 +4,7 @@
 // e preencha os dois campos abaixo com a "Project URL" e a chave "anon public".
 window.AFRO_ANALYTICS = {
   provider: 'supabase',
-  url: '',        // ex.: 'https://abcdxyz.supabase.co'
-  anonKey: '',    // chave "anon public" do projeto
+  url: 'postgresql://postgres:[YOUR-DATABASE-PASSWORD]@db.hmbsiwpqxeketyamsbsq.supabase.co:5432/postgres',        // ex.: 'https://abcdxyz.supabase.co'
+  anonKey: 'sb_publishable_P5Io41ZULIv1Jt9QysG-VQ_k0Nzzotb',    // chave "anon public" do projeto
   table: 'afrodite_sessions'
 };
