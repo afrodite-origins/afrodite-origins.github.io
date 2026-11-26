@@ -24,3 +24,23 @@ Se a tabela já existia antes da coluna `fights` (dados por luta, usados no rank
 ```sql
 alter table afrodite_sessions add column if not exists fights jsonb;
 ```
+
+Eventos da sessão (usados nas análises de Automático e de saída do jogo):
+
+```sql
+alter table afrodite_sessions add column if not exists events jsonb;
+```
+
+Relatos de bug enviados pelo botão do jogo:
+
+```sql
+create table afrodite_bugs (
+  id bigint generated always as identity primary key,
+  created_at timestamptz default now(),
+  session_id text, visitor_id text, nick text, version text, device text, screen text,
+  context jsonb, text text
+);
+alter table afrodite_bugs enable row level security;
+create policy "anon insert" on afrodite_bugs for insert to anon with check (true);
+create policy "anon select" on afrodite_bugs for select to anon using (true);
+```
