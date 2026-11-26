@@ -6,6 +6,12 @@ Protótipo de RPG tático por turnos, de tom sombrio: Afrodite enfrenta Hefesto,
 
 ## Últimas atualizações
 
+**Alpha 0.11.14 (experimental) · 26/11/2026**
+
+- 🛍 Lojinha da Forja: cada vitória sem o automático vale 🪙1 (no pódio, 🪙2). Troque por cores de cabelo, penteados, chapéus, roupinhas e armas alternativas para cada classe (só visual).
+- Abertura: “A disputa pelo poder”, e o golpe de Cronos agora acerta Urano bem onde dói.
+- Quem fica mais de 2 minutos parado (fora do automático) não conta tempo de jogo.
+
 **Alpha 0.11.13 (experimental) · 26/11/2026**
 
 - Três rankings: ⏳ Dedicação (quem mais joga sem o automático), 🔥 Devastação (mais dano por minuto de luta) e 🛡 Intocável (vencer Hefesto recebendo menos dano).
@@ -22,11 +28,6 @@ Protótipo de RPG tático por turnos, de tom sombrio: Afrodite enfrenta Hefesto,
 - “AGORA!” na hora certa, “ACERTOU!” e “PERFECT!” (com um som próprio) em cada reação e nota.
 - Crítico no estilo D&D: cada golpe rola um d20 e crita no 20. Acertar todas as notas PERFECT faz critar de 18 a 20, e reações perfeitas no turno do Hefesto dão inspiração (+1 cada, até +2). Crítico dobra o dano.
 - A câmera de reação ficou bem mais leve (mais FPS).
-
-**Alpha 0.11.10 (experimental) · 26/11/2026**
-
-- Ranking da Forja na tela de vitória: os servos que derrotaram Hefesto mais rápido, com o apelido e o tempo. Vitórias com o combate automático não entram.
-- Um agradecimento a quem está testando o jogo ❤
 
 ## Controles
 | | PC | Controle |
@@ -47,4 +48,4 @@ O jogo registra dados anônimos de partida (tempo, mortes, habilidades usadas) p
 
 ## Privacidade
 
-O jogo está em teste. Se você aceitar na primeira tela, ele registra como você joga (apelido escolhido, modelo do aparelho e navegador, tempo nas telas, escolhas, acertos e erros, onde você toca ou clica na tela, FPS) para ajustar o jogo. O desenvolvedor pode rever uma versão simplificada da partida, com atraso, para entender onde o jogo confunde. Não pedimos nome real, e-mail, telefone nem localização, e nada é vendido ou compartilhado. Dá para jogar sem enviar dados e mudar a escolha na engrenagem. Para pedir que seus dados sejam apagados, use **Reportar bug** e informe o código mostrado no aviso.
+O jogo está em teste. Se você aceitar na primeira tela, ele registra como você joga (apelido escolhido, modelo do aparelho e navegador, tempo nas telas, escolhas, acertos e erros, onde você toca ou clica na tela, FPS) para ajustar o jogo. O desenvolvedor pode rever uma versão simplificada da partida, com atraso, para entender onde o jogo confunde. Tempo parado por mais de 2 minutos não conta como tempo jogado. Os dados só podem ser lidos pelo desenvolvedor. Não pedimos nome real, e-mail, telefone nem localização, e nada é vendido ou compartilhado. Dá para jogar sem enviar dados e mudar a escolha na engrenagem. Para pedir que seus dados sejam apagados, use **Reportar bug** e informe o código mostrado no aviso.

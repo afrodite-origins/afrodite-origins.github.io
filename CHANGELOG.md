@@ -1,5 +1,11 @@
 # Últimas atualizações
 
+## Alpha 0.11.14 (experimental) · 26/11/2026
+
+- 🛍 Lojinha da Forja: cada vitória sem o automático vale 🪙1 (no pódio, 🪙2). Troque por cores de cabelo, penteados, chapéus, roupinhas e armas alternativas para cada classe (só visual).
+- Abertura: “A disputa pelo poder”, e o golpe de Cronos agora acerta Urano bem onde dói.
+- Quem fica mais de 2 minutos parado (fora do automático) não conta tempo de jogo.
+
 ## Alpha 0.11.13 (experimental) · 26/11/2026
 
 - Três rankings: ⏳ Dedicação (quem mais joga sem o automático), 🔥 Devastação (mais dano por minuto de luta) e 🛡 Intocável (vencer Hefesto recebendo menos dano).
