@@ -1,5 +1,9 @@
 # Últimas atualizações
 
+## Alpha 0.11.8 (experimental) · 26/11/2026
+
+- Nova trilha de piano, triste e épica, na tela de escolher o caminho. Agora dá para testar o volume da música antes da luta.
+
 ## Alpha 0.11.7 (experimental) · 26/11/2026
 
 - O som começa em 50% e pode ser ajustado já na tela de escolher o caminho, com um botão para testar antes da luta.

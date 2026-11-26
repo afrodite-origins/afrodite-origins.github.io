@@ -6,6 +6,10 @@ Protótipo de RPG tático por turnos, de tom sombrio: Afrodite enfrenta Hefesto,
 
 ## Últimas atualizações
 
+**Alpha 0.11.8 (experimental) · 26/11/2026**
+
+- Nova trilha de piano, triste e épica, na tela de escolher o caminho. Agora dá para testar o volume da música antes da luta.
+
 **Alpha 0.11.7 (experimental) · 26/11/2026**
 
 - O som começa em 50% e pode ser ajustado já na tela de escolher o caminho, com um botão para testar antes da luta.
@@ -18,10 +22,6 @@ Protótipo de RPG tático por turnos, de tom sombrio: Afrodite enfrenta Hefesto,
 **Alpha 0.11.5 (experimental) · 26/11/2026**
 
 - Corrida da Forja mais perigosa: Hefesto corre apoiado na prótese de ouro, que explode a cada passo, e deixa em chamas toda a borda e quase todo o anel de dentro do tabuleiro.
-
-**Alpha 0.11.4 (experimental) · 26/11/2026**
-
-- Mais registros para o relatório: cenas puladas, música e efeitos, turnos passados rápido e tempo esgotado com PA sobrando.
 
 ## Controles
 | | PC | Controle |

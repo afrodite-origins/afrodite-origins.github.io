@@ -643,8 +643,37 @@ function bgmPlay(){if(!bgmOk||bgmUserPaused)return bgmUI();const p=bgm.play();if
 bgm.addEventListener('error',()=>{bgmOk=false;$('player').querySelector('small').textContent='arquivo da trilha não encontrado';bgmUI()});
 bgm.addEventListener('play',bgmUI);bgm.addEventListener('pause',bgmUI);
 $('pp').onclick=()=>{if(!bgmOk)return;if(bgm.paused){bgmUserPaused=false;bgmPlay()}else{bgmUserPaused=true;bgm.pause()}$('pp').blur()};
-function startFight(){setTimeout(fitCanvas,30);wakeOn();$('nickS').hidden=true;$('fsAsk').hidden=true;$('modeS').hidden=true;$('origin').hidden=true;scr='fight';TEL.screen('Combate');try{TEL.cls((PRESETS.find(p=>p.sk&&p.sk.join()===build.join())||{n:'Personalizada'}).n)}catch(e){}document.body.classList.add('fighting');$('player').hidden=true;bgmPlay();$('modal').hidden=true;scr='fight';$('fx').innerHTML='';$('build').hidden=true;$('pick').hidden=true;$('game').hidden=false;newGame();startIntro();buildBar();try{ac().resume()}catch(e){}}
-function showBuild(){scr='build';$('player').hidden=true;bgm.pause();$('pick').hidden=true;$('build').hidden=false;$('game').hidden=true;renderBuild()}
+
+/* ===== Trilha do menu: piano melancólico gerado ao vivo (Ré menor) ===== */
+const MENU=(()=>{let on=false,g=null,dry,wet,conv,tm=0,pos=0,nextT=0,pw=null;const E8=60/62/2;
+ const mel=[[0,69,3],[3,65,1],[4,64,2],[6,62,2],[8,74,3],[11,72,1],[12,70,2],[14,69,2],[16,67,3],[19,70,1],[20,69,2],[22,67,2],[24,64,4],[28,73,4],[32,69,3],[35,74,1],[36,77,2],[38,76,2],[40,72,3],[43,77,1],[44,76,2],[46,72,2],[48,74,2],[50,70,2],[52,73,2],[54,76,2],[56,74,8]];
+ const ch=[[38,45,50,53,57],[34,41,46,50,53],[31,38,43,46,50],[33,40,45,49,52],[38,45,50,53,57],[29,36,41,45,48],[31,38,43,46,50],[38,45,50,53,57]];const A7=[[33,40,45,49,52]];
+ const arp=[0,1,2,3,4,3,2,1];
+ const ev=[];// [eighth, midi, durE, vel]
+ for(let sec=0;sec<2;sec++){const o=sec*64;
+  ch.forEach((c,b)=>{const half=(b===6);for(let i=0;i<8;i++){let cc=c;if(half&&i>=4)cc=A7[0];ev.push([o+b*8+i,cc[arp[i]],3,(i===0?.55:.32)])}
+   if(sec===1){ev.push([o+b*8,c[0]-12,8,.5]);ev.push([o+b*8,c[0],8,.38])}});
+  mel.forEach(m=>ev.push([o+m[0],m[1]+(sec?12:0),m[2],sec?.62:.52]));
+  if(sec===1)mel.forEach(m=>{if(m[2]>=2)ev.push([o+m[0],m[1],m[2],.3])})}
+ ev.sort((a,b)=>a[0]-b[0]);const LEN=128;
+ const hz=m=>440*Math.pow(2,(m-69)/12);
+ function wave(a){if(pw)return pw;const n=9,re=new Float32Array(n),im=new Float32Array(n);for(let k=1;k<n;k++)im[k]=[0,1,.55,.32,.2,.12,.07,.05,.03][k];return pw=a.createPeriodicWave(re,im)}
+ function note(a,t,m,d,v){const f=hz(m),dec=Math.max(.9,3.6-(m-40)*.045),o1=a.createOscillator(),o2=a.createOscillator(),g1=a.createGain(),g2=a.createGain();
+  o1.setPeriodicWave(wave(a));o1.frequency.value=f;o2.type='sine';o2.frequency.value=f*1.0015;
+  const pk=v*.2;g1.gain.setValueAtTime(0,t);g1.gain.linearRampToValueAtTime(pk,t+.006);g1.gain.exponentialRampToValueAtTime(pk*.25,t+.35);g1.gain.exponentialRampToValueAtTime(.0004,t+dec*.6);
+  g2.gain.setValueAtTime(0,t);g2.gain.linearRampToValueAtTime(pk*.7,t+.01);g2.gain.exponentialRampToValueAtTime(.0004,t+dec);
+  const off=t+Math.max(d*E8+.25,.5);g1.gain.setTargetAtTime(0,off,.18);g2.gain.setTargetAtTime(0,off,.25);
+  o1.connect(g1);o2.connect(g2);g1.connect(dry);g2.connect(dry);g1.connect(conv);g2.connect(conv);const end=Math.min(t+dec+.1,off+1.4);o1.start(t);o2.start(t);o1.stop(end);o2.stop(end)}
+ function setup(a){g=a.createGain();g.gain.value=0;g.connect(a.mus);dry=a.createGain();dry.gain.value=.75;dry.connect(g);wet=a.createGain();wet.gain.value=.55;wet.connect(g);conv=a.createConvolver();
+  const L=Math.floor(a.sampleRate*3.2),b=a.createBuffer(2,L,a.sampleRate);for(let c=0;c<2;c++){const d=b.getChannelData(c);for(let i=0;i<L;i++)d[i]=(Math.random()*2-1)*Math.pow(1-i/L,2.6)}conv.buffer=b;conv.connect(wet)}
+ function tick(){const a=AC;if(!a||!on)return;const ahead=a.currentTime+.35;while(nextT<ahead){const t=nextT;for(const e of ev)if(e[0]===pos)note(a,t+(Math.random()-.5)*.012,e[1],e[2],e[3]*(.9+Math.random()*.2));pos=(pos+1)%LEN;nextT+=E8*(pos%8===0&&pos%64===0?1.6:1)}}
+ return{start(){try{const a=ac();a.resume();if(!g)setup(a);if(on)return;on=true;pos=0;nextT=a.currentTime+.15;g.gain.cancelScheduledValues(a.currentTime);g.gain.setValueAtTime(g.gain.value,a.currentTime);g.gain.linearRampToValueAtTime(1,a.currentTime+1.5);clearInterval(tm);tm=setInterval(tick,90);tick()}catch(e){}},
+  stop(f){try{if(!on)return;on=false;clearInterval(tm);const a=AC;g.gain.cancelScheduledValues(a.currentTime);g.gain.setValueAtTime(g.gain.value,a.currentTime);g.gain.linearRampToValueAtTime(0,a.currentTime+(f||1.2))}catch(e){}},
+  get on(){return on}}})();
+const MENU_SCR=['pick','build'];function menuMusic(){try{if(MENU_SCR.includes(scr)&&!document.hidden&&!bgmUserPaused)MENU.start();else MENU.stop()}catch(e){}}
+document.addEventListener('visibilitychange',menuMusic);
+function startFight(){try{MENU.stop(.6)}catch(e){}setTimeout(fitCanvas,30);wakeOn();$('nickS').hidden=true;$('fsAsk').hidden=true;$('modeS').hidden=true;$('origin').hidden=true;scr='fight';TEL.screen('Combate');try{TEL.cls((PRESETS.find(p=>p.sk&&p.sk.join()===build.join())||{n:'Personalizada'}).n)}catch(e){}document.body.classList.add('fighting');$('player').hidden=true;bgmPlay();$('modal').hidden=true;scr='fight';$('fx').innerHTML='';$('build').hidden=true;$('pick').hidden=true;$('game').hidden=false;newGame();startIntro();buildBar();try{ac().resume()}catch(e){}}
+function showBuild(){scr='build';$('player').hidden=true;bgm.pause();menuMusic();$('pick').hidden=true;$('build').hidden=false;$('game').hidden=true;renderBuild()}
 $('mok').onclick=applyConfirm;$('mno').onclick=closeConfirm;
 
 /* ---------- tela inicial: classes predefinidas ou personalizada ---------- */
@@ -680,7 +709,7 @@ function drawPickPreview(dt){pkT+=dt;const p=PRESETS[pickI],pz=p.k==='custom'?CY
  c.fillStyle='rgba(150,120,95,.08)';c.beginPath();c.ellipse(150,298,110,18,0,0,7);c.fill();
  drawAfro(c,150,298,1.18,pz,pkT);
  const n=p.k==='custom'?'Personalizada · '+T.arch:p.n;if($('pkn').dataset.n!==n){$('pkn').dataset.n=n;$('pkn').innerHTML=`<b style="color:${p.k==='custom'?'#b08d4a':T.c}">${n}</b>`}}
-function showPick(){PAUSED=false;scr='pick';TEL.fightEnd('abandono');TEL.screen('Tela Inicial');document.body.classList.remove('fighting');try{sadStop();lamentStop()}catch(e){}$('player').hidden=true;bgm.pause();$('pick').hidden=false;$('nickS').hidden=true;$('fsAsk').hidden=true;$('modeS').hidden=true;$('origin').hidden=true;$('build').hidden=true;$('game').hidden=true;try{speechSynthesis.cancel()}catch(e){}renderPick();setTimeout(radLayout,30)}
+function showPick(){PAUSED=false;scr='pick';TEL.fightEnd('abandono');TEL.screen('Tela Inicial');document.body.classList.remove('fighting');try{sadStop();lamentStop()}catch(e){}$('player').hidden=true;bgm.pause();$('pick').hidden=false;$('nickS').hidden=true;$('fsAsk').hidden=true;$('modeS').hidden=true;$('origin').hidden=true;$('build').hidden=true;$('game').hidden=true;try{speechSynthesis.cancel()}catch(e){}renderPick();setTimeout(radLayout,30);menuMusic()}
 function showNick(){document.querySelectorAll('.upd').forEach(e=>e.textContent=updAgo());scr='nick';$('fsAsk').hidden=true;$('modeS').hidden=true;TEL.screen('Apelido');$('nickS').hidden=false;$('pick').hidden=true;$('build').hidden=true;$('game').hidden=true;$('player').hidden=true;const ni=$('nick');ni.value=TEL.getNick();if(!matchMedia('(pointer:coarse)').matches)setTimeout(()=>ni.focus(),60)}
 function nickGo(){const v=$('nick').value.trim();TEL.nick(v);beep(660,.06,'triangle',.05);showPick()}
 function cardArt(c,k,t){const W=240,Hh=170,pu=.5+.5*Math.sin(t*3);c.clearRect(0,0,W,Hh);
@@ -1990,8 +2019,9 @@ function drawTears(){if(!S.tears||S.t>S.tears||S.over)return;if(S.t>(S.tearT||0)
 
 
 /* versão, últimas atualizações e reporte de bug */
-const VERSION='Alpha 0.11.7 (experimental)';const BUILD_TS='2026-11-26T16:38:18Z';
+const VERSION='Alpha 0.11.8 (experimental)';const BUILD_TS='2026-11-26T16:54:40Z';
 const PATCH=[
+ {v:'Alpha 0.11.8 (experimental)',d:'26/11/2026',it:['Nova trilha de piano, triste e épica, na tela de escolher o caminho. Agora dá para testar o volume da música antes da luta.']},
  {v:'Alpha 0.11.7 (experimental)',d:'26/11/2026',it:['O som começa em 50% e pode ser ajustado já na tela de escolher o caminho, com um botão para testar antes da luta.']},
  {v:'Alpha 0.11.6 (experimental)',d:'26/11/2026',it:['Corrida da Forja: Hefesto desliza por todas as casas que pegam fogo (a borda inteira e quase todo o anel de dentro) e para na última, que também queima.','Botão de pausa no topo (também com Esc ou Start). O jogo pausa sozinho se você sair da aba.']},
  {v:'Alpha 0.11.5 (experimental)',d:'26/11/2026',it:['Corrida da Forja mais perigosa: Hefesto corre apoiado na prótese de ouro, que explode a cada passo, e deixa em chamas toda a borda e quase todo o anel de dentro do tabuleiro.']},
@@ -2408,7 +2438,7 @@ function loop0(n){const raw=n-last,dt=Math.min(.08,raw/1e3);last=n;if(scr==='fig
 // ================= ABERTURA: Cronos, Urano e o nascimento de Afrodite
 let ORG=null,ORG_SEEN=false;
 const ORG_TXT=[[.8,5.6,'A luta pelo poder parece ser algo inerente a qualquer criatura.'],[6,11.2,'Nos primórdios, Cronos e Urano se digladiam pelo domínio da criação.'],[12.4,16.6,'Do golpe sangrento de Cronos, Urano sucumbe...'],[18,25.4,'O que ninguém esperava era que das partes perdidas do Titã Urano, no encontro com o mar, nascesse uma criação deslumbrante:'],[25.8,33,'Afrodite — a divindade do amor, da beleza, do desejo e da sexualidade.',1]],ORG_DUR=35,ORG_HIT=11.6,ORG_SEA=16.6;
-function playOrigin(cb){if(ORG_SEEN)return cb();ORG_SEEN=true;scr='origin';TEL.screen('Abertura');try{bgm.pause()}catch(e){}
+function playOrigin(cb){if(ORG_SEEN)return cb();ORG_SEEN=true;scr='origin';try{MENU.stop(1.5)}catch(e){}TEL.screen('Abertura');try{bgm.pause()}catch(e){}
  const sec=$('origin'),cv2=$('oc'),c=cv2.getContext('2d');sec.hidden=false;$('pick').hidden=true;$('build').hidden=true;$('modal').hidden=true;
  const fit=()=>{const ar=Math.max(1.3,Math.min(2.3,innerWidth/Math.max(1,innerHeight))),w=Math.round(600*ar/2)*2;if(cv2.width!==w)cv2.width=w;return(w-960)/2};
  const pz=PRESETS[pickI]&&PRESETS[pickI].k!=='custom'?PRESETS[pickI].k:'paixao';
@@ -2493,8 +2523,8 @@ function orgStop(M){if(!M)return;clearInterval(M.iv);clearInterval(M.pad);const 
 showModeAsk();requestAnimationFrame(loop);
 setTimeout(()=>{$('consYes').onclick=()=>setConsent('sim');$('consNo').onclick=()=>setConsent('nao');if(!consent())showConsent()},50);setTimeout(()=>{$('bBugIco').onclick=()=>showBug();volSync();
  const vp=$('volP');try{if(!localStorage.getItem('afroVolOk'))vp.classList.add('hot')}catch(e){}const seen=()=>{vp.classList.remove('hot');try{localStorage.setItem('afroVolOk','1')}catch(e){}};
- let tT=0;const test=()=>{try{ac().resume()}catch(e){}if(bgmOk&&!bgmUserPaused){bgmPlay();clearTimeout(tT);tT=setTimeout(()=>{if(scr!=='fight')bgm.pause()},4000)}try{sndJackpot();setTimeout(()=>{try{clang(false)}catch(e){}},700)}catch(e){}};
- $('vMus').oninput=e=>{setMus(+e.target.value/100);seen();if(bgm.paused&&bgmOk&&!bgmUserPaused){bgmPlay();clearTimeout(tT);tT=setTimeout(()=>{if(scr!=='fight')bgm.pause()},3000)}};
+ const test=()=>{try{ac().resume()}catch(e){}if(MUSV>0)MENU.start();try{sndJackpot();setTimeout(()=>{try{clang(false)}catch(e){}},700)}catch(e){}};
+ $('vMus').oninput=e=>{setMus(+e.target.value/100);seen();if(MUSV>0){bgmUserPaused=false;menuMusic()}};
  $('vSfx').oninput=e=>{setSfx(+e.target.value/100);seen()};$('vSfx').onchange=()=>{try{ac().resume();sndHit(2,true)}catch(e){}};
  $('vTest').onclick=()=>{seen();test();try{TEL.ev('testou_som',{mus:Math.round(MUSV*100),fx:Math.round(SFXV*100)})}catch(e){}}});
 setTimeout(()=>{$('recGo').onclick=unstick;$('recBack').onclick=()=>{if(!restoreSave())unstick()};$('recNew').onclick=()=>{hideRecover();CRASHED=false;try{newGame();buildBar()}catch(e){showPick()}};$('recX').onclick=()=>{hideRecover();CRASHED=false}});
