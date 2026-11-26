@@ -6,6 +6,14 @@ Teste o potencial de Afrodite contra Hefesto em mais uma provação enviada por 
 
 ## Últimas atualizações
 
+**Alpha 0.11.31 (experimental) · 26/11/2026**
+
+- Minitutoriais mais curtos, com imagem animada e os botões do seu modo (toque, teclado ou controle).
+- Guitarra funk nas reações: a base toca enquanto o golpe vem e cada acerto toca uma nota.
+- Tela de recompensa do baú e ranking funcionam com o controle (DualSense e Xbox).
+- No PC, os menus crescem para ocupar a tela.
+- Masoquismo explicado: como os acúmulos sobem e quanto dano cada um dá, com tutorial no primeiro acúmulo.
+
 **Alpha 0.11.30 (experimental) · 26/11/2026**
 
 - Celular: ao conjurar, toque direto na pista da nota (sem as setas nas laterais).
@@ -28,10 +36,6 @@ Teste o potencial de Afrodite contra Hefesto em mais uma provação enviada por 
 
 - O jogo agora se chama Afrodite Origins, com ícone e prévia de link.
 - No celular, use “Adicionar à tela inicial” para abrir como aplicativo, em tela cheia.
-
-**Alpha 0.11.27 (experimental) · 26/11/2026**
-
-- Errar a sequência ao conjurar agora gasta os PA da habilidade, e Afrodite dá uma bronca: “Presta atenção! Seja mais rápido!”.
 
 ## Controles
 | | PC | Controle |

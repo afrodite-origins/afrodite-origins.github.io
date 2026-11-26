@@ -1,5 +1,13 @@
 # Últimas atualizações
 
+## Alpha 0.11.31 (experimental) · 26/11/2026
+
+- Minitutoriais mais curtos, com imagem animada e os botões do seu modo (toque, teclado ou controle).
+- Guitarra funk nas reações: a base toca enquanto o golpe vem e cada acerto toca uma nota.
+- Tela de recompensa do baú e ranking funcionam com o controle (DualSense e Xbox).
+- No PC, os menus crescem para ocupar a tela.
+- Masoquismo explicado: como os acúmulos sobem e quanto dano cada um dá, com tutorial no primeiro acúmulo.
+
 ## Alpha 0.11.30 (experimental) · 26/11/2026
 
 - Celular: ao conjurar, toque direto na pista da nota (sem as setas nas laterais).
