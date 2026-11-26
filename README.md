@@ -6,6 +6,11 @@ Teste o potencial de Afrodite contra Hefesto em mais uma provação enviada por 
 
 ## Últimas atualizações
 
+**Alpha 0.11.32 (experimental) · 26/11/2026**
+
+- Corrigido: a Paladina travava o jogo ao abrir o menu de ações (descrição da troca de postura).
+- A tela “O jogo travou?” e o termo inicial agora funcionam com o controle.
+
 **Alpha 0.11.31 (experimental) · 26/11/2026**
 
 - Minitutoriais mais curtos, com imagem animada e os botões do seu modo (toque, teclado ou controle).
@@ -31,11 +36,6 @@ Teste o potencial de Afrodite contra Hefesto em mais uma provação enviada por 
 
 - O título Afrodite Origins aparece na primeira tela.
 - Novo texto da prévia do link: teste o potencial de Afrodite contra Hefesto em mais uma provação enviada por Atena.
-
-**Alpha 0.11.28 (experimental) · 26/11/2026**
-
-- O jogo agora se chama Afrodite Origins, com ícone e prévia de link.
-- No celular, use “Adicionar à tela inicial” para abrir como aplicativo, em tela cheia.
 
 ## Controles
 | | PC | Controle |

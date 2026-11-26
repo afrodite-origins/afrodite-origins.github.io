@@ -1,5 +1,10 @@
 # Últimas atualizações
 
+## Alpha 0.11.32 (experimental) · 26/11/2026
+
+- Corrigido: a Paladina travava o jogo ao abrir o menu de ações (descrição da troca de postura).
+- A tela “O jogo travou?” e o termo inicial agora funcionam com o controle.
+
 ## Alpha 0.11.31 (experimental) · 26/11/2026
 
 - Minitutoriais mais curtos, com imagem animada e os botões do seu modo (toque, teclado ou controle).
