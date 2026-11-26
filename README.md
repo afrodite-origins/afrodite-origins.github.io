@@ -6,6 +6,15 @@ Protótipo de RPG tático por turnos, de tom sombrio: Afrodite enfrenta Hefesto,
 
 ## Últimas atualizações
 
+**Alpha 0.11.10 (experimental) · 26/11/2026**
+
+- Ranking da Forja na tela de vitória: os servos que derrotaram Hefesto mais rápido, com o apelido e o tempo. Vitórias com o combate automático não entram.
+- Um agradecimento a quem está testando o jogo ❤
+
+**Alpha 0.11.9 (experimental) · 26/11/2026**
+
+- O jogo avisa com mais frequência que você está jogando, para o relatório mostrar quem está online agora (só com o termo aceito).
+
 **Alpha 0.11.8 (experimental) · 26/11/2026**
 
 - Nova trilha de piano, triste e épica, na tela de escolher o caminho. Agora dá para testar o volume da música antes da luta.
@@ -13,15 +22,6 @@ Protótipo de RPG tático por turnos, de tom sombrio: Afrodite enfrenta Hefesto,
 **Alpha 0.11.7 (experimental) · 26/11/2026**
 
 - O som começa em 50% e pode ser ajustado já na tela de escolher o caminho, com um botão para testar antes da luta.
-
-**Alpha 0.11.6 (experimental) · 26/11/2026**
-
-- Corrida da Forja: Hefesto desliza por todas as casas que pegam fogo (a borda inteira e quase todo o anel de dentro) e para na última, que também queima.
-- Botão de pausa no topo (também com Esc ou Start). O jogo pausa sozinho se você sair da aba.
-
-**Alpha 0.11.5 (experimental) · 26/11/2026**
-
-- Corrida da Forja mais perigosa: Hefesto corre apoiado na prótese de ouro, que explode a cada passo, e deixa em chamas toda a borda e quase todo o anel de dentro do tabuleiro.
 
 ## Controles
 | | PC | Controle |

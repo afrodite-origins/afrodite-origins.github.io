@@ -32,15 +32,24 @@ table{width:100%;border-collapse:collapse;font-variant-numeric:tabular-nums}th,t
 details.more{margin-top:6px}details.more>summary{cursor:pointer;color:var(--acc);font-weight:600;padding:10px 0;list-style:none}details.more>summary::before{content:'▸ ';}details.more[open]>summary::before{content:'▾ '}
 .tlw{max-height:420px;overflow:auto;background:var(--pan2);border-radius:8px;padding:6px 10px}.tli{display:grid;grid-template-columns:54px 170px 1fr;gap:8px;padding:4px 0;border-bottom:1px solid var(--line);font-size:12.5px}.tlt{color:var(--mut);font-variant-numeric:tabular-nums}.tlx{color:var(--mut)}h3{font-size:13px;color:var(--tx);margin:14px 0 6px}
 .prof.stars{grid-template-columns:repeat(auto-fill,minmax(520px,1fr))}@media (max-width:600px){.prof.stars{grid-template-columns:1fr}}
+.per{text-transform:none;letter-spacing:0;font-weight:500;color:#6f7786;font-size:12px;margin-left:6px}
+.live{border-color:#2c4a3a;background:linear-gradient(180deg,#14201a,var(--pan) 60%)}.dot{display:inline-block;width:9px;height:9px;border-radius:50%;background:#4fd18b;box-shadow:0 0 0 0 #4fd18b88;animation:pl 1.6s infinite;margin-right:7px;vertical-align:1px}.dot.off{background:#5a606b;animation:none}@keyframes pl{0%{box-shadow:0 0 0 0 #4fd18b99}70%{box-shadow:0 0 0 9px #4fd18b00}100%{box-shadow:0 0 0 0 #4fd18b00}}
+.lvw{display:grid;grid-template-columns:minmax(320px,1.35fr) 1fr;gap:16px;align-items:start}@media (max-width:860px){.lvw{grid-template-columns:1fr}}.lvsvg{width:100%;height:auto;background:radial-gradient(ellipse at 50% 50%,#1b2a22 0%,var(--pan2) 70%);border-radius:10px;display:block}
+.lvp{background:var(--pan2);border:1px solid var(--line);border-radius:8px;padding:8px 10px;margin-bottom:8px}.lvp b{font-size:14px}.lvp .m{color:var(--mut);font-size:12px}.hpb{display:grid;grid-template-columns:62px 1fr 34px;gap:6px;align-items:center;font-size:11.5px;color:var(--mut);margin-top:3px}.hpb .t{height:7px;background:#0f1115;border-radius:4px;overflow:hidden}.hpb .f{height:100%;border-radius:4px}
+.feed{max-height:230px;overflow:auto;font-size:12.5px}.feed div{display:grid;grid-template-columns:58px 110px 1fr;gap:8px;padding:3px 0;border-bottom:1px solid var(--line)}.feed .new{animation:nw 2.5s ease-out}@keyframes nw{from{background:#2a4a36}to{background:transparent}}
+.kpi.lk b{color:#8ee0b3}
 </style></head><body><div class="w">
 <header><h1>Afrodite Alpha <small>análise dos testes</small></h1><span class="src" id="src">carregando…</span></header>
-<div class="filters"><label>Período <select id="fp"><option value="0">tudo</option><option value="1">últimas 24 h</option><option value="7">últimos 7 dias</option><option value="30">últimos 30 dias</option></select></label>
+<div class="filters"><label>Período <select id="fp"><option value="0">tudo</option><option value="0.0417">última hora</option><option value="1">últimas 24 h</option><option value="7">últimos 7 dias</option><option value="30">últimos 30 dias</option></select></label>
 <label>Dispositivo <select id="fd"><option value="">todos</option><option>PC</option><option>Mobile</option></select></label>
 <label><input type="checkbox" id="fa"> ignorar lutas com Automático</label>
 <span style="flex:1"></span><button id="reload">Atualizar</button><button id="csv">CSV (lutas)</button><button id="json">JSON</button></div>
 <div class="kpis" id="kpis"></div>
-<div class="box" style="margin-bottom:14px"><h2>Grupos de jogadores por comportamento</h2><p class="note" style="margin:0 0 10px">Os jogadores são agrupados automaticamente pelo jeito de jogar: uso do automático, tempo montando build, controle ou toque, acerto nas reações, abandono e quantas lutas jogam.</p><div id="clu"></div></div>
-<div class="box" style="margin-bottom:14px"><h2>Constelação de ações por jogador</h2><p class="note" style="margin:0 0 10px">O apelido fica no centro e as ações em volta. Quanto mais vezes o jogador repetiu uma ação, mais forte ela fica e mais longe do centro. Verde = acertos e conquistas, vermelho = falhas, azul = automático, amarelo = pressa ou cenas puladas.</p><div class="prof stars" id="stars"></div></div>
+<div class="box live" style="margin-bottom:14px"><h2><span class="dot off" id="lvDot"></span>Ao vivo: jogando agora <span class="per" id="lvSub">conectando…</span></h2>
+<p class="note" style="margin:0 0 10px">Atualiza sozinho a cada 10 segundos. Cada jogador aparece com as decisões dos últimos 3 minutos ao redor: a mais recente fica mais forte e mais perto dele. As outras seções abaixo olham para o passado (escolha o período no filtro).</p>
+<div class="lvw"><div><svg class="lvsvg" id="lvSvg" viewBox="0 0 760 440"></svg></div><div><div id="lvList"></div><h3>Últimas decisões</h3><div class="feed" id="lvFeed"></div></div></div></div>
+<div class="box" style="margin-bottom:14px"><h2>Grupos de jogadores por comportamento <span class="per"></span></h2><p class="note" style="margin:0 0 10px">Os jogadores são agrupados automaticamente pelo jeito de jogar: uso do automático, tempo montando build, controle ou toque, acerto nas reações, abandono e quantas lutas jogam.</p><div id="clu"></div></div>
+<div class="box" style="margin-bottom:14px"><h2>Constelação de ações por jogador <span class="per"></span></h2><p class="note" style="margin:0 0 10px">O apelido fica no centro e as ações em volta. Quanto mais vezes o jogador repetiu uma ação, mais forte ela fica e mais longe do centro. Verde = acertos e conquistas, vermelho = falhas, azul = automático, amarelo = pressa ou cenas puladas.</p><div class="prof stars" id="stars"></div></div>
 <div class="box" style="margin-bottom:14px"><h2>Comportamento durante a luta</h2><div id="beh"></div></div>
 <div class="box" style="margin-bottom:14px"><h2>Linha do tempo de uma sessão</h2><select id="tlSel" style="max-width:100%;margin-bottom:10px"></select><div id="tl"></div></div>
 <div class="box" style="margin-bottom:14px"><h2>Aparelhos e FPS</h2><div class="tw" id="devs"></div></div>
@@ -75,7 +84,7 @@ async function load(){const c=window.AFRO_ANALYTICS||{};let rows=[],src='dados l
  if(!rows.length){try{rows=Object.values(JSON.parse(localStorage.getItem('afroTelSessions')||'{}'))}catch(e){rows=[]}}
  let bugs=[],bsrc='';if(c.provider==='supabase'&&c.url&&c.anonKey){try{const r=await fetch(c.url.replace(/\/$/,'')+'/rest/v1/'+(c.bugTable||'afrodite_bugs')+'?select=*&order=created_at.desc&limit=500',{headers:Object.assign({apikey:c.anonKey},/^eyJ/.test(c.anonKey)?{Authorization:'Bearer '+c.anonKey}:{})});if(!r.ok)throw new Error('HTTP '+r.status);bugs=await r.json()}catch(e){bsrc='Não foi possível ler a tabela de bugs ('+e.message+').'+(/40[46]/.test(e.message)?' A tabela afrodite_bugs provavelmente ainda não foi criada no Supabase: rode o SQL do TELEMETRIA.md.':/401|403/.test(e.message)?' Falta a permissão de leitura (policy "anon select") na tabela afrodite_bugs.':'')+' Mostrando só os deste navegador.'}}
  if(!bugs.length){try{bugs=JSON.parse(localStorage.getItem('afroBugs')||'[]').reverse()}catch(e){}}BUGS=bugs.map(b=>({...b,context:obj(b.context)}));BSRC=bsrc;
- SES=rows.map(r=>{const sc=obj(r.screens),fr=arr(r.fights),er=arr(r.events),fb=arr(sc._fights),eb=arr(sc._events);delete sc._fights;delete sc._events;return{...r,screens:sc,skills:obj(r.skills),reactions:obj(r.reactions),fights:fr.length?fr:fb,events:er.length?er:eb,_fromScreens:!fr.length&&fb.length>0}});$('src').textContent=src;render()}
+ SES=rows.map(r=>{const sc=obj(r.screens),fr=arr(r.fights),er=arr(r.events),fb=arr(sc._fights),eb=arr(sc._events);delete sc._fights;delete sc._events;delete sc._cur;delete sc._live;return{...r,screens:sc,skills:obj(r.skills),reactions:obj(r.reactions),fights:fr.length?fr:fb,events:er.length?er:eb,_fromScreens:!fr.length&&fb.length>0}});$('src').textContent=src;render()}
 function render(){const days=+$('fp').value,dev=$('fd').value,noAuto=$('fa').checked,now=Date.now();
  const S=SES.filter(s=>(!days||now-new Date(s.started_at).getTime()<days*864e5)&&(!dev||s.device===dev));
  const who=s=>(s.nick||'').trim()||('anônimo '+String(s.visitor_id||'').slice(0,4));
@@ -172,7 +181,8 @@ function render(){const days=+$('fp').value,dev=$('fd').value,noAuto=$('fa').che
   $('stars').innerHTML=PL.length?PL.slice(0,12).map(p=>`<div class="pc">${star(p)}</div>`).join(''):'<div class="empty">Ainda sem ações registradas (versão 0.11.4 ou mais nova).</div>'}
 
  const k=(v,l,i)=>`<div class="kpi"><b>${v}</b><span>${l}</span>${i?`<i>${i}</i>`:''}</div>`;
- $('kpis').innerHTML=k(new Set(S.map(s=>s.visitor_id)).size,'jogadores únicos',pct(new Set(S.filter(s=>s.device==='Mobile').map(s=>s.visitor_id)).size,new Set(S.map(s=>s.visitor_id)).size)+' no celular')+k(S.length,'sessões',fmt(avg(S.map(s=>+s.total_ms||0)))+' em média')+k(F.length,'lutas iniciadas',done.length+' terminadas')+k(pct(wins.length,done.length),'taxa de vitória','meta de design: ~40%')
+ const perL=days?(days<1?'última hora':days===1?'últimas 24 h':'últimos '+days+' dias'):'todo o histórico';document.querySelectorAll('.per:not(#lvSub)').forEach(e=>e.textContent='· '+perL+' · '+new Set(S.map(s=>s.visitor_id)).size+' jogadores');
+ $('kpis').innerHTML=`<div class="kpi lk" id="kLive"><b>${typeof LV!=='undefined'?LV.n:'…'}</b><span><span class="dot" style="width:7px;height:7px"></span>jogando agora</span><i>atualiza a cada 10 s</i></div>`+k(new Set(S.map(s=>s.visitor_id)).size,'jogadores únicos',pct(new Set(S.filter(s=>s.device==='Mobile').map(s=>s.visitor_id)).size,new Set(S.map(s=>s.visitor_id)).size)+' no celular')+k(S.length,'sessões',fmt(avg(S.map(s=>+s.total_ms||0)))+' em média')+k(F.length,'lutas iniciadas',done.length+' terminadas')+k(pct(wins.length,done.length),'taxa de vitória','meta de design: ~40%')
   +k(fmt(avg(done.map(f=>+f.dur_ms||0))),'duração média da luta',r1(avg(done.map(f=>+f.rounds||0)))+' rodadas')+k(r1(med(turns))+'s','mediana por turno','limite: 45s')+k(pct(tos,turns.length),'turnos esgotados',tos+' de '+turns.length)+k(pct(rOk,rAll),'precisão das reações',rAll+' reações');
  const P={};F.forEach(f=>{const p=P[f.who]=P[f.who]||{n:f.who,f:0,w:0,l:0,best:null,dmg:[],rOk:0,rAll:0};p.f++;if(f.res==='vitória'){p.w++;if(p.best==null||f.rounds<p.best)p.best=f.rounds}if(f.res==='derrota')p.l++;p.dmg.push(+f.dmg_out||0);Object.values(f.react||{}).forEach(x=>{p.rOk+=x.ok||0;p.rAll+=(x.ok||0)+(x.fail||0)})});
  const PR=Object.values(P).sort((a,b)=>b.w-a.w||(a.best??99)-(b.best??99)||b.f-a.f);
@@ -275,5 +285,59 @@ function render(){const days=+$('fp').value,dev=$('fd').value,noAuto=$('fa').che
 function dl(name,txt,type){const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([txt],{type}));a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000)}
 $('json').onclick=()=>dl('afrodite-sessoes.json',JSON.stringify(SES,null,2),'application/json');
 $('csv').onclick=()=>{const cols=['date','who','device','cls','res','dur_ms','rounds','phase2','dmg_out','dmg_in','cells','escapes','escape_fails','timeouts','killer','hp_left','enemy_left','auto','turns','dists','react','skills'];const q=v=>'"'+String(typeof v==='object'?JSON.stringify(v):(v??'')).replace(/"/g,'""')+'"';dl('afrodite-lutas.csv','﻿'+cols.join(';')+'\n'+(window.__F||[]).map(r=>cols.map(c=>q(r[c])).join(';')).join('\n'),'text/csv')};
-['fp','fd','fa'].forEach(id=>$(id).onchange=render);$('reload').onclick=load;load();
+
+/* ===== Ao vivo ===== */
+const TIPO_G={aparar:'aparar',pular:'pular',desviar:'desviar'};
+  const LABG=e=>{switch(e.e){
+   case 'classe':return 'escolheu '+(e.c||'classe');case 'reação_ok':return (e.auto?'auto: ':'')+'acertou '+(TIPO_G[e.tipo]||'reação');case 'reação_falhou':return (e.auto?'auto: ':'')+'falhou ao '+(TIPO_G[e.tipo]||'reagir');
+   case 'tela_cheia_aceita':return 'aceitou tela cheia';case 'tela_cheia_recusada':return 'recusou tela cheia';case 'consentiu':return 'aceitou o termo';case 'recusou_dados':return 'recusou o termo';
+   case 'metade_hefesto':return 'Hefesto à metade';case 'pulou_cena':return 'pulou: '+(e.cena||'cena');case 'musica_desligou':return 'desligou a música';case 'musica_ligou':return 'ligou a música';case 'musica_aumentou':return 'aumentou a música';case 'musica_diminuiu':return 'abaixou a música';
+   case 'efeitos_desligou':return 'desligou os efeitos';case 'efeitos_ligou':return 'ligou os efeitos';case 'efeitos_aumentou':return 'aumentou os efeitos';case 'efeitos_diminuiu':return 'abaixou os efeitos';
+   case 'turno_rapido':return 'passou o turno rápido';case 'tempo_esgotado':return e.pa>0?'tempo esgotou com PA':'tempo esgotou';case 'qte_ok':return 'conjurou';case 'qte_metade':return 'conjurou pela metade';case 'qte_falha':return 'falhou ao conjurar';
+   case 'morte':return 'morreu';case 'vitória':return 'venceu';case 'abandono':return 'abandonou a luta';case 'auto_on':return 'ligou o automático';case 'dano_grande':return 'levou dano grande';case 'saiu_aba':return 'saiu da aba';case 'nick_aleatorio':return 'apelido no dado';
+   case 'travou':return 'jogo travou';case 'bug':return 'reportou bug';case 'retomou':return 'retomou a luta';case 'luta':return 'começou luta';default:return null}};
+  const COLRG=t=>/falhou|morreu|esgotou|abandonou|travou|recusou|dano/.test(t)?'#f0a093':/acertou|conjurou$|venceu|aceitou|metade/.test(t)?'#8ee0b3':/auto/.test(t)?'#8ec9f0':/música|efeitos/.test(t)?'#c6ccd6':/pulou|rápido|aba/.test(t)?'#f0cf8e':'#e7b9d6';
+  
+const LV={seen:{},chg:{},rows:[],feedKeys:new Set(),first:true,n:0};
+const nowMs=()=>Date.now();
+async function liveFetch(){const c=window.AFRO_ANALYTICS||{};let rows=[];
+ if(c.provider==='supabase'&&c.url&&c.anonKey){const since=new Date(nowMs()-10*60e3).toISOString();
+  const r=await fetch(c.url.replace(/\/$/,'')+'/rest/v1/'+(c.table||'afrodite_sessions')+'?select=session_id,visitor_id,nick,device,started_at,updated_at,screens,events&updated_at=gte.'+encodeURIComponent(since)+'&order=updated_at.desc&limit=200',{headers:Object.assign({apikey:c.anonKey},/^eyJ/.test(c.anonKey)?{Authorization:'Bearer '+c.anonKey}:{}),cache:'no-store'});
+  if(!r.ok)throw new Error('HTTP '+r.status);rows=await r.json()}
+ else{try{rows=Object.values(JSON.parse(localStorage.getItem('afroTelSessions')||'{}'))}catch(e){}}
+ return rows.map(r=>{const sc=obj(r.screens);return{...r,screens:sc,events:(()=>{const e=arr(r.events);return e.length?e:arr(sc._events)})()}})}
+async function liveTick(){let rows;try{rows=await liveFetch()}catch(e){$('lvSub').textContent='falha ao ler ('+e.message+')';$('lvDot').className='dot off';return}
+ const now=nowMs();rows.forEach(r=>{const u=r.updated_at||'';if(LV.seen[r.session_id]!==undefined&&LV.seen[r.session_id]!==u)LV.chg[r.session_id]=now;LV.seen[r.session_id]=u});
+ const who=s=>(s.nick||'').trim()||('anônimo '+String(s.visitor_id||'').slice(0,4));
+ const on=rows.filter(r=>{const sc=r.screens||{};if(sc._cur==='saiu')return false;const age=now-new Date(r.updated_at).getTime();return age<45e3||(LV.chg[r.session_id]&&now-LV.chg[r.session_id]<30e3)});
+ // um jogador = um visitante (fica a sessão mais recente)
+ const byV={};on.forEach(r=>{const k=r.visitor_id||r.session_id;if(!byV[k]||r.updated_at>byV[k].updated_at)byV[k]=r});const P=Object.values(byV);
+ LV.rows=P;LV.n=P.length;$('lvDot').className='dot'+(P.length?'':' off');$('lvSub').textContent=(P.length?P.length+(P.length>1?' jogadores':' jogador'):'ninguém jogando agora')+' · '+new Date().toLocaleTimeString('pt-BR');
+ const kk=$('kLive');if(kk)kk.querySelector('b').textContent=P.length;
+ // decisões recentes
+ const D=[];P.forEach(r=>{const st=new Date(r.started_at).getTime();r.events.forEach((e,i)=>{const l=LABG(e);if(!l)return;const at=st+(+e.t||0)*1000;D.push({who:who(r),sid:r.session_id,l,at,k:r.session_id+':'+i,col:COLRG(l)})})});
+ const cut=now-180e3;const rec=D.filter(d=>d.at>=cut-20e3).sort((a,b)=>b.at-a.at);
+ // svg
+ const W=760,H=440,cx=W/2,cy=H/2,N=P.length;let o='';
+ if(!N)o=`<text x="${cx}" y="${cy-6}" fill="#6f7786" font-size="16" text-anchor="middle">Ninguém jogando neste momento</text><text x="${cx}" y="${cy+16}" fill="#4b525e" font-size="12" text-anchor="middle">a tela atualiza sozinha quando alguém entrar</text>`;
+ else{o+=`<circle cx="${cx}" cy="${cy}" r="30" fill="#14201a" stroke="#4fd18b" stroke-opacity=".5"/><text x="${cx}" y="${cy-2}" fill="#8ee0b3" font-size="17" font-weight="800" text-anchor="middle">${N}</text><text x="${cx}" y="${cy+13}" fill="#6f9a82" font-size="9" text-anchor="middle">AGORA</text>`;
+  const RP=N===1?0:Math.min(150,70+N*18);
+  P.forEach((r,i)=>{const an=-Math.PI/2+i*2*Math.PI/N,px=cx+Math.cos(an)*RP*1.25,py=cy+Math.sin(an)*RP*.8,sc=r.screens||{},lv=sc._live;
+   if(N>1)o+=`<line x1="${cx}" y1="${cy}" x2="${r1(px)}" y2="${r1(py)}" stroke="#4fd18b" stroke-opacity=".18"/>`;
+   const mine=rec.filter(d=>d.sid===r.session_id).slice(0,N===1?8:N>3?4:5),M=mine.length,rr=N===1?0:1;
+   const spread=N===1?2*Math.PI:Math.PI*1.1,base=N===1?-Math.PI/2:an-spread/2;
+   mine.forEach((d,j)=>{const age=(now-d.at)/1000,k=Math.max(.15,1-age/180),a2=base+(M===1&&N>1?spread/2:j*spread/Math.max(1,N===1?M:M-1)),L=(N===1?70:44)+(1-k)*(N===1?95:40)+(j%2)*14,x=px+Math.cos(a2)*L,y=py+Math.sin(a2)*L*.85,ax=Math.cos(a2)>.25?'start':Math.cos(a2)<-.25?'end':'middle',dx=ax==='start'?7:ax==='end'?-7:0,dy=ax==='middle'?(Math.sin(a2)>0?14:-8):4;
+    o+=`<line x1="${r1(px)}" y1="${r1(py)}" x2="${r1(x)}" y2="${r1(y)}" stroke="${d.col}" stroke-opacity="${(.15+.5*k).toFixed(2)}" stroke-width="${(1+2.5*k).toFixed(1)}"/><circle cx="${r1(x)}" cy="${r1(y)}" r="${(2.5+3.5*k).toFixed(1)}" fill="${d.col}" fill-opacity="${(.35+.65*k).toFixed(2)}">${age<15?'<animate attributeName="r" values="4;9;4" dur="1.2s" repeatCount="3"/>':''}</circle><text x="${r1(x+dx)}" y="${r1(y+dy)}" fill="${d.col}" fill-opacity="${(.45+.55*k).toFixed(2)}" font-size="${(9.5+3*k).toFixed(1)}" font-weight="${k>.7?700:500}" text-anchor="${ax}" paint-order="stroke" stroke="#161a21" stroke-width="3">${esc(d.l)} · ${Math.round(age)}s</text>`});
+   const nm=who(r),n2=nm.length>14?nm.slice(0,13)+'…':nm,tela=sc._cur||'?';
+   o+=`<circle cx="${r1(px)}" cy="${r1(py)}" r="${N===1?40:30}" fill="#1b1820" stroke="#d4a85a" stroke-opacity=".6"/><text x="${r1(px)}" y="${r1(py-1)}" fill="#fff" font-size="${n2.length>9?11:13}" font-weight="800" text-anchor="middle">${esc(n2)}</text><text x="${r1(px)}" y="${r1(py+12)}" fill="#8b93a1" font-size="8.5" text-anchor="middle">${esc(r.device==='Mobile'?'celular':'PC')} · ${esc(tela.length>12?tela.slice(0,11)+'…':tela)}</text>`;
+   if(lv)o+=`<rect x="${r1(px-26)}" y="${r1(py+(N===1?46:36))}" width="52" height="4" rx="2" fill="#0f1115"/><rect x="${r1(px-26)}" y="${r1(py+(N===1?46:36))}" width="${r1(52*lv.a/100)}" height="4" rx="2" fill="#e7b9d6"/><rect x="${r1(px-26)}" y="${r1(py+(N===1?52:42))}" width="52" height="4" rx="2" fill="#0f1115"/><rect x="${r1(px-26)}" y="${r1(py+(N===1?52:42))}" width="${r1(52*lv.h/100)}" height="4" rx="2" fill="#e06a5a"/>`})}
+ $('lvSvg').innerHTML=o;
+ const hb=(n,v,c)=>`<div class="hpb"><span>${n}</span><div class="t"><div class="f" style="width:${v}%;background:${c}"></div></div><span>${v}%</span></div>`;
+ $('lvList').innerHTML=P.length?P.map(r=>{const sc=r.screens||{},lv=sc._live,last=D.filter(d=>d.sid===r.session_id).sort((a,b)=>b.at-a.at)[0],dur=Math.max(0,Math.round((now-new Date(r.started_at).getTime())/60000));
+  return`<div class="lvp"><b>${esc(who(r))}</b> <span class="m">· ${r.device==='Mobile'?'celular':'PC'} · ${esc(sc._cur||'?')} · ${dur} min de sessão${lv?` · rodada ${lv.r}${lv.auto?' · <span style="color:#8ec9f0">automático</span>':''}`:''}</span>${lv?hb('Afrodite',lv.a,'#e7b9d6')+hb('Hefesto',lv.h,'#e06a5a'):''}<div class="m" style="margin-top:3px">Última decisão: ${last?`<span style="color:${last.col}">${esc(last.l)}</span> há ${fmt(now-last.at)}`:'—'}</div></div>`}).join(''):'<div class="empty">Ninguém jogando agora.</div>';
+ const fd=rec.slice(0,25);$('lvFeed').innerHTML=fd.length?fd.map(d=>{const nw=!LV.first&&!LV.feedKeys.has(d.k);return`<div class="${nw?'new':''}"><span class="tlt">${new Date(d.at).toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit',second:'2-digit'})}</span><b>${esc(d.who.length>13?d.who.slice(0,12)+'…':d.who)}</b><span style="color:${d.col}">${esc(d.l)}</span></div>`}).join(''):'<div class="empty">Sem decisões nos últimos 3 minutos.</div>';
+ fd.forEach(d=>LV.feedKeys.add(d.k));LV.first=false}
+let lvTimer=0;function liveStart(){clearInterval(lvTimer);liveTick();lvTimer=setInterval(()=>{if(!document.hidden)liveTick()},10000)}
+document.addEventListener('visibilitychange',()=>{if(!document.hidden)liveTick()});
+['fp','fd','fa'].forEach(id=>$(id).onchange=render);$('reload').onclick=()=>{load();liveTick()};load();liveStart();
 </script></body></html>

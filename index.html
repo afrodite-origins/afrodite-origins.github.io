@@ -62,6 +62,13 @@ button small{color:var(--mut)}
 .det em{color:#ff9a8a;font-style:normal}.det i{color:#b6f08a;font-style:normal}
 .bar{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0}
 canvas{width:100%;height:auto;display:block;border:1px solid var(--ln);border-radius:6px;background:#0e0c0a}
+#rankP[hidden]{display:none!important}#rankP{position:fixed;inset:0;z-index:7;display:grid;place-items:center;background:radial-gradient(ellipse at 50% 30%,#2a1a0a99,#050302e6);padding:8px;overflow:auto;animation:rkIn .6s ease-out}@keyframes rkIn{from{opacity:0}to{opacity:1}}
+#rankP .rkb{background:linear-gradient(#1b150d,#0d0b09);border:1px solid #d4a85a;border-radius:12px;box-shadow:0 0 40px #ffb03a33,0 20px 60px #000;max-width:460px;width:100%;padding:14px 18px;max-height:calc(100dvh - 16px);overflow:auto;color:#e8dcc8;font:15px "EB Garamond",Georgia,serif}
+#rankP h2{margin:0;text-align:center;font:600 22px Cinzel,serif;letter-spacing:.12em;color:#ffe2a0;text-shadow:0 0 14px #ffb03a88}.rkS{text-align:center;color:#a89a84;margin:2px 0 10px;font-size:14px}
+#rkL table{width:100%;border-collapse:collapse;font-variant-numeric:tabular-nums}#rkL td{padding:5px 6px;border-bottom:1px solid #2e2820}#rkL td.p{width:34px;color:#d8b25a;font:700 14px Cinzel,serif;text-align:center}#rkL td.t{text-align:right;color:#ffd9a0;font-weight:700}#rkL td.c{color:#8f8578;font-size:13px}#rkL tr.me td{background:#3a2a1255;color:#fff}#rkL tr.me td.p{color:#ffe2a0}
+#rkMe{text-align:center;margin:0 0 10px;padding:8px;border-radius:8px;background:#ffffff08;border:1px solid #3a332b}#rkMe b{color:#ffe2a0;font:700 20px Cinzel,serif}#rkMe.warn{border-color:#6b4a2a;background:#2a1e14;color:#f0cf8e}
+.rkTy{text-align:center;color:#d8c8a8;font-style:italic;margin:12px 0 10px;line-height:1.4}.rkBt{display:flex;gap:8px;justify-content:center;flex-wrap:wrap}.rkBt button{min-height:40px;font:700 13px Cinzel,serif;padding:6px 14px}
+@media (max-height:520px){#rankP .rkb{padding:8px 12px;font-size:13.5px}#rankP h2{font-size:17px}#rkL td{padding:3px 5px}.rkTy{margin:6px 0}}
 #modal{position:fixed;inset:0;background:#030202f5;display:grid;place-items:center;z-index:8;overflow:auto;padding:6px 0}.mbox{max-height:calc(100dvh - 12px);overflow:auto}@media (max-height:520px){#bugt{height:84px!important;min-height:60px}.mbox{padding:10px 14px!important}.mbox h2{font-size:17px!important;margin-bottom:4px!important}.mbox .bar button{min-height:42px}}#modal[hidden]{display:none}
 .mbox{background:var(--pan);border:1px solid var(--acc);border-radius:10px;padding:16px 20px;max-width:460px;width:calc(100% - 32px);box-shadow:0 10px 40px #000a}
 .mbox h2{font:800 20px Cinzel,serif;margin:0 0 8px;color:var(--acc)}.mbox ul{margin:6px 0 10px;padding-left:18px}.mbox li{margin:2px 0}.mbox .warn{color:#ffb35a}
@@ -261,6 +268,7 @@ html{-webkit-text-size-adjust:100%;text-size-adjust:100%}#nickS{min-height:calc(
 </section>
 <p id="pad"></p>
 </div>
+<div id="rankP" hidden role="dialog" aria-modal="true" aria-labelledby="rkT"><div class="rkb"><h2 id="rkT">Ranking da Forja</h2><p class="rkS">Quem derrotou Hefesto mais rápido</p><div id="rkMe"></div><div id="rkL"><p class="rkS">carregando…</p></div><p class="rkTy">Obrigado por testar <b>A Ascensão e o Triunfo de Afrodite</b>! Cada luta sua ajuda a deixar o jogo melhor. Se algo estranho aconteceu, use o botão de bug.</p><div class="rkBt"><button id="rkAgain" type="button">Jogar de novo</button><button id="rkHome" type="button">Escolher outro caminho</button></div></div></div>
 <div id="modal" hidden role="dialog" aria-modal="true" aria-labelledby="mt"><div class="mbox"><h2 id="mt">Confirmar distribuição?</h2><div id="msum"></div><div class="bar"><button id="mok">Confirmar <small>A / Enter</small></button><button id="mno">Voltar <small>Esc</small></button></div></div></div>
 <div id="fx" aria-hidden="true"></div>
 <audio id="bgm" src="forging_flames.mp3" loop preload="auto"></audio>
@@ -499,7 +507,7 @@ const pop=(x,y,txt,col='#fff',big)=>S.pop.push({x,y,t:S.t,txt,col,big});
 const hline=(k,t)=>{if(S.said[k])return;S.said[k]=1;heLine(t)};
 const aSay=(k,t)=>{if(S.said[k])return;S.said[k]=1;afLine(t)};
 let HEF_HP=420,HEF_DMG=1.3;
-function newGame(){if(scr==='fight')TEL.screen('Combate');try{TEL.fightStart((PRESETS.find(p=>p.sk&&p.sk.join()===build.join())||{n:'Personalizada'}).n)}catch(e){}const mhp=80+12*A.con;try{sadStop();lamentStop();if(scr==='fight'&&bgm.paused&&!bgmUserPaused)bgmPlay()}catch(e){}
+function newGame(){try{rankHide()}catch(e){}if(scr==='fight')TEL.screen('Combate');try{TEL.fightStart((PRESETS.find(p=>p.sk&&p.sk.join()===build.join())||{n:'Personalizada'}).n)}catch(e){}const mhp=80+12*A.con;try{sadStop();lamentStop();if(scr==='fight'&&bgm.paused&&!bgmUserPaused)bgmPlay()}catch(e){}
  S={st:'deploy',maso:0,gT:{},plan:[],walk:null,hoverBad:null,vfx:[],msgT:-9,line:null,aline:null,hp:mhp,mhp,eh:HEF_HP,meh:HEF_HP,cd:{},stance:'def',poison:null,puddles:[],hglyph:null,glyphs:[],blood:[],stains:[],fire:[],meteors:[],mfall:[],ally:null,bleed:null,poison:0,hslow:0,wall:0,recuo:false,swUsed:false,charm:0,pa:6,pm:3,me:{c:1,r:4},he:{c:4,r:1},anv:[],booms:[],fx:[],guard:false,fasc:false,curse:0,cc:0,mark:0,burn:0,stun:false,dizzy:false,slow:false,cool:false,free:false,phase:1,said:{},t:0,q:[],atk:null,over:null,jumpT:-9,parryT:-9,msg:'Posicione Afrodite.',fly:null,lock:0,hs:0,shake:0,flashW:0,sparks:[],round:1,mode:null,aim:null,cur:null,mi:0,pop:[],last:'',lastDodge:null,dice:null,n:0,li:0,eshake:0,hflash:0};
  S.hpG=S.hp;S.ehG=S.eh;S.hbar=S.ebar=-9;H=P(1,4).slice();HE=P(4,1).slice();S.pz=postureFinal();
  say('Posicione Afrodite e dê Pronto.')}
@@ -672,6 +680,31 @@ const MENU=(()=>{let on=false,g=null,dry,wet,conv,tm=0,pos=0,nextT=0,pw=null;con
   get on(){return on}}})();
 const MENU_SCR=['pick','build'];function menuMusic(){try{if(MENU_SCR.includes(scr)&&!document.hidden&&!bgmUserPaused)MENU.start();else MENU.stop()}catch(e){}}
 document.addEventListener('visibilitychange',menuMusic);
+
+/* ===== Ranking final: tempo para derrotar Hefesto (sem automático) ===== */
+const fmtKill=ms=>{const s=Math.round(ms/1000),m=Math.floor(s/60);return m+':'+String(s%60).padStart(2,'0')};
+let RANK_T=0;
+function rankHide(){clearTimeout(RANK_T);$('rankP').hidden=true}
+async function rankLoad(){const c=(window.AFRO_ANALYTICS)||{};let rows=[];
+ if(c.provider==='supabase'&&c.url&&c.anonKey){try{const r=await fetch(c.url.replace(/\/$/,'')+'/rest/v1/'+(c.table||'afrodite_sessions')+'?select=visitor_id,nick,fights,screens,updated_at&wins=gt.0&order=updated_at.desc&limit=3000',{headers:Object.assign({apikey:c.anonKey},/^eyJ/.test(c.anonKey)?{Authorization:'Bearer '+c.anonKey}:{}),cache:'no-store'});if(r.ok)rows=await r.json()}catch(e){}}
+ try{Object.values(JSON.parse(localStorage.getItem('afroTelSessions')||'{}')).forEach(x=>rows.push(x))}catch(e){}
+ const best={};rows.forEach(r=>{let f=r.fights;if(typeof f==='string')try{f=JSON.parse(f)}catch(e){f=[]}if(!Array.isArray(f)||!f.length){let sc=r.screens;if(typeof sc==='string')try{sc=JSON.parse(sc)}catch(e){sc={}}f=(sc&&sc._fights)||[]}
+  (f||[]).forEach(x=>{if(!x||x.res!=='vitória'||x.auto||!(x.dur_ms>5000))return;const id=r.visitor_id||r.nick;const b=best[id];const nk=(r.nick||'').trim()||'anônimo';if(!b||x.dur_ms<b.ms)best[id]={ms:x.dur_ms,nick:b&&b.nick!=='anônimo'?b.nick:nk,cls:x.cls||'',vid:r.visitor_id}})});
+ return Object.values(best).sort((a,b)=>a.ms-b.ms)}
+async function showRank(){if(scr!=='fight'||!S||!S.over||S.hp<=0)return;const me=TEL_LAST&&TEL_LAST.res==='vitória'?TEL_LAST:null,vid=(()=>{try{return localStorage.getItem('afroVid')}catch(e){return null}})(),cons=(()=>{try{return localStorage.getItem('afroConsent')==='sim'}catch(e){return false}})();
+ $('rkL').innerHTML='<p class="rkS">carregando…</p>';$('rankP').hidden=false;setTimeout(()=>{try{$('rkAgain').focus()}catch(e){}},60);
+ const mt=$('rkMe');mt.className='';
+ if(me&&me.auto){mt.className='warn';mt.innerHTML='Você venceu em <b>'+fmtKill(me.dur_ms)+'</b>, mas com o combate automático ligado.<br>Esta vitória não entra no ranking.'}
+ else if(me){mt.innerHTML='Seu tempo: <b>'+fmtKill(me.dur_ms)+'</b>'+(cons?'':'<br><small style="color:#f0cf8e">Você não aceitou enviar dados, então seu tempo fica só neste aparelho.</small>')}else mt.innerHTML='';
+ let L=await rankLoad();if($('rankP').hidden)return;
+ if(me&&!me.auto&&me.dur_ms>5000){const nk=((window.NICK||'')||(()=>{try{return localStorage.getItem('afroNick')}catch(e){return''}})()||'').trim()||'você';const ex=L.find(x=>vid&&x.vid===vid);if(!ex)L.push({ms:me.dur_ms,nick:nk,cls:me.cls,vid,me:1});else if(me.dur_ms<ex.ms){ex.ms=me.dur_ms;ex.cls=me.cls}L.sort((a,b)=>a.ms-b.ms)}
+ const pos=L.findIndex(x=>(vid&&x.vid===vid)||x.me);const md=['🥇','🥈','🥉'];
+ const row=(x,i)=>`<tr class="${i===pos?'me':''}"><td class="p">${md[i]||i+1}</td><td>${String(x.nick).replace(/[<>&"]/g,'').slice(0,22)}${i===pos?' <small style="color:#d8b25a">(você)</small>':''}</td><td class="c">${String(x.cls||'').replace(/[<>&]/g,'')}</td><td class="t">${fmtKill(x.ms)}</td></tr>`;
+ let h=L.slice(0,10).map(row).join('');if(pos>=10)h+=`<tr><td colspan="4" style="text-align:center;color:#6f665a">⋯</td></tr>`+row(L[pos],pos);
+ $('rkL').innerHTML=L.length?`<table>${h}</table><p class="rkS" style="margin:8px 0 0;font-size:12.5px">${L.length} ${L.length>1?'servos venceram':'servo venceu'} sem o automático. Vale o melhor tempo de cada um.</p>`:'<p class="rkS">Ainda ninguém derrotou Hefesto sem o automático. Seja o primeiro!</p>';
+ if(me&&me.dur_ms<5000);if(me&&me.auto&&mt.innerHTML)mt.classList.add('warn');
+ try{TEL.ev('ranking_visto',{pos:pos>=0?pos+1:0,auto:!!(me&&me.auto)})}catch(e){}}
+setTimeout(()=>{$('rkAgain').onclick=()=>{rankHide();newGame();buildBar()};$('rkHome').onclick=()=>{rankHide();showPick()}});
 function startFight(){try{MENU.stop(.6)}catch(e){}setTimeout(fitCanvas,30);wakeOn();$('nickS').hidden=true;$('fsAsk').hidden=true;$('modeS').hidden=true;$('origin').hidden=true;scr='fight';TEL.screen('Combate');try{TEL.cls((PRESETS.find(p=>p.sk&&p.sk.join()===build.join())||{n:'Personalizada'}).n)}catch(e){}document.body.classList.add('fighting');$('player').hidden=true;bgmPlay();$('modal').hidden=true;scr='fight';$('fx').innerHTML='';$('build').hidden=true;$('pick').hidden=true;$('game').hidden=false;newGame();startIntro();buildBar();try{ac().resume()}catch(e){}}
 function showBuild(){scr='build';$('player').hidden=true;bgm.pause();menuMusic();$('pick').hidden=true;$('build').hidden=false;$('game').hidden=true;renderBuild()}
 $('mok').onclick=applyConfirm;$('mno').onclick=closeConfirm;
@@ -709,7 +742,7 @@ function drawPickPreview(dt){pkT+=dt;const p=PRESETS[pickI],pz=p.k==='custom'?CY
  c.fillStyle='rgba(150,120,95,.08)';c.beginPath();c.ellipse(150,298,110,18,0,0,7);c.fill();
  drawAfro(c,150,298,1.18,pz,pkT);
  const n=p.k==='custom'?'Personalizada · '+T.arch:p.n;if($('pkn').dataset.n!==n){$('pkn').dataset.n=n;$('pkn').innerHTML=`<b style="color:${p.k==='custom'?'#b08d4a':T.c}">${n}</b>`}}
-function showPick(){PAUSED=false;scr='pick';TEL.fightEnd('abandono');TEL.screen('Tela Inicial');document.body.classList.remove('fighting');try{sadStop();lamentStop()}catch(e){}$('player').hidden=true;bgm.pause();$('pick').hidden=false;$('nickS').hidden=true;$('fsAsk').hidden=true;$('modeS').hidden=true;$('origin').hidden=true;$('build').hidden=true;$('game').hidden=true;try{speechSynthesis.cancel()}catch(e){}renderPick();setTimeout(radLayout,30);menuMusic()}
+function showPick(){PAUSED=false;try{rankHide()}catch(e){}scr='pick';TEL.fightEnd('abandono');TEL.screen('Tela Inicial');document.body.classList.remove('fighting');try{sadStop();lamentStop()}catch(e){}$('player').hidden=true;bgm.pause();$('pick').hidden=false;$('nickS').hidden=true;$('fsAsk').hidden=true;$('modeS').hidden=true;$('origin').hidden=true;$('build').hidden=true;$('game').hidden=true;try{speechSynthesis.cancel()}catch(e){}renderPick();setTimeout(radLayout,30);menuMusic()}
 function showNick(){document.querySelectorAll('.upd').forEach(e=>e.textContent=updAgo());scr='nick';$('fsAsk').hidden=true;$('modeS').hidden=true;TEL.screen('Apelido');$('nickS').hidden=false;$('pick').hidden=true;$('build').hidden=true;$('game').hidden=true;$('player').hidden=true;const ni=$('nick');ni.value=TEL.getNick();if(!matchMedia('(pointer:coarse)').matches)setTimeout(()=>ni.focus(),60)}
 function nickGo(){const v=$('nick').value.trim();TEL.nick(v);beep(660,.06,'triangle',.05);showPick()}
 function cardArt(c,k,t){const W=240,Hh=170,pu=.5+.5*Math.sin(t*3);c.clearRect(0,0,W,Hh);
@@ -1082,7 +1115,7 @@ function drawVol(){if(!volOpen())return;const k=S.volUI.k,r=VOLR[k],v=k==='mus'?
  const x0=r[0]+66,x1=r[0]+r[2]-40,y=r[1]+15;g.strokeStyle='#3a332b';g.lineWidth=5;g.lineCap='round';g.beginPath();g.moveTo(x0,y);g.lineTo(x1,y);g.stroke();g.strokeStyle='#e0c27a';g.beginPath();g.moveTo(x0,y);g.lineTo(x0+(x1-x0)*v,y);g.stroke();
  g.fillStyle='#ffe2a0';g.beginPath();g.arc(x0+(x1-x0)*v,y,7,0,7);g.fill();g.fillStyle='#d8c8a8';g.font='600 10px "EB Garamond",Georgia,serif';g.textAlign='right';g.fillText(Math.round(v*100)+'%',r[0]+r[2]-8,y+4);g.restore()}
 /* confirmação do automático */
-function askAuto(){if(AUTO)return setAuto(false);showModal('Ligar o combate automático?','<p>A máquina passa a <b>jogar por você</b>: anda, escolhe habilidades, aperta os comandos e reage aos golpes do Hefesto, como uma pessoa faria.</p><p>A luta fica <b>bem mais fácil</b>. Vale para assistir e aprender o ritmo das reações. Dá para desligar a qualquer momento.</p>',()=>setAuto(true),'Ativar')}
+function askAuto(){if(AUTO)return setAuto(false);showModal('Ligar o combate automático?','<p>A máquina passa a <b>jogar por você</b>: anda, escolhe habilidades, aperta os comandos e reage aos golpes do Hefesto, como uma pessoa faria.</p><p>A luta fica <b>bem mais fácil</b>. Vale para assistir e aprender o ritmo das reações. Dá para desligar a qualquer momento.</p><p style="border:1px solid #6b4a2a;background:#2a1e14;color:#f0cf8e;border-radius:8px;padding:8px 10px">⚠ <b>Esta luta não vai entrar no ranking final.</b> Só entram vitórias sem o combate automático, mesmo que você desligue depois.</p>',()=>setAuto(true),'Ativar')}
 /* IA no comando das habilidades */
 function aiQTE(Q){const nt=Q.notes[Q.i];if(!nt)return;const el=S.t-Q.t0;if(nt.aiT==null){const r=Math.random();nt.aiK=nt.k;nt.aiT=nt.T+(r<.72?(Math.random()-.5)*.1:r<.97?(Math.random()<.5?-1:1)*(.2+Math.random()*.12):0);if(r>=.97)nt.aiK=Q.kind==='swipe'?{up:'down',down:'up',left:'right',right:'left'}[nt.k]:laneSet().find(x=>x!==nt.k)}
  if(el>=nt.aiT){if(Q.kind==='swipe'){const v={up:[0,-1],down:[0,1],left:[-1,0],right:[1,0]}[nt.aiK];Q.drag={a:[480,330],b:[480+v[0]*110,330+v[1]*110]};setTimeout(()=>{if(S.qte===Q)Q.drag=null},160)}qteJudge(nt.aiK)}}
@@ -1506,7 +1539,7 @@ function moan(){try{const a=ac(),t=a.currentTime,v=Math.random(),dur=.42+Math.ra
 function brass(a,f,t0,d,v,dest){const o=a.createOscillator(),o2=a.createOscillator(),lp=a.createBiquadFilter(),gn=a.createGain();o.type='sawtooth';o2.type='sawtooth';o.frequency.value=f;o2.frequency.value=f*1.006;lp.type='lowpass';lp.frequency.setValueAtTime(400,t0);lp.frequency.linearRampToValueAtTime(2400,t0+.12);lp.frequency.linearRampToValueAtTime(1200,t0+d);
  o.connect(lp);o2.connect(lp);lp.connect(gn);gn.connect(dest);gn.gain.setValueAtTime(0,t0);gn.gain.linearRampToValueAtTime(v,t0+.06);gn.gain.setValueAtTime(v*.8,t0+d*.7);gn.gain.linearRampToValueAtTime(0,t0+d);o.start(t0);o2.start(t0);o.stop(t0+d+.05);o2.stop(t0+d+.05)}
 function timp(a,t0,f,dest){const o=a.createOscillator(),gn=a.createGain();o.type='sine';o.frequency.setValueAtTime(f*1.6,t0);o.frequency.exponentialRampToValueAtTime(f,t0+.08);o.connect(gn);gn.connect(dest);gn.gain.setValueAtTime(.5,t0);gn.gain.exponentialRampToValueAtTime(.001,t0+1.2);o.start(t0);o.stop(t0+1.25)}
-function onWin(){clearSave();S.winT=S.t;TEL.fightEnd('vitória',{rounds:S.round,hp_left:Math.round(100*S.hp/S.mhp),enemy_left:0});S.overRT=performance.now();TEL.add('wins');TEL.screen('Tela Final');lamentStop();try{bgm.pause()}catch(e){}sadStop();try{const a=ac(),m=a.createGain();m.gain.value=.55;m.connect(a.mus);const t=a.currentTime+.05;
+function onWin(){clearSave();S.winT=S.t;clearTimeout(RANK_T);RANK_T=setTimeout(showRank,5200);TEL.fightEnd('vitória',{rounds:S.round,hp_left:Math.round(100*S.hp/S.mhp),enemy_left:0});S.overRT=performance.now();TEL.add('wins');TEL.screen('Tela Final');lamentStop();try{bgm.pause()}catch(e){}sadStop();try{const a=ac(),m=a.createGain();m.gain.value=.55;m.connect(a.mus);const t=a.currentTime+.05;
  [[220,0,.5],[261.6,.5,.5],[329.6,1,.5],[392,1.5,1.4]].forEach(([f,o,d])=>brass(a,f,t+o,d,.06,m));[174.6,220,261.6,349.2].forEach(f=>{brass(a,f,t+2.9,1.9,.035,m);choirNote(a,f,t+2.9,2.2,.03,m,'o')});[261.6,329.6,392,523.3].forEach(f=>{brass(a,f,t+4.7,3.2,.035,m);choirNote(a,f,t+4.7,3.6,.035,m,'a')});[0,2.9,4.7].forEach(o=>timp(a,t+o,o?55:65,m));
  nz(3.5,6000,.5,.06,3000);
  const CH=[[220,261.6,329.6],[174.6,220,261.6],[261.6,329.6,392],[196,246.9,293.7]],ML=[659.3,523.3,587.3,493.9];let i=0;
@@ -1893,7 +1926,7 @@ function drawOutro(){const C=S.cut,el=C.el;g.setTransform(1,0,0,1,OX,0);g.fillSt
  g.globalAlpha=Math.min(1,el/2)*.5;g.font='12px "EB Garamond",Georgia,serif';g.textAlign='right';g.fillStyle='#8f8578';g.fillText('✕ / clique: pular',940,24);g.restore()}
 
 /* ---------- telemetria leve (localStorage + Supabase opcional via analytics-config.js) ---------- */
-const TEL=(()=>{const LS=k=>{try{return localStorage.getItem(k)}catch(e){return null}},SS=(k,v)=>{try{localStorage.setItem(k,v)}catch(e){}};
+let TEL_LAST=null;const TEL=(()=>{const LS=k=>{try{return localStorage.getItem(k)}catch(e){return null}},SS=(k,v)=>{try{localStorage.setItem(k,v)}catch(e){}};
  const rid=()=>Math.random().toString(36).slice(2,10)+Date.now().toString(36).slice(-4);
  let vid=LS('afroVid');if(!vid){vid=rid();SS('afroVid',vid)}
  const mob=(()=>{try{return matchMedia('(pointer:coarse)').matches||/Android|iPhone|iPad|Mobile/i.test(navigator.userAgent)}catch(e){return false}})();
@@ -1907,10 +1940,10 @@ const TEL=(()=>{const LS=k=>{try{return localStorage.getItem(k)}catch(e){return 
  function slim(d){let j=JSON.stringify(d);if(j.length<60000)return j;const e=d.events?'events':d.screens&&d.screens._events?'_ev':null;if(d.events)d.events=d.events.slice(-60);if(d.screens&&d.screens._events)d.screens._events=d.screens._events.slice(-60);(d.fights||d.screens&&d.screens._fights||[]).forEach(f=>{if(f.turns&&f.turns.length>30)f.turns=f.turns.slice(-30);if(f.dists&&f.dists.length>30)f.dists=f.dists.slice(-30)});j=JSON.stringify(d);if(j.length>60000){delete d.events;if(d.screens)delete d.screens._events;j=JSON.stringify(d)}return j}
  function post(doc,final,tries){const c=cfg();if(!(c.provider==='supabase'&&c.url&&c.anonKey))return;if(LS('afroConsent')!=='sim')return;tries=tries||0;const body=slim(shape(doc));try{fetch(c.url.replace(/\/$/,'')+'/rest/v1/'+(c.table||'afrodite_sessions')+'?on_conflict=session_id',{method:'POST',keepalive:!!final&&body.length<63000,headers:Object.assign({apikey:c.anonKey,'Content-Type':'application/json',Prefer:'resolution=merge-duplicates,return=minimal'},/^eyJ/.test(c.anonKey)?{Authorization:'Bearer '+c.anonKey}:{}),body})
   .then(r=>{if(r.ok){D._ok=(D._ok||0)+1;return}return r.text().then(t=>{if(tries>2)return;let ch=false;if(/fights/.test(t)&&!MISS.fights){MISS.fights=1;ch=true}if(/events/.test(t)&&!MISS.events){MISS.events=1;ch=true}if(!ch&&!MISS.fights){MISS.fights=1;MISS.events=1;ch=true}if(ch){SS('afroTelMiss',JSON.stringify(MISS));post(doc,final,tries+1)}})}).catch(()=>{})}catch(e){}}
- function save(final){acc();D.updated_at=new Date().toISOString();const doc={...D,inputs:D.inputs.join(','),classes:D.classes.join(','),screens:Object.fromEntries(Object.entries(D.screens).map(([k,v])=>[k,Math.round(v)])),auto_ms:Math.round(D.auto_ms)};
+ function save(final){acc();D.updated_at=new Date().toISOString();const doc={...D,inputs:D.inputs.join(','),classes:D.classes.join(','),screens:Object.fromEntries(Object.entries(D.screens).map(([k,v])=>[k,Math.round(v)])),auto_ms:Math.round(D.auto_ms)};try{doc.screens._cur=final&&document.visibilityState==='hidden'?'saiu':(cur||'?');if(typeof scr!=='undefined'&&scr==='fight'&&typeof S!=='undefined'&&S&&S.mhp)doc.screens._live={a:Math.round(100*Math.max(0,S.hp)/S.mhp),h:Math.round(100*Math.max(0,S.eh)/(S.meh||1)),r:S.round||0,auto:!!(typeof AUTO!=='undefined'&&AUTO)}}catch(e){};
   try{const all=JSON.parse(LS('afroTelSessions')||'{}');all[D.session_id]=doc;const ks=Object.keys(all);if(ks.length>200)delete all[ks[0]];SS('afroTelSessions',JSON.stringify(all))}catch(e){}post(doc,final)}
- setInterval(()=>save(false),15000);setTimeout(()=>save(false),4000);let svT=0;const soon=()=>{clearTimeout(svT);svT=setTimeout(()=>save(false),1500)};addEventListener('pagehide',()=>save(true));document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='hidden')save(true)});
- const fin=res=>{if(!F||F.res)return;F.res=res;ev(res==='vitória'?'vitória':res==='derrota'?'morte':'abandono',{cls:F.cls});F.dur_ms=Math.round(performance.now()-F._t);delete F._t;F=null};
+ setInterval(()=>{if(document.visibilityState!=='hidden')save(false)},8000);setInterval(()=>{if(document.visibilityState==='hidden')save(false)},60000);setTimeout(()=>save(false),4000);let svT=0;const soon=()=>{clearTimeout(svT);svT=setTimeout(()=>save(false),1500)};addEventListener('pagehide',()=>save(true));document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='hidden')save(true)});
+ const fin=res=>{if(!F||F.res)return;F.res=res;ev(res==='vitória'?'vitória':res==='derrota'?'morte':'abandono',{cls:F.cls});F.dur_ms=Math.round(performance.now()-F._t);delete F._t;try{TEL_LAST={...F}}catch(e){}F=null};
  const postBug=doc=>{const c=cfg();if(!(c.provider==='supabase'&&c.url&&c.anonKey))return Promise.resolve({ok:false,msg:'sem servidor configurado'});
   return fetch(c.url.replace(/\/$/,'')+'/rest/v1/'+(c.bugTable||'afrodite_bugs'),{method:'POST',headers:Object.assign({apikey:c.anonKey,'Content-Type':'application/json',Prefer:'return=minimal'},/^eyJ/.test(c.anonKey)?{Authorization:'Bearer '+c.anonKey}:{}),body:JSON.stringify(doc)})
    .then(r=>r.ok?{ok:true}:r.text().then(t=>{let m='';try{const j=JSON.parse(t);m=j.message||j.hint||''}catch(e){m=t.slice(0,120)}return{ok:false,msg:'HTTP '+r.status+(m?' · '+m:'')}})).catch(e=>({ok:false,msg:'sem conexão'}))};
@@ -2019,8 +2052,10 @@ function drawTears(){if(!S.tears||S.t>S.tears||S.over)return;if(S.t>(S.tearT||0)
 
 
 /* versão, últimas atualizações e reporte de bug */
-const VERSION='Alpha 0.11.8 (experimental)';const BUILD_TS='2026-11-26T16:54:40Z';
+const VERSION='Alpha 0.11.10 (experimental)';const BUILD_TS='2026-11-26T17:21:07Z';
 const PATCH=[
+ {v:'Alpha 0.11.10 (experimental)',d:'26/11/2026',it:['Ranking da Forja na tela de vitória: os servos que derrotaram Hefesto mais rápido, com o apelido e o tempo. Vitórias com o combate automático não entram.','Um agradecimento a quem está testando o jogo ❤']},
+ {v:'Alpha 0.11.9 (experimental)',d:'26/11/2026',it:['O jogo avisa com mais frequência que você está jogando, para o relatório mostrar quem está online agora (só com o termo aceito).']},
  {v:'Alpha 0.11.8 (experimental)',d:'26/11/2026',it:['Nova trilha de piano, triste e épica, na tela de escolher o caminho. Agora dá para testar o volume da música antes da luta.']},
  {v:'Alpha 0.11.7 (experimental)',d:'26/11/2026',it:['O som começa em 50% e pode ser ajustado já na tela de escolher o caminho, com um botão para testar antes da luta.']},
  {v:'Alpha 0.11.6 (experimental)',d:'26/11/2026',it:['Corrida da Forja: Hefesto desliza por todas as casas que pegam fogo (a borda inteira e quase todo o anel de dentro) e para na última, que também queima.','Botão de pausa no topo (também com Esc ou Start). O jogo pausa sozinho se você sair da aba.']},

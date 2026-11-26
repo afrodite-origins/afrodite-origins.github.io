@@ -1,5 +1,14 @@
 # Últimas atualizações
 
+## Alpha 0.11.10 (experimental) · 26/11/2026
+
+- Ranking da Forja na tela de vitória: os servos que derrotaram Hefesto mais rápido, com o apelido e o tempo. Vitórias com o combate automático não entram.
+- Um agradecimento a quem está testando o jogo ❤
+
+## Alpha 0.11.9 (experimental) · 26/11/2026
+
+- O jogo avisa com mais frequência que você está jogando, para o relatório mostrar quem está online agora (só com o termo aceito).
+
 ## Alpha 0.11.8 (experimental) · 26/11/2026
 
 - Nova trilha de piano, triste e épica, na tela de escolher o caminho. Agora dá para testar o volume da música antes da luta.
