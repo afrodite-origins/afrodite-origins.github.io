@@ -6,6 +6,10 @@ Protótipo de RPG tático por turnos, de tom sombrio: Afrodite enfrenta Hefesto,
 
 ## Últimas atualizações
 
+**Alpha 0.11.7 (experimental) · 26/11/2026**
+
+- O som começa em 50% e pode ser ajustado já na tela de escolher o caminho, com um botão para testar antes da luta.
+
 **Alpha 0.11.6 (experimental) · 26/11/2026**
 
 - Corrida da Forja: Hefesto desliza por todas as casas que pegam fogo (a borda inteira e quase todo o anel de dentro) e para na última, que também queima.
@@ -18,12 +22,6 @@ Protótipo de RPG tático por turnos, de tom sombrio: Afrodite enfrenta Hefesto,
 **Alpha 0.11.4 (experimental) · 26/11/2026**
 
 - Mais registros para o relatório: cenas puladas, música e efeitos, turnos passados rápido e tempo esgotado com PA sobrando.
-
-**Alpha 0.11.3 (experimental) · 26/11/2026**
-
-- Na primeira vez, o jogo explica quais dados de jogo são coletados e pergunta se você aceita. Dá para jogar sem enviar dados e mudar a escolha na engrenagem.
-
-[Ver todas as atualizações](CHANGELOG.md) · [Jogar a versão estável (0.9.9)](https://isaacbcampos.github.io/afrodite-alpha/estavel/) · achou um bug? Use o botão **Reportar bug** dentro do jogo.
 
 ## Controles
 | | PC | Controle |
