@@ -1,5 +1,13 @@
 # Últimas atualizações
 
+## Alpha 0.10.7 (experimental) · 26/11/2026
+
+- Tela de escolha do caminho mais limpa: só as 4 classes, a Personalizada e um ícone para reportar bug.
+- Se o jogo travar, aparece uma tela para destravar e continuar, voltar ao início do turno ou recomeçar a luta. O travamento é relatado automaticamente.
+- Se você fechar ou recarregar a página no meio da luta, a primeira tela oferece continuar de onde parou.
+- Na engrenagem há a opção "O jogo travou? Destravar".
+- A câmera de reação agora está sempre ligada.
+
 ## Alpha 0.10.6 (experimental) · 26/11/2026
 
 - A entrada agora tem 3 passos: como você vai jogar, tela cheia (no celular) e apelido.

@@ -6,6 +6,14 @@ Protótipo de RPG tático por turnos, de tom sombrio: Afrodite enfrenta Hefesto,
 
 ## Últimas atualizações
 
+**Alpha 0.10.7 (experimental) · 26/11/2026**
+
+- Tela de escolha do caminho mais limpa: só as 4 classes, a Personalizada e um ícone para reportar bug.
+- Se o jogo travar, aparece uma tela para destravar e continuar, voltar ao início do turno ou recomeçar a luta. O travamento é relatado automaticamente.
+- Se você fechar ou recarregar a página no meio da luta, a primeira tela oferece continuar de onde parou.
+- Na engrenagem há a opção "O jogo travou? Destravar".
+- A câmera de reação agora está sempre ligada.
+
 **Alpha 0.10.6 (experimental) · 26/11/2026**
 
 - A entrada agora tem 3 passos: como você vai jogar, tela cheia (no celular) e apelido.
@@ -24,15 +32,6 @@ Protótipo de RPG tático por turnos, de tom sombrio: Afrodite enfrenta Hefesto,
 - Painel de turnos mais estreito: a vida virou um anel em volta do retrato.
 - O comando da habilidade mostra o que acontece se você conjurar com sucesso, com a chance de cada efeito (ex.: veneno 47%).
 - No automático aparece "A máquina está jogando".
-
-**Alpha 0.10.3 (experimental) · 26/11/2026**
-
-- Sons de cassino a cada nota no tempo certo, chuva de moedas ao conjurar e som de falha ao errar a tecla ou o tempo.
-- Mensagens novas: SUCESSO AO CONJURAR, CONJUROU PELA METADE e FALHOU AO CONJURAR.
-- O histórico some sozinho 15 s depois da última ação; o botão Histórico, no canto inferior esquerdo, mostra de novo.
-- Música no canto inferior direito, com Efeitos sonoros logo acima: um toque liga ou desliga, e a barra de volume aparece para arrastar.
-- Botão Automático maior e mais visível, com confirmação antes de ligar.
-- No automático, a máquina toca os comandos e reage aos golpes como uma pessoa, inclusive errando às vezes. Dá para assistir e aprender.
 
 [Ver todas as atualizações](CHANGELOG.md) · [Jogar a versão estável (0.9.9)](https://isaacbcampos.github.io/afrodite-alpha/estavel/) · achou um bug? Use o botão **Reportar bug** dentro do jogo.
 
