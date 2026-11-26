@@ -6,11 +6,13 @@ Protótipo de RPG tático por turnos, de tom sombrio: Afrodite enfrenta Hefesto,
 
 ## Últimas atualizações
 
-**Alpha 0.9.6 · 26/11/2026**
+**Alpha 0.9.9 · 26/11/2026**
 
-- No menu de ações, um toque na habilidade já leva direto para a mira.
-- Encerrar o turno pelo menu agora pede confirmação, mostrando quantos PA e PM ainda sobram.
-- Na mira, um aviso discreto indica como confirmar, e o botão Confirmar aparece no lugar de Passar turno.
+- Ao posicionar Afrodite, uma luz percorre as casas da esquerda para a direita: escolha qualquer uma delas.
+- Dicas rápidas nas primeiras vezes: menu de ações e PA, como gastar PM, como reagir no turno do inimigo e o teste de fuga.
+- Hefesto reage melhor aos golpes: recua, pisca e solta faíscas, com números de dano mais fortes.
+- Nova cena de derrota: Hefesto arremessa a prótese de ouro e Afrodite cai estonteada.
+- Menu inicial mais limpo: os 4 caminhos no círculo e a Personalizada num botão próprio, no canto.
 
 [Ver todas as atualizações](CHANGELOG.md) · achou um bug? Use o botão **Reportar bug** dentro do jogo.
 

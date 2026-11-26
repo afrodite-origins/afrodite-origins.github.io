@@ -1,5 +1,30 @@
 # Últimas atualizações
 
+## Alpha 0.9.9 · 26/11/2026
+
+- Ao posicionar Afrodite, uma luz percorre as casas da esquerda para a direita: escolha qualquer uma delas.
+- Dicas rápidas nas primeiras vezes: menu de ações e PA, como gastar PM, como reagir no turno do inimigo e o teste de fuga.
+- Hefesto reage melhor aos golpes: recua, pisca e solta faíscas, com números de dano mais fortes.
+- Nova cena de derrota: Hefesto arremessa a prótese de ouro e Afrodite cai estonteada.
+- Menu inicial mais limpo: os 4 caminhos no círculo e a Personalizada num botão próprio, no canto.
+
+## Alpha 0.9.8 · 26/11/2026
+
+- Nova entrada: primeiro o seu apelido, depois o caminho de Afrodite escolhido num menu radial.
+- Nova abertura: Cronos, Urano e o nascimento de Afrodite (dá para pular com um toque).
+- Todas as habilidades ganharam animações novas, mais limpas e fáceis de ler.
+- Ritmo da luta um pouco mais cadenciado.
+- Êxtase agora vem com a risada da Sedutora, e a Flecha do Cupido explode com um BOOM.
+
+## Alpha 0.9.7 · 26/11/2026
+
+- No celular deitado, a luta agora ocupa a tela inteira, sem faixas vazias nas laterais.
+- Ao traçar um caminho aparece o botão Mover, com um aviso discreto para confirmar.
+- O botão Ações mostra quantos PA ainda restam enquanto houver algo para usar.
+- Passar turno ficou separado, no canto direito, para não ser apertado sem querer.
+- A tela de reportar bug cabe no celular e avisa se o envio falhou; nesse caso o relato é reenviado depois.
+- Na tela inicial: botão para jogar em tela cheia e controle do volume dos efeitos sonoros.
+
 ## Alpha 0.9.6 · 26/11/2026
 
 - No menu de ações, um toque na habilidade já leva direto para a mira.
