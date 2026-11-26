@@ -1,10 +1,14 @@
 # Últimas atualizações
 
+## Alpha 0.11.13 (experimental) · 26/11/2026
+
+- Três rankings: ⏳ Dedicação (quem mais joga sem o automático), 🔥 Devastação (mais dano por minuto de luta) e 🛡 Intocável (vencer Hefesto recebendo menos dano).
+- O termo de dados foi atualizado (agora cita onde você toca ou clica na tela) e aparece de novo uma vez.
+
 ## Alpha 0.11.12 (experimental) · 26/11/2026
 
-- Ranking da Forja agora soma pontos: velocidade para vencer Hefesto, dano causado e tempo jogado (sem o automático).
 - Quem chega ao pódio (1º, 2º ou 3º) ganha medalha animada, confete, fanfarra e um selo na tela inicial.
-- O jogo manda retratos simples da tela para o desenvolvedor poder acompanhar a partida (só com o termo aceito).
+- O desenvolvedor pode acompanhar, com atraso, uma versão simplificada da partida para entender onde o jogo confunde (só com o termo aceito).
 
 ## Alpha 0.11.11 (experimental) · 26/11/2026
 

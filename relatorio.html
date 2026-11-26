@@ -37,21 +37,21 @@ details.more{margin-top:6px}details.more>summary{cursor:pointer;color:var(--acc)
 .lvw{display:grid;grid-template-columns:minmax(320px,1.35fr) 1fr;gap:16px;align-items:start}@media (max-width:860px){.lvw{grid-template-columns:1fr}}.lvsvg{width:100%;height:auto;background:radial-gradient(ellipse at 50% 50%,#1b2a22 0%,var(--pan2) 70%);border-radius:10px;display:block}
 .lvp{background:var(--pan2);border:1px solid var(--line);border-radius:8px;padding:8px 10px;margin-bottom:8px}.lvp b{font-size:14px}.lvp .m{color:var(--mut);font-size:12px}.hpb{display:grid;grid-template-columns:62px 1fr 34px;gap:6px;align-items:center;font-size:11.5px;color:var(--mut);margin-top:3px}.hpb .t{height:7px;background:#0f1115;border-radius:4px;overflow:hidden}.hpb .f{height:100%;border-radius:4px}
 .feed{max-height:230px;overflow:auto;font-size:12.5px}.feed div{display:grid;grid-template-columns:58px 110px 1fr;gap:8px;padding:3px 0;border-bottom:1px solid var(--line)}.feed .new{animation:nw 2.5s ease-out}@keyframes nw{from{background:#2a4a36}to{background:transparent}}
-.kpi.lk b{color:#8ee0b3}
+.kpi.lk b{color:#8ee0b3}[hidden]{display:none!important}
 .obsg{display:grid;grid-template-columns:minmax(320px,2fr) 1fr;gap:14px;align-items:start}@media (max-width:860px){.obsg{grid-template-columns:1fr}}#obsC{width:100%;height:auto;background:#0b0907;border-radius:10px;border:1px solid var(--line)}
 </style></head><body><div class="w">
 <header><h1>Afrodite Alpha <small>análise dos testes</small></h1><span class="src" id="src">carregando…</span></header>
 <div class="filters"><label>Período <select id="fp"><option value="0">tudo</option><option value="0.0417">última hora</option><option value="1">últimas 24 h</option><option value="7">últimos 7 dias</option><option value="30">últimos 30 dias</option></select></label>
 <label>Dispositivo <select id="fd"><option value="">todos</option><option>PC</option><option>Mobile</option></select></label>
 <label><input type="checkbox" id="fa"> ignorar lutas com Automático</label>
-<span style="flex:1"></span><button id="reload">Atualizar</button><button id="csv">CSV (lutas)</button><button id="json">JSON</button></div>
+<span style="flex:1"></span><button id="gmB" title="Entrar como GM para observar jogadores">🔑 GM</button><button id="reload">Atualizar</button><button id="csv">CSV (lutas)</button><button id="json">JSON</button></div>
 <div class="kpis" id="kpis"></div>
 <div class="box live" style="margin-bottom:14px"><h2><span class="dot off" id="lvDot"></span>Ao vivo: jogando agora <span class="per" id="lvSub">conectando…</span></h2>
 <p class="note" style="margin:0 0 10px">Atualiza sozinho a cada 10 segundos. Cada jogador aparece com as decisões dos últimos 3 minutos ao redor: a mais recente fica mais forte e mais perto dele. As outras seções abaixo olham para o passado (escolha o período no filtro).</p>
 <div class="lvw"><div><svg class="lvsvg" id="lvSvg" viewBox="0 0 760 440"></svg></div><div><div id="lvList"></div><h3>Últimas decisões</h3><div class="feed" id="lvFeed"></div></div></div>
 <div id="obsW" hidden style="margin-top:14px;border-top:1px solid var(--line);padding-top:12px"><div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:8px"><b id="obsT" style="font-size:15px">Observando</b><span class="per" id="obsS">carregando…</span><span style="flex:1"></span><button id="obsLive">⏭ Ir para o mais recente</button><button id="obsX">Fechar</button></div>
 <div class="obsg"><canvas id="obsC" width="1100" height="600"></canvas><div><h3 style="margin-top:0">O que ele está fazendo</h3><div id="obsI" class="feed" style="max-height:none"></div><h3>Decisões</h3><div id="obsE" class="feed"></div></div></div>
-<p class="note">Versão simplificada da tela do jogador, repetida com uns 10 a 15 segundos de atraso. Círculos brancos são toques e cliques (onde ele encostou na tela dele); as teclas aparecem embaixo. Só funciona com jogadores na versão 0.11.12 ou mais nova.</p></div></div>
+<p class="note">Versão simplificada da tela do jogador, repetida com uns 10 a 15 segundos de atraso. Círculos brancos são toques e cliques (onde ele encostou na tela dele); as teclas aparecem embaixo. Só você, logado como GM, consegue ver isto. Funciona com jogadores na versão 0.11.13 ou mais nova.</p></div></div>
 <div class="box" style="margin-bottom:14px"><h2>Grupos de jogadores por comportamento <span class="per"></span></h2><p class="note" style="margin:0 0 10px">Os jogadores são agrupados automaticamente pelo jeito de jogar: uso do automático, tempo montando build, controle ou toque, acerto nas reações, abandono e quantas lutas jogam.</p><div id="clu"></div></div>
 <div class="box" style="margin-bottom:14px"><h2>Constelação de ações por jogador <span class="per"></span></h2><p class="note" style="margin:0 0 10px">O apelido fica no centro e as ações em volta. Quanto mais vezes o jogador repetiu uma ação, mais forte ela fica e mais longe do centro. Verde = acertos e conquistas, vermelho = falhas, azul = automático, amarelo = pressa ou cenas puladas.</p><div class="prof stars" id="stars"></div></div>
 <div class="box" style="margin-bottom:14px"><h2>Comportamento durante a luta</h2><div id="beh"></div></div>
@@ -73,6 +73,9 @@ details.more{margin-top:6px}details.more>summary{cursor:pointer;color:var(--acc)
 <div class="box" style="margin-bottom:14px"><h2>Bugs reportados</h2><div class="tw" id="bugs"></div></div>
 <div class="box"><h2>Lutas</h2><div class="tw" id="fights"></div></div>
 </div>
+<div id="gmM" hidden style="position:fixed;inset:0;background:#000b;display:grid;place-items:center;z-index:20"><form id="gmF" class="box" style="width:min(360px,92vw)"><h2>Entrar como GM</h2><p class="note" style="margin:0 0 10px">Só o GM (você) consegue observar jogadores. Use o e-mail e a senha do usuário criado no Supabase (Authentication → Users).</p>
+<input id="gmE" type="email" placeholder="e-mail" autocomplete="username" style="width:100%;margin-bottom:8px;padding:8px;background:var(--pan2);color:var(--tx);border:1px solid var(--line);border-radius:6px"><input id="gmP" type="password" placeholder="senha" autocomplete="current-password" style="width:100%;margin-bottom:10px;padding:8px;background:var(--pan2);color:var(--tx);border:1px solid var(--line);border-radius:6px">
+<div style="display:flex;gap:8px"><button type="submit" style="flex:1">Entrar</button><button type="button" id="gmC">Cancelar</button></div><p class="note" id="gmMsg"></p></form></div>
 <script src="analytics-config.js"></script>
 <script>
 const $=id=>document.getElementById(id),esc=v=>String(v??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
@@ -338,24 +341,40 @@ async function liveTick(){let rows;try{rows=await liveFetch()}catch(e){$('lvSub'
  $('lvSvg').innerHTML=o;
  const hb=(n,v,c)=>`<div class="hpb"><span>${n}</span><div class="t"><div class="f" style="width:${v}%;background:${c}"></div></div><span>${v}%</span></div>`;
  $('lvList').innerHTML=P.length?P.map(r=>{const sc=r.screens||{},lv=sc._live,last=D.filter(d=>d.sid===r.session_id).sort((a,b)=>b.at-a.at)[0],dur=Math.max(0,Math.round((now-new Date(r.started_at).getTime())/60000));
-  return`<div class="lvp"><button class="obsB" data-sid="${esc(r.session_id)}" data-nk="${esc(who(r))}" style="float:right;padding:3px 9px;font-size:12px">📺 Observar</button><b>${esc(who(r))}</b> <span class="m">· ${r.device==='Mobile'?'celular':'PC'} · ${esc(sc._cur||'?')} · ${dur} min de sessão${lv?` · rodada ${lv.r}${lv.auto?' · <span style="color:#8ec9f0">automático</span>':''}`:''}</span>${lv?hb('Afrodite',lv.a,'#e7b9d6')+hb('Hefesto',lv.h,'#e06a5a'):''}<div class="m" style="margin-top:3px">Última decisão: ${last?`<span style="color:${last.col}">${esc(last.l)}</span> há ${fmt(now-last.at)}`:'—'}</div></div>`}).join(''):'<div class="empty">Ninguém jogando agora.</div>';
+  return`<div class="lvp"><button class="obsB" ${GM.ok()?'':'hidden'} data-sid="${esc(r.session_id)}" data-nk="${esc(who(r))}" style="float:right;padding:3px 9px;font-size:12px">📺 Observar</button><b>${esc(who(r))}</b> <span class="m">· ${r.device==='Mobile'?'celular':'PC'} · ${esc(sc._cur||'?')} · ${dur} min de sessão${lv?` · rodada ${lv.r}${lv.auto?' · <span style="color:#8ec9f0">automático</span>':''}`:''}</span>${lv?hb('Afrodite',lv.a,'#e7b9d6')+hb('Hefesto',lv.h,'#e06a5a'):''}<div class="m" style="margin-top:3px">Última decisão: ${last?`<span style="color:${last.col}">${esc(last.l)}</span> há ${fmt(now-last.at)}`:'—'}</div></div>`}).join(''):'<div class="empty">Ninguém jogando agora.</div>';
  const fd=rec.slice(0,25);$('lvFeed').innerHTML=fd.length?fd.map(d=>{const nw=!LV.first&&!LV.feedKeys.has(d.k);return`<div class="${nw?'new':''}"><span class="tlt">${new Date(d.at).toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit',second:'2-digit'})}</span><b>${esc(d.who.length>13?d.who.slice(0,12)+'…':d.who)}</b><span style="color:${d.col}">${esc(d.l)}</span></div>`}).join(''):'<div class="empty">Sem decisões nos últimos 3 minutos.</div>';
  fd.forEach(d=>LV.feedKeys.add(d.k));LV.first=false}
 
+
+/* ===== GM: login no Supabase Auth (só o GM lê os retratos da tela) ===== */
+const GM=(()=>{const K='afroGM';let st=(()=>{try{return JSON.parse(localStorage.getItem(K)||'null')}catch(e){return null}})();const cfg=()=>window.AFRO_ANALYTICS||{},base=()=>String(cfg().url||'').replace(/\/$/,'');
+ const save=v=>{st=v;try{v?localStorage.setItem(K,JSON.stringify(v)):localStorage.removeItem(K)}catch(e){}ui()};
+ function ui(){const b=$('gmB');if(b){b.textContent=st?'🔑 GM: '+String(st.email||'').split('@')[0]+' (sair)':'🔑 GM';}document.querySelectorAll('.obsB').forEach(x=>x.hidden=!st)}
+ async function auth(body,grant){const r=await fetch(base()+'/auth/v1/token?grant_type='+grant,{method:'POST',headers:{apikey:cfg().anonKey,'Content-Type':'application/json'},body:JSON.stringify(body)});const j=await r.json().catch(()=>({}));if(!r.ok)throw new Error(j.error_description||j.msg||j.error||('HTTP '+r.status));return{access:j.access_token,refresh:j.refresh_token,exp:Date.now()+(j.expires_in||3600)*1000-60000,email:(j.user&&j.user.email)||body.email||(st&&st.email)}}
+ return{ok:()=>!!st,
+  async login(email,password){save(await auth({email,password},'password'))},logout(){save(null)},ui,
+  async token(){if(!st)return null;if(Date.now()>st.exp){try{save(await auth({refresh_token:st.refresh},'refresh_token'))}catch(e){save(null);return null}}return st.access}}})();
+$('gmB').onclick=()=>{if(GM.ok()){if(confirm('Sair do modo GM?'))GM.logout();return}$('gmMsg').textContent='';$('gmM').hidden=false;setTimeout(()=>$('gmE').focus(),30)};
+$('gmC').onclick=()=>$('gmM').hidden=true;
+$('gmF').onsubmit=async e=>{e.preventDefault();$('gmMsg').textContent='entrando…';try{await GM.login($('gmE').value.trim(),$('gmP').value);$('gmP').value='';$('gmM').hidden=true}catch(err){$('gmMsg').textContent='Não deu: '+err.message}};
+setTimeout(()=>GM.ui());
 /* ===== Observador ("telar" um jogador) ===== */
 const OB={sid:null,nk:'',fr:[],ev:[],st:0,play:0,last:0,tm:0,raf:0,ses:null};
 const N6=6,CW=84,CH=46,SKX=14,X0=235,Y0=258,OXo=70,PP=(c,r)=>[X0+c*CW+(N6-1-r)*SKX+OXo,Y0+r*CH];
 const SCRN={mode:'Escolhendo como vai jogar',fsask:'Pergunta da tela cheia',nick:'Digitando o apelido',pick:'Escolhendo o caminho (classe)',build:'Montando a build personalizada',origin:'Assistindo à abertura (origem)'};
-async function obsFetch(){const c=window.AFRO_ANALYTICS||{};let rows=[];
- if(c.provider==='supabase'&&c.url&&c.anonKey){const r=await fetch(c.url.replace(/\/$/,'')+'/rest/v1/'+(c.table||'afrodite_sessions')+'?select=session_id,nick,device,started_at,updated_at,screens,events&session_id=eq.'+encodeURIComponent(OB.sid),{headers:Object.assign({apikey:c.anonKey},/^eyJ/.test(c.anonKey)?{Authorization:'Bearer '+c.anonKey}:{}),cache:'no-store'});if(!r.ok)throw new Error('HTTP '+r.status);rows=await r.json()}
- else{try{const a=JSON.parse(localStorage.getItem('afroTelSessions')||'{}');rows=Object.values(a).filter(x=>x.session_id===OB.sid)}catch(e){}}
- const r=rows[0];if(!r)return;const sc=obj(r.screens);OB.ses=r;const fr=arr(sc._obs);const have=new Set(OB.fr.map(f=>f.T));fr.forEach(f=>{if(f&&f.T&&!have.has(f.T))OB.fr.push(f)});OB.fr.sort((a,b)=>a.T-b.T);if(OB.fr.length>800)OB.fr=OB.fr.slice(-800);
- const st=new Date(r.started_at).getTime();OB.ev=arr(r.events).map(e=>({at:st+(+e.t||0)*1000,l:LABG(e),col:COLRG(LABG(e)||'')})).filter(e=>e.l);OB.last=Date.now()}
-function obsOpen(sid,nk){OB.sid=sid;OB.nk=nk;OB.fr=[];OB.ev=[];OB.play=0;$('obsW').hidden=false;$('obsT').textContent='Observando '+nk;$('obsS').textContent='carregando…';
+async function obsFetch(){const c=window.AFRO_ANALYTICS||{};if(!(c.provider==='supabase'&&c.url&&c.anonKey)){OB.err='O observador precisa do Supabase configurado.';return}
+ const base=c.url.replace(/\/$/,'')+'/rest/v1/',H={apikey:c.anonKey},tk=await GM.token();if(!tk){OB.err='Entre como GM (botão 🔑 GM no topo) para observar.';return}
+ const r=await fetch(base+(c.obsTable||'afrodite_obs')+'?select=frames,created_at&session_id=eq.'+encodeURIComponent(OB.sid)+'&order=created_at.desc&limit=10',{headers:{...H,Authorization:'Bearer '+tk},cache:'no-store'});
+ if(!r.ok){OB.err=r.status===404?'A tabela afrodite_obs ainda não existe: rode o SQL novo do TELEMETRIA.md.':r.status===401||r.status===403?'Sem permissão: confira o e-mail do GM no SQL (política "gm select").':'falha ao ler (HTTP '+r.status+')';return}
+ const rows=await r.json();OB.err=rows.length?'':'Nenhum retrato desse jogador ainda (ele precisa estar na 0.11.13 ou mais nova, com o termo aceito e a aba aberta). Se ele está jogando, confira o e-mail do GM no SQL.';
+ const have=new Set(OB.fr.map(f=>f.T));rows.forEach(x=>arr(x.frames).forEach(f=>{if(f&&f.T&&!have.has(f.T)){have.add(f.T);OB.fr.push(f)}}));OB.fr.sort((a,b)=>a.T-b.T);if(OB.fr.length>800)OB.fr=OB.fr.slice(-800);
+ try{const r2=await fetch(base+(c.table||'afrodite_sessions')+'?select=started_at,events&session_id=eq.'+encodeURIComponent(OB.sid),{headers:Object.assign({apikey:c.anonKey},/^eyJ/.test(c.anonKey)?{Authorization:'Bearer '+c.anonKey}:{}),cache:'no-store'});if(r2.ok){const s2=(await r2.json())[0];if(s2){const st=new Date(s2.started_at).getTime();OB.ev=arr(s2.events).map(e=>({at:st+(+e.t||0)*1000,l:LABG(e),col:COLRG(LABG(e)||'')})).filter(e=>e.l)}}}catch(e){}
+ OB.last=Date.now()}
+function obsOpen(sid,nk){if(!GM.ok()){$('gmB').click();return}OB.sid=sid;OB.nk=nk;OB.fr=[];OB.ev=[];OB.play=0;$('obsW').hidden=false;$('obsT').textContent='Observando '+nk;$('obsS').textContent='carregando…';
  const tick=async()=>{try{await obsFetch()}catch(e){$('obsS').textContent='falha ao ler ('+e.message+')'}};clearInterval(OB.tm);tick();OB.tm=setInterval(()=>{if(!document.hidden)tick()},4000);
  cancelAnimationFrame(OB.raf);let lt=performance.now();const loop=n=>{const dt=n-lt;lt=n;obsStep(dt);OB.raf=requestAnimationFrame(loop)};OB.raf=requestAnimationFrame(loop);$('obsW').scrollIntoView({behavior:'smooth',block:'start'})}
 function obsClose(){clearInterval(OB.tm);cancelAnimationFrame(OB.raf);OB.sid=null;$('obsW').hidden=true}
-function obsStep(dt){const F=OB.fr;if(!F.length){obsDraw(null);$('obsS').textContent=OB.last?'sem retratos da tela ainda (o jogador precisa estar na 0.11.12 ou mais nova, com a aba aberta)':'carregando…';return}
+function obsStep(dt){const F=OB.fr;if(!F.length){obsDraw(null);$('obsS').textContent=OB.err||(OB.last?'esperando os primeiros retratos…':'carregando…');return}
  const newest=F[F.length-1].T,DL=11000;if(!OB.play||OB.play<F[0].T-500||newest-OB.play>45000)OB.play=Math.max(F[0].T,newest-DL);
  if(OB.play<newest)OB.play=Math.min(newest,OB.play+dt*(newest-OB.play>DL+6000?1.6:1));
  let i=0;while(i+1<F.length&&F[i+1].T<=OB.play)i++;const f=F[i],nx=F[i+1];
@@ -395,7 +414,7 @@ function obsDraw(f,nx,F){const cv=$('obsC'),g=cv.getContext('2d');g.setTransform
  const rec=F.filter(x=>x.T<=OB.play&&OB.play-x.T<1400);rec.forEach(x=>{const age=(OB.play-x.T)/1400;(x.tp||[]).forEach(([tx,ty])=>{g.strokeStyle=`rgba(255,255,255,${1-age})`;g.lineWidth=3;g.beginPath();g.arc(tx+OXo,ty,10+26*age,0,7);g.stroke();g.fillStyle=`rgba(255,255,255,${.5*(1-age)})`;g.beginPath();g.arc(tx+OXo,ty,6,0,7);g.fill()})});
  const ks=F.filter(x=>x.T<=OB.play&&OB.play-x.T<2500).flatMap(x=>(x.ky||[]).map(k=>[k,(OB.play-x.T)/2500]));let kx=OXo+20;ks.slice(-10).forEach(([k,a])=>{g.globalAlpha=1-a;g.font='700 13px system-ui';const w=g.measureText(k).width+16;g.fillStyle='#1c212a';g.fillRect(kx,560,w,26);g.strokeStyle='#d4a85a';g.strokeRect(kx+.5,560.5,w-1,25);g.fillStyle='#fff';g.textAlign='center';g.fillText(k,kx+w/2,578);kx+=w+6;g.globalAlpha=1})}
 document.addEventListener('click',e=>{const b=e.target.closest&&e.target.closest('.obsB');if(b)obsOpen(b.dataset.sid,b.dataset.nk)});
-let lvTimer=0;function liveStart(){clearInterval(lvTimer);liveTick();lvTimer=setInterval(()=>{if(!document.hidden)liveTick()},10000)}
+let lvTimer=0;function liveStart(){clearInterval(lvTimer);GM.ui();liveTick();lvTimer=setInterval(()=>{if(!document.hidden)liveTick()},10000)}
 document.addEventListener('visibilitychange',()=>{if(!document.hidden)liveTick()});
 ['fp','fd','fa'].forEach(id=>$(id).onchange=render);$('obsX').onclick=obsClose;$('obsLive').onclick=()=>{const F=OB.fr;if(F.length)OB.play=F[F.length-1].T-1500};$('reload').onclick=()=>{load();liveTick()};load();liveStart();
 </script></body></html>

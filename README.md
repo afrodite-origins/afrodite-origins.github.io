@@ -6,11 +6,15 @@ Protótipo de RPG tático por turnos, de tom sombrio: Afrodite enfrenta Hefesto,
 
 ## Últimas atualizações
 
+**Alpha 0.11.13 (experimental) · 26/11/2026**
+
+- Três rankings: ⏳ Dedicação (quem mais joga sem o automático), 🔥 Devastação (mais dano por minuto de luta) e 🛡 Intocável (vencer Hefesto recebendo menos dano).
+- O termo de dados foi atualizado (agora cita onde você toca ou clica na tela) e aparece de novo uma vez.
+
 **Alpha 0.11.12 (experimental) · 26/11/2026**
 
-- Ranking da Forja agora soma pontos: velocidade para vencer Hefesto, dano causado e tempo jogado (sem o automático).
 - Quem chega ao pódio (1º, 2º ou 3º) ganha medalha animada, confete, fanfarra e um selo na tela inicial.
-- O jogo manda retratos simples da tela para o desenvolvedor poder acompanhar a partida (só com o termo aceito).
+- O desenvolvedor pode acompanhar, com atraso, uma versão simplificada da partida para entender onde o jogo confunde (só com o termo aceito).
 
 **Alpha 0.11.11 (experimental) · 26/11/2026**
 
@@ -23,10 +27,6 @@ Protótipo de RPG tático por turnos, de tom sombrio: Afrodite enfrenta Hefesto,
 
 - Ranking da Forja na tela de vitória: os servos que derrotaram Hefesto mais rápido, com o apelido e o tempo. Vitórias com o combate automático não entram.
 - Um agradecimento a quem está testando o jogo ❤
-
-**Alpha 0.11.9 (experimental) · 26/11/2026**
-
-- O jogo avisa com mais frequência que você está jogando, para o relatório mostrar quem está online agora (só com o termo aceito).
 
 ## Controles
 | | PC | Controle |
@@ -47,4 +47,4 @@ O jogo registra dados anônimos de partida (tempo, mortes, habilidades usadas) p
 
 ## Privacidade
 
-O jogo está em teste. Se você aceitar na primeira tela, ele registra como você joga (apelido escolhido, modelo do aparelho e navegador, tempo nas telas, escolhas, acertos e erros, FPS) para ajustar o jogo. Não pedimos nome real, e-mail, telefone nem localização, e nada é vendido ou compartilhado. Dá para jogar sem enviar dados e mudar a escolha na engrenagem. Para pedir que seus dados sejam apagados, use **Reportar bug** e informe o código mostrado no aviso.
+O jogo está em teste. Se você aceitar na primeira tela, ele registra como você joga (apelido escolhido, modelo do aparelho e navegador, tempo nas telas, escolhas, acertos e erros, onde você toca ou clica na tela, FPS) para ajustar o jogo. O desenvolvedor pode rever uma versão simplificada da partida, com atraso, para entender onde o jogo confunde. Não pedimos nome real, e-mail, telefone nem localização, e nada é vendido ou compartilhado. Dá para jogar sem enviar dados e mudar a escolha na engrenagem. Para pedir que seus dados sejam apagados, use **Reportar bug** e informe o código mostrado no aviso.
