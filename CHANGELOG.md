@@ -1,5 +1,19 @@
 # Últimas atualizações
 
+## Alpha 0.11.26 (experimental) · 26/11/2026
+
+- Relatório do GM mais limpo, com abas Manual e Automático.
+- O observador do GM também acompanha a abertura do baú, a lojinha, a mochila e o ranking.
+
+## Alpha 0.11.25 (experimental) · 26/11/2026
+
+- Venceu Hefesto sem o automático? Depois da cena final, Afrodite abre um Baú da Forja e mostra o que você ganhou.
+- Quem vence no automático continua ganhando moedas e pode comprar baús na loja.
+
+## Alpha 0.11.24 (experimental) · 26/11/2026
+
+- O relatório do GM mostra moedas, itens e baús abertos por jogador.
+
 ## Alpha 0.11.23 (experimental) · 26/11/2026
 
 - Cada visual e o baú ganharam ícone na loja e na mochila.

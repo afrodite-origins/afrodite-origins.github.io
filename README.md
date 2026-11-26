@@ -6,32 +6,26 @@ Protótipo de RPG tático por turnos, de tom sombrio: Afrodite enfrenta Hefesto,
 
 ## Últimas atualizações
 
+**Alpha 0.11.26 (experimental) · 26/11/2026**
+
+- Relatório do GM mais limpo, com abas Manual e Automático.
+- O observador do GM também acompanha a abertura do baú, a lojinha, a mochila e o ranking.
+
+**Alpha 0.11.25 (experimental) · 26/11/2026**
+
+- Venceu Hefesto sem o automático? Depois da cena final, Afrodite abre um Baú da Forja e mostra o que você ganhou.
+- Quem vence no automático continua ganhando moedas e pode comprar baús na loja.
+
+**Alpha 0.11.24 (experimental) · 26/11/2026**
+
+- O relatório do GM mostra moedas, itens e baús abertos por jogador.
+
 **Alpha 0.11.23 (experimental) · 26/11/2026**
 
 - Cada visual e o baú ganharam ícone na loja e na mochila.
 - A loja troca a cada 30 minutos, com uma barrinha mostrando quanto falta.
 - Sem item escolhido, a loja mostra um set completo na Afrodite.
 - Rankings com a métrica: DPS no Dano e tempo em segundos no Intocável e no Automático.
-
-**Alpha 0.11.22 (experimental) · 26/11/2026**
-
-- 🎁 Baú da Forja: sorteia visuais Comuns (50%), Incomuns (30%), Raros (14%), Épicos (5%) e Lendários (1%). Toda vitória sem o automático dá um baú, e dá para comprar baús com moedas.
-- Loja do dia: ofertas novas todo dia, com preço pela raridade.
-- Visuais novos em 5 sets (Solar, Abissal, Rosa Negra, Bosque e Gelo Eterno): botas, roupinhas, chapéus, armas épicas e asas lendárias.
-- Ranking com cara de Dark Souls e o ícone da classe ao lado de cada nome.
-- O som começa em 25% e o painel de volume vira um ícone depois de ajustado.
-
-**Alpha 0.11.21 (experimental) · 26/11/2026**
-
-- Ranking mais limpo, com menos texto.
-- Hall da Fama na tela inicial: os 3 primeiros em Dano, Intocável e Automático.
-
-**Alpha 0.11.20 (experimental) · 26/11/2026**
-
-- 🤖 Hall da Fama do Automático: ranking das builds que vencem Hefesto mais rápido no combate automático.
-- Visuais por classe: cada caminho tem os próprios visuais. Compre e equipe para cada classe e colecione todos.
-- 🎒 Mochila na tela inicial: veja suas moedas e equipe os visuais que já conquistou.
-- Árvore de habilidades da Personalizada refeita com os emblemas novos e as descrições atualizadas.
 
 ## Controles
 | | PC | Controle |
