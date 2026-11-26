@@ -6,6 +6,18 @@ Protótipo de RPG tático por turnos, de tom sombrio: Afrodite enfrenta Hefesto,
 
 ## Últimas atualizações
 
+**Alpha 0.11.21 (experimental) · 26/11/2026**
+
+- Ranking mais limpo, com menos texto.
+- Hall da Fama na tela inicial: os 3 primeiros em Dano, Intocável e Automático.
+
+**Alpha 0.11.20 (experimental) · 26/11/2026**
+
+- 🤖 Hall da Fama do Automático: ranking das builds que vencem Hefesto mais rápido no combate automático.
+- Visuais por classe: cada caminho tem os próprios visuais. Compre e equipe para cada classe e colecione todos.
+- 🎒 Mochila na tela inicial: veja suas moedas e equipe os visuais que já conquistou.
+- Árvore de habilidades da Personalizada refeita com os emblemas novos e as descrições atualizadas.
+
 **Alpha 0.11.19 (experimental) · 26/11/2026**
 
 - Moedas da lojinha em escala nova: vitória sem o automático vale 🪙10 (no pódio, 🪙20), vitória no automático vale 🪙2. Cada visual custa 🪙20. Quem já tinha moedas teve o saldo convertido.
@@ -14,14 +26,6 @@ Protótipo de RPG tático por turnos, de tom sombrio: Afrodite enfrenta Hefesto,
 
 - Glifo da Maré apaga as brasas do Hefesto: onde a água encontra o fogo, os dois somem (o glifo perde aquela casa). Agora com ondulações na água e vapor.
 - O Ataque do Mar da Ninfa deixa Hefesto molhado: o próximo Glifo da Maré causa +50% nele.
-
-**Alpha 0.11.17 (experimental) · 26/11/2026**
-
-- Visual mais limpo: todos os textos do jogo agora em maiúsculas, na mesma fonte do título.
-
-**Alpha 0.11.16 (experimental) · 26/11/2026**
-
-- Brasões novos para as quatro classes e emblemas novos para todas as habilidades, com cores fortes de cada caminho.
 
 ## Controles
 | | PC | Controle |
