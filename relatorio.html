@@ -30,6 +30,7 @@ table{width:100%;border-collapse:collapse;font-variant-numeric:tabular-nums}th,t
 .clul{display:flex;flex-direction:column;gap:10px}.clc{background:var(--pan2);border:1px solid var(--line);border-left:4px solid;border-radius:8px;padding:10px 12px}.clc b{font-size:15px}.clc p{color:var(--mut);font-size:12.5px;margin:4px 0 6px}
 .clm{display:flex;flex-wrap:wrap;gap:4px 12px;font-size:12px;color:var(--mut)}.clm b{color:var(--tx);font-size:12px}.cln{margin-top:6px;font-size:12px;color:#c6ccd6}
 details.more{margin-top:6px}details.more>summary{cursor:pointer;color:var(--acc);font-weight:600;padding:10px 0;list-style:none}details.more>summary::before{content:'▸ ';}details.more[open]>summary::before{content:'▾ '}
+.tlw{max-height:420px;overflow:auto;background:var(--pan2);border-radius:8px;padding:6px 10px}.tli{display:grid;grid-template-columns:54px 170px 1fr;gap:8px;padding:4px 0;border-bottom:1px solid var(--line);font-size:12.5px}.tlt{color:var(--mut);font-variant-numeric:tabular-nums}.tlx{color:var(--mut)}h3{font-size:13px;color:var(--tx);margin:14px 0 6px}
 </style></head><body><div class="w">
 <header><h1>Afrodite Alpha <small>análise dos testes</small></h1><span class="src" id="src">carregando…</span></header>
 <div class="filters"><label>Período <select id="fp"><option value="0">tudo</option><option value="1">últimas 24 h</option><option value="7">últimos 7 dias</option><option value="30">últimos 30 dias</option></select></label>
@@ -38,6 +39,8 @@ details.more{margin-top:6px}details.more>summary{cursor:pointer;color:var(--acc)
 <span style="flex:1"></span><button id="reload">Atualizar</button><button id="csv">CSV (lutas)</button><button id="json">JSON</button></div>
 <div class="kpis" id="kpis"></div>
 <div class="box" style="margin-bottom:14px"><h2>Grupos de jogadores por comportamento</h2><p class="note" style="margin:0 0 10px">Os jogadores são agrupados automaticamente pelo jeito de jogar: uso do automático, tempo montando build, controle ou toque, acerto nas reações, abandono e quantas lutas jogam.</p><div id="clu"></div></div>
+<div class="box" style="margin-bottom:14px"><h2>Comportamento durante a luta</h2><div id="beh"></div></div>
+<div class="box" style="margin-bottom:14px"><h2>Linha do tempo de uma sessão</h2><select id="tlSel" style="max-width:100%;margin-bottom:10px"></select><div id="tl"></div></div>
 <div class="box" style="margin-bottom:14px"><h2>Saúde da coleta</h2><div id="health"></div></div>
 <details class="more" open><summary>Ranking, classes e perfis</summary>
 <div class="grid"><div class="box"><h2>Ranking de jogadores</h2><div class="tw" id="rank"></div></div><div class="box"><h2>Classes</h2><div id="cls"></div></div></div>
@@ -105,6 +108,35 @@ function render(){const days=+$('fp').value,dev=$('fd').value,noAuto=$('fa').che
    return`<div class="clc" style="border-left-color:${COL[j%5]}"><b>${esc(c.name)}</b> <span class="pill mid">${n} ${n>1?'jogadores':'jogador'} · ${pct(n,pls.length)}</span><p>${esc(c.why||'sem traço marcante: jogam de forma parecida com a média')}</p>
    <div class="clm">${[['Automático',c.c.auto],['Montando build',c.c.build],['Acerto nas reações',c.c.react],['Vitórias',c.c.win]].map(([l,v])=>`<span>${l} <b>${Math.round(100*v)}%</b></span>`).join('')}<span>Celular <b>${pct(mob,n)}</b></span><span>Controle <b>${pct(c.m.filter(p=>p.inp.Controle).length,n)}</b></span></div>
    <div class="cln">${c.m.slice(0,12).map(p=>esc(p.n)).join(', ')}${n>12?' e mais '+(n-12):''}</div></div>`}).join('')}</div></div>`}
+
+  // ---- comportamento durante a luta
+ {const st={},ser={};F.forEach(f=>{Object.entries(f.st||{}).forEach(([k,v])=>st[k]=(st[k]||0)+v);Object.entries(f.ser||{}).forEach(([k,a])=>(ser[k]=ser[k]||[]).push(...a))});
+  const E=S.flatMap(s=>s.events.map(e=>({...e,dev:s.device}))),cnt=n=>E.filter(e=>e.e===n).length,turnsN=F.reduce((a,f)=>a+(f.turns||[]).length,0)||1;
+  const nm=ser.nota_ms||[],rm=ser.reacao_ms||[],dm=ser.decisao_ms||[],early=a=>a.filter(x=>x<-80).length,late=a=>a.filter(x=>x>80).length;
+  const conj=(st.conj_ok||0)+(st.conj_metade||0)+(st.conj_falha||0),fpsM=F.filter(f=>f.fps&&f.device==='Mobile').map(f=>f.fps),fpsP=F.filter(f=>f.fps&&f.device==='PC').map(f=>f.fps);
+  const cls=E.filter(e=>e.e==='classe'),mobS=S.filter(s=>s.device==='Mobile'),fsMob=mobS.filter(s=>s.events.some(e=>e.e==='tela_cheia'&&e.on)).length;
+  const k2=(v,l,i)=>`<div class="kpi"><b>${v}</b><span>${l}</span>${i?`<i>${i}</i>`:''}</div>`;
+  const has=Object.keys(st).length||nm.length||dm.length||E.some(e=>['ambiente','saiu_aba','classe'].includes(e.e));
+  $('beh').innerHTML=!has?'<div class="empty">Ainda sem dados. Esses números começam a aparecer com jogadores na versão 0.10.9 ou mais nova.</div>':`<div class="kpis" style="margin-bottom:10px">
+   ${k2(dm.length?r1(med(dm)/1000)+'s':'—','até a 1ª ação do turno','mediana · '+dm.length+' turnos')}
+   ${k2(r1((st.menu||0)/turnsN),'aberturas do menu por turno',pct(st.menu_fechado||0,st.menu||0)+' fechadas sem usar')}
+   ${k2(pct(st.mira_cancelada||0,(st.mira_ok||0)+(st.mira_cancelada||0)),'miras canceladas',(st.mira_ok||0)+' confirmadas')}
+   ${k2(pct(st.conj_ok||0,conj),'conjurou com sucesso',pct(st.conj_metade||0,conj)+' pela metade · '+pct(st.conj_falha||0,conj)+' falhou')}
+   ${k2(nm.length?Math.round(med(nm))+' ms':'—','desvio típico nas notas',nm.length?pct(early(nm),nm.length)+' cedo · '+pct(late(nm),nm.length)+' tarde':'')}
+   ${k2(rm.length?Math.round(med(rm))+' ms':'—','tempo das reações (aparar/pular)',rm.length?pct(early(rm),rm.length)+' cedo · '+pct(late(rm),rm.length)+' tarde':'negativo = cedo')}
+   ${k2(r1((st.queimou||0)/Math.max(1,F.length)),'queimaduras por luta',(st.parede||0)+' batidas na parede')}
+   ${k2(r1(cnt('saiu_aba')/Math.max(1,S.length)),'saídas da aba por sessão',cnt('voltou_aba')+' voltaram')}
+   ${k2(fpsM.length?Math.round(med(fpsM)):'—','quadros/s no celular',fpsP.length?'PC: '+Math.round(med(fpsP)):'')}
+   ${k2(pct(fsMob,mobS.length),'celulares em tela cheia',mobS.length+' sessões no celular')}
+   ${k2(cls.length?r1(avg(cls.map(e=>+e.vistas||1))):'—','classes olhadas antes de escolher',cls.length+' escolhas')}
+   ${k2(cnt('nick_aleatorio'),'apelidos gerados no dado','')}</div>
+   ${(()=>{const sq=Object.entries(st).filter(([k])=>/^seq_/.test(k));if(!sq.length)return'';const by={};sq.forEach(([k,v])=>{const m=k.match(/seq_(ok|falha)_(\d+)/);if(!m)return;const o=by[m[2]]=by[m[2]]||{ok:0,f:0};m[1]==='ok'?o.ok+=v:o.f+=v});
+    return '<h3>Sequências do Hefesto: acerto por golpe da sequência</h3>'+bars(Object.entries(by).sort((a,b)=>a[0]-b[0]).map(([i,o])=>[i+'º golpe',Math.round(100*o.ok/Math.max(1,o.ok+o.f)),'ok']),null,v=>v+'%')+'<p class="note">Se o acerto cai muito do 1º para os seguintes, o ritmo da sequência ainda não está claro para os jogadores.</p>'})()}`}
+ // ---- linha do tempo de uma sessão
+ {const sel=$('tlSel'),cur=sel.value;sel.innerHTML=S.slice(0,80).map(s=>`<option value="${esc(s.session_id)}">${esc(who(s))} · ${s.device} · ${new Date(s.started_at).toLocaleString('pt-BR')} · ${s.events.length} eventos</option>`).join('');if(cur&&S.some(s=>s.session_id===cur))sel.value=cur;
+  const show=()=>{const s=S.find(x=>x.session_id===sel.value);if(!s){$('tl').innerHTML='<div class="empty">Sem sessões.</div>';return}const NM={tela:'tela',luta:'começou luta',vitória:'venceu',morte:'morreu',abandono:'abandonou',reação_ok:'reação certa',reação_falhou:'reação errada',saiu_aba:'saiu da aba',voltou_aba:'voltou à aba',tela_cheia:'tela cheia',auto_on:'ligou automático',auto_off:'desligou automático',qte_ok:'conjurou',qte_metade:'conjurou pela metade',qte_falha:'falhou ao conjurar',dano_grande:'levou dano grande',classe:'escolheu classe',dica:'viu dica',travou:'jogo travou',destravou:'destravou',retomou:'retomou luta',ambiente:'abriu o jogo',versão:'modo escolhido',fase2:'chegou à fase 2',tempo_esgotado:'tempo esgotado',bug:'reportou bug',modo:'mudou o modo',nick_aleatorio:'gerou apelido no dado',qte_ini:'começou a conjurar',engrenagem:'abriu configurações',volume:'mexeu no volume',orientacao:'girou o celular',morte_cena:'cena de derrota',lento:'jogo lento'};
+   $('tl').innerHTML=s.events.length?`<div class="tlw">${s.events.map(e=>{const x=Object.entries(e).filter(([k])=>k!=='t'&&k!=='e').map(([k,v])=>k+': '+(typeof v==='object'?JSON.stringify(v):v)).join(' · ');return`<div class="tli"><span class="tlt">${Math.floor(e.t/60)}:${String(e.t%60).padStart(2,'0')}</span><b>${esc(NM[e.e]||e.e)}</b><span class="tlx">${esc(x)}</span></div>`}).join('')}</div>`:'<div class="empty">Esta sessão não tem eventos (versão antiga ou coluna events ausente).</div>'};
+  sel.onchange=show;show()}
 
  const k=(v,l,i)=>`<div class="kpi"><b>${v}</b><span>${l}</span>${i?`<i>${i}</i>`:''}</div>`;
  $('kpis').innerHTML=k(new Set(S.map(s=>s.visitor_id)).size,'jogadores únicos',pct(new Set(S.filter(s=>s.device==='Mobile').map(s=>s.visitor_id)).size,new Set(S.map(s=>s.visitor_id)).size)+' no celular')+k(S.length,'sessões',fmt(avg(S.map(s=>+s.total_ms||0)))+' em média')+k(F.length,'lutas iniciadas',done.length+' terminadas')+k(pct(wins.length,done.length),'taxa de vitória','meta de design: ~40%')

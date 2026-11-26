@@ -6,6 +6,10 @@ Protótipo de RPG tático por turnos, de tom sombrio: Afrodite enfrenta Hefesto,
 
 ## Últimas atualizações
 
+**Alpha 0.10.9 (experimental) · 26/11/2026**
+
+- Mais dados de comportamento para o desenvolvedor: tempo de decisão, precisão das notas e das reações, uso dos menus, trocas de aba, tela cheia e desempenho.
+
 **Alpha 0.10.8 (experimental) · 26/11/2026**
 
 - Coleta de dados mais confiável, principalmente no celular: o jogo envia os dados logo no começo e a cada troca de tela, e não perde mais as lutas quando o servidor recusa um campo.
@@ -24,12 +28,6 @@ Protótipo de RPG tático por turnos, de tom sombrio: Afrodite enfrenta Hefesto,
 - Aviso de quando foi a última atualização na tela inicial.
 - Tela mais limpa: os botões viraram ícones que mostram o nome quando o mouse passa por cima, e as opções foram para a engrenagem (Configurações).
 - O relógio do turno está maior, no canto direito, embaixo do botão de tela cheia, e não fica mais em cima do título das ações.
-
-**Alpha 0.10.5 (experimental) · 26/11/2026**
-
-- No celular, o comando das habilidades e o desvio usam botões de seta na tela: ← e → do lado esquerdo, ↑ e ↓ do lado direito. Não precisa mais arrastar.
-- No celular, a primeira tela pede para entrar em tela cheia.
-- Com uma habilidade escolhida, tocar ou clicar fora do tabuleiro cancela a habilidade.
 
 [Ver todas as atualizações](CHANGELOG.md) · [Jogar a versão estável (0.9.9)](https://isaacbcampos.github.io/afrodite-alpha/estavel/) · achou um bug? Use o botão **Reportar bug** dentro do jogo.
 

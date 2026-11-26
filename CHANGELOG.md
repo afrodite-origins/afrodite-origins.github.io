@@ -1,5 +1,9 @@
 # Últimas atualizações
 
+## Alpha 0.10.9 (experimental) · 26/11/2026
+
+- Mais dados de comportamento para o desenvolvedor: tempo de decisão, precisão das notas e das reações, uso dos menus, trocas de aba, tela cheia e desempenho.
+
 ## Alpha 0.10.8 (experimental) · 26/11/2026
 
 - Coleta de dados mais confiável, principalmente no celular: o jogo envia os dados logo no começo e a cada troca de tela, e não perde mais as lutas quando o servidor recusa um campo.
