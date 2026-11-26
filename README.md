@@ -6,6 +6,12 @@ Protótipo de RPG tático por turnos, de tom sombrio: Afrodite enfrenta Hefesto,
 
 ## Últimas atualizações
 
+**Alpha 0.11 (experimental) · 26/11/2026**
+
+- Desempenho: o fundo, o tabuleiro, a vinheta e os retratos agora são desenhados uma vez e reaproveitados, e a câmera de reação ficou bem mais leve.
+- Movimentos mais lisos, que acompanham a taxa de quadros real do aparelho.
+- Indicador de FPS no canto superior esquerdo (dá para esconder na engrenagem).
+
 **Alpha 0.10.9 (experimental) · 26/11/2026**
 
 - Mais dados de comportamento para o desenvolvedor: tempo de decisão, precisão das notas e das reações, uso dos menus, trocas de aba, tela cheia e desempenho.
@@ -21,13 +27,6 @@ Protótipo de RPG tático por turnos, de tom sombrio: Afrodite enfrenta Hefesto,
 - Se você fechar ou recarregar a página no meio da luta, a primeira tela oferece continuar de onde parou.
 - Na engrenagem há a opção "O jogo travou? Destravar".
 - A câmera de reação agora está sempre ligada.
-
-**Alpha 0.10.6 (experimental) · 26/11/2026**
-
-- A entrada agora tem 3 passos: como você vai jogar, tela cheia (no celular) e apelido.
-- Aviso de quando foi a última atualização na tela inicial.
-- Tela mais limpa: os botões viraram ícones que mostram o nome quando o mouse passa por cima, e as opções foram para a engrenagem (Configurações).
-- O relógio do turno está maior, no canto direito, embaixo do botão de tela cheia, e não fica mais em cima do título das ações.
 
 [Ver todas as atualizações](CHANGELOG.md) · [Jogar a versão estável (0.9.9)](https://isaacbcampos.github.io/afrodite-alpha/estavel/) · achou um bug? Use o botão **Reportar bug** dentro do jogo.
 

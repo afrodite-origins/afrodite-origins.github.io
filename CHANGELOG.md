@@ -1,5 +1,11 @@
 # Últimas atualizações
 
+## Alpha 0.11 (experimental) · 26/11/2026
+
+- Desempenho: o fundo, o tabuleiro, a vinheta e os retratos agora são desenhados uma vez e reaproveitados, e a câmera de reação ficou bem mais leve.
+- Movimentos mais lisos, que acompanham a taxa de quadros real do aparelho.
+- Indicador de FPS no canto superior esquerdo (dá para esconder na engrenagem).
+
 ## Alpha 0.10.9 (experimental) · 26/11/2026
 
 - Mais dados de comportamento para o desenvolvedor: tempo de decisão, precisão das notas e das reações, uso dos menus, trocas de aba, tela cheia e desempenho.
