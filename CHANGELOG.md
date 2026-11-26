@@ -1,5 +1,18 @@
 # Últimas atualizações
 
+## Alpha 0.10.6 (experimental) · 26/11/2026
+
+- A entrada agora tem 3 passos: como você vai jogar, tela cheia (no celular) e apelido.
+- Aviso de quando foi a última atualização na tela inicial.
+- Tela mais limpa: os botões viraram ícones que mostram o nome quando o mouse passa por cima, e as opções foram para a engrenagem (Configurações).
+- O relógio do turno está maior, no canto direito, embaixo do botão de tela cheia, e não fica mais em cima do título das ações.
+
+## Alpha 0.10.5 (experimental) · 26/11/2026
+
+- No celular, o comando das habilidades e o desvio usam botões de seta na tela: ← e → do lado esquerdo, ↑ e ↓ do lado direito. Não precisa mais arrastar.
+- No celular, a primeira tela pede para entrar em tela cheia.
+- Com uma habilidade escolhida, tocar ou clicar fora do tabuleiro cancela a habilidade.
+
 ## Alpha 0.10.4 (experimental) · 26/11/2026
 
 - Painel de turnos mais estreito: a vida virou um anel em volta do retrato.

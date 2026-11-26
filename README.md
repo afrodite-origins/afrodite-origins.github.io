@@ -6,6 +6,19 @@ Protótipo de RPG tático por turnos, de tom sombrio: Afrodite enfrenta Hefesto,
 
 ## Últimas atualizações
 
+**Alpha 0.10.6 (experimental) · 26/11/2026**
+
+- A entrada agora tem 3 passos: como você vai jogar, tela cheia (no celular) e apelido.
+- Aviso de quando foi a última atualização na tela inicial.
+- Tela mais limpa: os botões viraram ícones que mostram o nome quando o mouse passa por cima, e as opções foram para a engrenagem (Configurações).
+- O relógio do turno está maior, no canto direito, embaixo do botão de tela cheia, e não fica mais em cima do título das ações.
+
+**Alpha 0.10.5 (experimental) · 26/11/2026**
+
+- No celular, o comando das habilidades e o desvio usam botões de seta na tela: ← e → do lado esquerdo, ↑ e ↓ do lado direito. Não precisa mais arrastar.
+- No celular, a primeira tela pede para entrar em tela cheia.
+- Com uma habilidade escolhida, tocar ou clicar fora do tabuleiro cancela a habilidade.
+
 **Alpha 0.10.4 (experimental) · 26/11/2026**
 
 - Painel de turnos mais estreito: a vida virou um anel em volta do retrato.
@@ -20,30 +33,6 @@ Protótipo de RPG tático por turnos, de tom sombrio: Afrodite enfrenta Hefesto,
 - Música no canto inferior direito, com Efeitos sonoros logo acima: um toque liga ou desliga, e a barra de volume aparece para arrastar.
 - Botão Automático maior e mais visível, com confirmação antes de ligar.
 - No automático, a máquina toca os comandos e reage aos golpes como uma pessoa, inclusive errando às vezes. Dá para assistir e aprender.
-
-**Alpha 0.10.2 (experimental) · 26/11/2026**
-
-- Hefesto agora ataca em sequências (ex.: dois golpes rápidos e um demorado). Cada golpe precisa da sua reação (a sequência inteira gasta só 1 PM), e o som antes de cada um denuncia o ritmo: chiado curto para golpe rápido, rugido longo para golpe demorado.
-- Na câmera de reação, a pista mostra todas as notas da sequência e o contador do golpe (1/3, 2/3…).
-- Pisar numa casa em chamas queima na hora: Afrodite grita, chora e leva dano, inclusive ao desviar para dentro do fogo.
-- Ícones maiores no menu de ações.
-
-**Alpha 0.10.1 (experimental) · 26/11/2026**
-
-- Comando das habilidades no estilo Guitar Hero: as notas descem pela pista e você aperta quando chegam à linha (PERFEITO, BOM ou FORA DO TEMPO).
-- Teclas certas no tempo errado: a habilidade sai PELA METADE, com metade do dano e dos efeitos, som e aviso próprios.
-- No controle, o comando usa os botões A, B, X e Y com as cores de cada um, e o controle vibra a cada acerto.
-- Na câmera de reação, uma nota desce até a linha no instante do impacto, mostrando o botão certo.
-- Onomatopeias em todos os golpes, incluindo os de Hefesto.
-- Botão de dado ao lado do apelido para gerar um apelido apaixonado aleatório.
-- Tela inicial e menu navegáveis pelo controle.
-
-**Alpha 0.10 (experimental) · 26/11/2026**
-
-- Escolha como vai jogar logo na entrada: Celular (toque), PC (teclado) ou PC (controle). Dá para trocar depois no menu inicial.
-- Câmera de reação: quando Hefesto ataca, a luta vira uma câmera de perto, com ele avançando na sua direção e um anel que fecha no instante exato do impacto. No celular, deslize para desviar. Dá para desligar no menu inicial.
-- Habilidades e feitiços agora pedem um comando para sair: no celular, arraste na direção da seta; no teclado ou controle, aperte a sequência de setas. O ataque da arma continua direto.
-- A versão anterior continua jogável em /estavel.
 
 [Ver todas as atualizações](CHANGELOG.md) · [Jogar a versão estável (0.9.9)](https://isaacbcampos.github.io/afrodite-alpha/estavel/) · achou um bug? Use o botão **Reportar bug** dentro do jogo.
 
