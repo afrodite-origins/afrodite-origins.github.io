@@ -1,5 +1,9 @@
 # Últimas atualizações
 
+## Alpha 0.10.8 (experimental) · 26/11/2026
+
+- Coleta de dados mais confiável, principalmente no celular: o jogo envia os dados logo no começo e a cada troca de tela, e não perde mais as lutas quando o servidor recusa um campo.
+
 ## Alpha 0.10.7 (experimental) · 26/11/2026
 
 - Tela de escolha do caminho mais limpa: só as 4 classes, a Personalizada e um ícone para reportar bug.

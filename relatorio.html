@@ -25,6 +25,11 @@ table{width:100%;border-collapse:collapse;font-variant-numeric:tabular-nums}th,t
 .pc{background:radial-gradient(ellipse at 50% 38%,#231c26 0%,var(--pan2) 70%);border:1px solid var(--line);border-radius:10px;padding:10px 12px 14px;text-align:center}
 .pc svg{width:100%;height:auto;display:block}.pc .arch{font-size:17px;font-weight:700;color:var(--acc);letter-spacing:.02em;margin-top:2px}.pc .why{color:var(--mut);font-size:12px;margin:3px 0 8px}
 .tag{display:inline-block;margin:2px 3px;padding:2px 9px;border-radius:999px;font-size:11.5px;border:1px solid #3a3340;color:#d9cfe0;background:#1d1a22}.tag.hot{border-color:#7a5a2a;color:#f0cf8e;background:#2a2116}
+.warn{margin-top:10px;padding:10px 12px;border:1px solid #6b4a2a;background:#2a1e14;color:#f0cf8e;border-radius:8px;font-size:13px;line-height:1.5}.warn code{color:#fff}
+.cluw{display:grid;grid-template-columns:minmax(300px,1.1fr) 1fr;gap:16px;align-items:start}@media (max-width:820px){.cluw{grid-template-columns:1fr}}.scat{width:100%;height:auto;background:var(--pan2);border-radius:8px}
+.clul{display:flex;flex-direction:column;gap:10px}.clc{background:var(--pan2);border:1px solid var(--line);border-left:4px solid;border-radius:8px;padding:10px 12px}.clc b{font-size:15px}.clc p{color:var(--mut);font-size:12.5px;margin:4px 0 6px}
+.clm{display:flex;flex-wrap:wrap;gap:4px 12px;font-size:12px;color:var(--mut)}.clm b{color:var(--tx);font-size:12px}.cln{margin-top:6px;font-size:12px;color:#c6ccd6}
+details.more{margin-top:6px}details.more>summary{cursor:pointer;color:var(--acc);font-weight:600;padding:10px 0;list-style:none}details.more>summary::before{content:'▸ ';}details.more[open]>summary::before{content:'▾ '}
 </style></head><body><div class="w">
 <header><h1>Afrodite Alpha <small>análise dos testes</small></h1><span class="src" id="src">carregando…</span></header>
 <div class="filters"><label>Período <select id="fp"><option value="0">tudo</option><option value="1">últimas 24 h</option><option value="7">últimos 7 dias</option><option value="30">últimos 30 dias</option></select></label>
@@ -32,14 +37,20 @@ table{width:100%;border-collapse:collapse;font-variant-numeric:tabular-nums}th,t
 <label><input type="checkbox" id="fa"> ignorar lutas com Automático</label>
 <span style="flex:1"></span><button id="reload">Atualizar</button><button id="csv">CSV (lutas)</button><button id="json">JSON</button></div>
 <div class="kpis" id="kpis"></div>
+<div class="box" style="margin-bottom:14px"><h2>Grupos de jogadores por comportamento</h2><p class="note" style="margin:0 0 10px">Os jogadores são agrupados automaticamente pelo jeito de jogar: uso do automático, tempo montando build, controle ou toque, acerto nas reações, abandono e quantas lutas jogam.</p><div id="clu"></div></div>
+<div class="box" style="margin-bottom:14px"><h2>Saúde da coleta</h2><div id="health"></div></div>
+<details class="more" open><summary>Ranking, classes e perfis</summary>
 <div class="grid"><div class="box"><h2>Ranking de jogadores</h2><div class="tw" id="rank"></div></div><div class="box"><h2>Classes</h2><div id="cls"></div></div></div>
 <div class="box" style="margin-bottom:14px"><h2>Perfis de jogador</h2><div id="arch" style="margin-bottom:12px"></div><div class="prof" id="prof"></div><p class="note">Cada perfil reúne todas as lutas do jogador no período. Em volta do nome ficam as escolhas que mais se repetem; quanto maior a palavra, mais forte o hábito. O estilo principal é o traço mais marcante entre os critérios abaixo de cada cartão.</p></div>
+</details>
+<details class="more"><summary>Mais detalhes (automático, saída do jogo, funil, turnos, reações, movimento, habilidades, telas, ritmo)</summary>
 <div class="box" style="margin-bottom:14px"><h2>Combate automático</h2><div id="auto"></div></div>
 <div class="box" style="margin-bottom:14px"><h2>Quando os jogadores fecham o jogo</h2><div id="quit"></div></div>
 <div class="grid"><div class="box"><h2>Funil</h2><div id="funnel"></div></div><div class="box"><h2>Tempo por turno</h2><div id="turns"></div></div></div>
 <div class="grid"><div class="box"><h2>Precisão das reações</h2><div id="react"></div></div><div class="box"><h2>O que derrota os jogadores</h2><div id="kill"></div></div></div>
 <div class="grid"><div class="box"><h2>Movimento e posicionamento</h2><div id="move"></div></div><div class="box"><h2>Habilidades mais usadas</h2><div id="skills"></div></div></div>
 <div class="grid"><div class="box"><h2>Tempo por tela (média por sessão)</h2><div id="screens"></div></div><div class="box"><h2>Ritmo das lutas</h2><div id="pace"></div></div></div>
+</details>
 <div class="box" style="margin-bottom:14px"><h2>Bugs reportados</h2><div class="tw" id="bugs"></div></div>
 <div class="box"><h2>Lutas</h2><div class="tw" id="fights"></div></div>
 </div>
@@ -58,15 +69,45 @@ async function load(){const c=window.AFRO_ANALYTICS||{};let rows=[],src='dados l
  if(!rows.length){try{rows=Object.values(JSON.parse(localStorage.getItem('afroTelSessions')||'{}'))}catch(e){rows=[]}}
  let bugs=[],bsrc='';if(c.provider==='supabase'&&c.url&&c.anonKey){try{const r=await fetch(c.url.replace(/\/$/,'')+'/rest/v1/'+(c.bugTable||'afrodite_bugs')+'?select=*&order=created_at.desc&limit=500',{headers:Object.assign({apikey:c.anonKey},/^eyJ/.test(c.anonKey)?{Authorization:'Bearer '+c.anonKey}:{})});if(!r.ok)throw new Error('HTTP '+r.status);bugs=await r.json()}catch(e){bsrc='Não foi possível ler a tabela de bugs ('+e.message+').'+(/40[46]/.test(e.message)?' A tabela afrodite_bugs provavelmente ainda não foi criada no Supabase: rode o SQL do TELEMETRIA.md.':/401|403/.test(e.message)?' Falta a permissão de leitura (policy "anon select") na tabela afrodite_bugs.':'')+' Mostrando só os deste navegador.'}}
  if(!bugs.length){try{bugs=JSON.parse(localStorage.getItem('afroBugs')||'[]').reverse()}catch(e){}}BUGS=bugs.map(b=>({...b,context:obj(b.context)}));BSRC=bsrc;
- SES=rows.map(r=>({...r,screens:obj(r.screens),skills:obj(r.skills),reactions:obj(r.reactions),fights:arr(r.fights),events:arr(r.events)}));$('src').textContent=src;render()}
+ SES=rows.map(r=>{const sc=obj(r.screens),fr=arr(r.fights),er=arr(r.events),fb=arr(sc._fights),eb=arr(sc._events);delete sc._fights;delete sc._events;return{...r,screens:sc,skills:obj(r.skills),reactions:obj(r.reactions),fights:fr.length?fr:fb,events:er.length?er:eb,_fromScreens:!fr.length&&fb.length>0}});$('src').textContent=src;render()}
 function render(){const days=+$('fp').value,dev=$('fd').value,noAuto=$('fa').checked,now=Date.now();
  const S=SES.filter(s=>(!days||now-new Date(s.started_at).getTime()<days*864e5)&&(!dev||s.device===dev));
  const who=s=>(s.nick||'').trim()||('anônimo '+String(s.visitor_id||'').slice(0,4));
  const F=[];S.forEach(s=>s.fights.forEach(f=>{if(noAuto&&f.auto)return;F.push({...f,who:who(s),vid:s.visitor_id,device:s.device,date:s.started_at})}));
  const done=F.filter(f=>f.res==='vitória'||f.res==='derrota'),wins=done.filter(f=>f.res==='vitória'),turns=F.flatMap(f=>f.turns||[]),tos=F.reduce((a,f)=>a+(f.timeouts||0),0);
  const R={};F.forEach(f=>Object.entries(f.react||{}).forEach(([k,v])=>{const x=R[k]=R[k]||{ok:0,fail:0,perfect:0};x.ok+=v.ok||0;x.fail+=v.fail||0;x.perfect+=v.perfect||0}));const rOk=Object.values(R).reduce((a,x)=>a+x.ok,0),rAll=Object.values(R).reduce((a,x)=>a+x.ok+x.fail,0);
+  // ---- saúde da coleta
+ {const dv=d=>S.filter(s=>s.device===d),wf=a=>a.filter(s=>s.fights.length).length,last=S.reduce((m,s)=>Math.max(m,new Date(s.updated_at||s.started_at).getTime()||0),0),miss=S.filter(s=>s._fromScreens).length;
+  const row=(n,a)=>[n,a.length,pct(a.length,S.length),wf(a)+' ('+pct(wf(a),a.length)+')',fmt(avg(a.map(s=>+s.total_ms||0)))];
+  const warn=[];if(S.length&&wf(S)/S.length<.3)warn.push('Poucas sessões trazem os dados das lutas. Se o Supabase ainda não tem as colunas <code>fights</code> e <code>events</code>, rode o SQL do TELEMETRIA.md (a partir da versão 0.10.8 o jogo guarda as lutas mesmo sem essas colunas).');
+  if(dv('Mobile').length===0&&S.length>3)warn.push('Nenhuma sessão de celular no período. Se você sabe que há jogadores no celular, eles podem estar numa versão antiga em cache: peça para recarregarem a página.');
+  $('health').innerHTML=tbl(['Dispositivo','Sessões','Parcela','Com lutas registradas','Tempo médio'],[row('Celular',dv('Mobile')),row('PC',dv('PC')),row('Total',S)],[1,2,3,4])+`<p class="note">Último dado recebido: ${last?new Date(last).toLocaleString('pt-BR'):'—'}${miss?` · ${miss} sessões guardaram as lutas no campo reserva (colunas ausentes no Supabase)`:''}</p>`+(warn.length?`<div class="warn">${warn.map(w=>'⚠ '+w).join('<br>')}</div>`:'')}
+ // ---- clusters de comportamento
+ {const PL={};S.forEach(s=>{const id=s.visitor_id||who(s),p=PL[id]=PL[id]||{n:who(s),dev:{},inp:{},tot:0,fight:0,build:0,auto:0,F:[],ses:0};p.ses++;p.n=who(s);p.dev[s.device]=(p.dev[s.device]||0)+1;String(s.inputs||'').split(',').filter(Boolean).forEach(i=>p.inp[i]=1);
+   const sc=s.screens||{};p.tot+=+s.total_ms||0;p.fight+=+sc['Combate']||0;p.build+=(+sc['Árvore de Habilidades']||0)+(+sc['Características']||0);p.auto+=+s.auto_ms||0;s.fights.forEach(f=>p.F.push(f))});
+  const pls=Object.values(PL).filter(p=>p.tot>15000);
+  const feat=p=>{const fin=p.F.filter(f=>f.res==='vitória'||f.res==='derrota');let ok=0,all=0;p.F.forEach(f=>Object.values(f.react||{}).forEach(x=>{ok+=x.ok||0;all+=(x.ok||0)+(x.fail||0)}));
+   return{auto:Math.min(1,p.auto/Math.max(1,p.fight)),build:p.build/Math.max(1,p.build+p.fight),pad:p.inp.Controle?1:0,touch:p.inp.Toque?1:0,react:all?ok/all:.5,quit:p.F.length?p.F.filter(f=>f.res==='abandono').length/p.F.length:1,eng:Math.min(1,Math.log(1+p.F.length)/Math.log(11)),win:fin.length?fin.filter(f=>f.res==='vitória').length/fin.length:0}};
+  const KEYS=['auto','build','pad','touch','react','quit','eng'],W={auto:1.4,build:1.2,pad:1,touch:1,react:.9,quit:.9,eng:.8};pls.forEach(p=>p.v=feat(p));
+  const NAME={auto:['Assistem o automático','deixam a máquina lutar boa parte do tempo'],build:['Montadores de build','passam muito tempo montando atributos e habilidades'],pad:['Jogam no controle','usam controle para reagir e conjurar'],touch:['Jogam no celular','tocam na tela'],react:['Reflexo afiado','acertam a maioria das reações'],quit:['Saem cedo','abandonam a luta ou nem chegam a lutar'],eng:['Muito engajados','jogam várias lutas']};
+  const NAMElo={react:['Apanham nas reações','erram a maioria das reações'],auto:['Jogam na mão','quase não usam o automático'],build:['Vão direto para a luta','pouco tempo montando build']};
+  let C=[];if(pls.length>=4){const k=Math.max(2,Math.min(5,Math.round(Math.sqrt(pls.length/2))));const dist=(a,b)=>KEYS.reduce((t,q)=>t+W[q]*(a[q]-b[q])**2,0);
+   let cen=[pls[0].v];while(cen.length<k){let best=null,bd=-1;pls.forEach(p=>{const d=Math.min(...cen.map(c=>dist(p.v,c)));if(d>bd){bd=d;best=p}});cen.push({...best.v})}
+   for(let it=0;it<25;it++){pls.forEach(p=>{let bi=0,bd=1e9;cen.forEach((c,i)=>{const d=dist(p.v,c);if(d<bd){bd=d;bi=i}});p.c=bi});cen=cen.map((c,i)=>{const m=pls.filter(p=>p.c===i);if(!m.length)return c;const o={};KEYS.concat('win').forEach(q=>o[q]=avg(m.map(p=>p.v[q])));return o})}
+   const G={};KEYS.forEach(q=>G[q]=avg(pls.map(p=>p.v[q])));
+   C=cen.map((c,i)=>{const m=pls.filter(p=>p.c===i);if(!m.length)return null;const dev=KEYS.map(q=>[q,(c[q]-G[q])*W[q]]).sort((a,b)=>Math.abs(b[1])-Math.abs(a[1]));const top=dev.filter(d=>Math.abs(d[1])>.06).slice(0,2);
+    const lab=top.map(([q,d])=>d>0?NAME[q]:(NAMElo[q]||null)).filter(Boolean);return{i,m,c,name:lab.length?lab.map(l=>l[0]).join(' · '):'Equilibrados',why:lab.map(l=>l[1]).join('; ')}}).filter(Boolean).sort((a,b)=>b.m.length-a.m.length)}
+  const COL=['#d4a85a','#6aa3e0','#5bbf8a','#c77ddb','#e06a5a'];
+  const sc=pls.length?`<svg viewBox="0 0 520 300" class="scat"><rect x="50" y="10" width="450" height="240" fill="none" stroke="#272d38"/>${[0,.25,.5,.75,1].map(t=>`<text x="${50+450*t}" y="268" fill="#8b93a1" font-size="10" text-anchor="middle">${Math.round(t*100)}%</text><text x="44" y="${250-240*t+3}" fill="#8b93a1" font-size="10" text-anchor="end">${Math.round(t*100)}%</text>`).join('')}
+   <text x="275" y="290" fill="#c6ccd6" font-size="11" text-anchor="middle">tempo de luta no automático →</text><text x="14" y="130" fill="#c6ccd6" font-size="11" text-anchor="middle" transform="rotate(-90 14 130)">tempo montando build →</text>
+   ${pls.map(p=>{const cl=C.findIndex(c=>c.m.includes(p)),x=50+450*p.v.auto,y=250-240*p.v.build,r=4+6*p.v.eng;return`<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${r.toFixed(1)}" fill="${cl>=0?COL[cl%5]:'#8b93a1'}" fill-opacity=".75" stroke="#0f1115"><title>${esc(p.n)} · ${p.F.length} lutas · ${Object.keys(p.dev).join('/')}${p.inp.Controle?' · controle':''}</title></circle>`}).join('')}</svg>`:'';
+  $('clu').innerHTML=pls.length<4?'<div class="empty">Precisa de pelo menos 4 jogadores com 15 s ou mais de jogo para formar grupos.</div>':`<div class="cluw"><div>${sc}<p class="note">Cada ponto é um jogador. Ponto maior = mais lutas. Passe o mouse para ver o nome.</p></div><div class="clul">${C.map((c,j)=>{const n=c.m.length,mob=c.m.filter(p=>p.dev.Mobile).length;
+   return`<div class="clc" style="border-left-color:${COL[j%5]}"><b>${esc(c.name)}</b> <span class="pill mid">${n} ${n>1?'jogadores':'jogador'} · ${pct(n,pls.length)}</span><p>${esc(c.why||'sem traço marcante: jogam de forma parecida com a média')}</p>
+   <div class="clm">${[['Automático',c.c.auto],['Montando build',c.c.build],['Acerto nas reações',c.c.react],['Vitórias',c.c.win]].map(([l,v])=>`<span>${l} <b>${Math.round(100*v)}%</b></span>`).join('')}<span>Celular <b>${pct(mob,n)}</b></span><span>Controle <b>${pct(c.m.filter(p=>p.inp.Controle).length,n)}</b></span></div>
+   <div class="cln">${c.m.slice(0,12).map(p=>esc(p.n)).join(', ')}${n>12?' e mais '+(n-12):''}</div></div>`}).join('')}</div></div>`}
+
  const k=(v,l,i)=>`<div class="kpi"><b>${v}</b><span>${l}</span>${i?`<i>${i}</i>`:''}</div>`;
- $('kpis').innerHTML=k(new Set(S.map(s=>s.visitor_id)).size,'jogadores únicos')+k(S.length,'sessões',fmt(avg(S.map(s=>+s.total_ms||0)))+' em média')+k(F.length,'lutas iniciadas',done.length+' terminadas')+k(pct(wins.length,done.length),'taxa de vitória','meta de design: ~40%')
+ $('kpis').innerHTML=k(new Set(S.map(s=>s.visitor_id)).size,'jogadores únicos',pct(new Set(S.filter(s=>s.device==='Mobile').map(s=>s.visitor_id)).size,new Set(S.map(s=>s.visitor_id)).size)+' no celular')+k(S.length,'sessões',fmt(avg(S.map(s=>+s.total_ms||0)))+' em média')+k(F.length,'lutas iniciadas',done.length+' terminadas')+k(pct(wins.length,done.length),'taxa de vitória','meta de design: ~40%')
   +k(fmt(avg(done.map(f=>+f.dur_ms||0))),'duração média da luta',r1(avg(done.map(f=>+f.rounds||0)))+' rodadas')+k(r1(med(turns))+'s','mediana por turno','limite: 45s')+k(pct(tos,turns.length),'turnos esgotados',tos+' de '+turns.length)+k(pct(rOk,rAll),'precisão das reações',rAll+' reações');
  const P={};F.forEach(f=>{const p=P[f.who]=P[f.who]||{n:f.who,f:0,w:0,l:0,best:null,dmg:[],rOk:0,rAll:0};p.f++;if(f.res==='vitória'){p.w++;if(p.best==null||f.rounds<p.best)p.best=f.rounds}if(f.res==='derrota')p.l++;p.dmg.push(+f.dmg_out||0);Object.values(f.react||{}).forEach(x=>{p.rOk+=x.ok||0;p.rAll+=(x.ok||0)+(x.fail||0)})});
  const PR=Object.values(P).sort((a,b)=>b.w-a.w||(a.best??99)-(b.best??99)||b.f-a.f);
