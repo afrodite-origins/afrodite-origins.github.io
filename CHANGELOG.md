@@ -1,5 +1,18 @@
 # Últimas atualizações
 
+## Alpha 0.11.12 (experimental) · 26/11/2026
+
+- Ranking da Forja agora soma pontos: velocidade para vencer Hefesto, dano causado e tempo jogado (sem o automático).
+- Quem chega ao pódio (1º, 2º ou 3º) ganha medalha animada, confete, fanfarra e um selo na tela inicial.
+- O jogo manda retratos simples da tela para o desenvolvedor poder acompanhar a partida (só com o termo aceito).
+
+## Alpha 0.11.11 (experimental) · 26/11/2026
+
+- Reações e comandos sem atraso: o jogo agora conta o momento exato em que você aperta, descontando o atraso da tela e do toque.
+- “AGORA!” na hora certa, “ACERTOU!” e “PERFECT!” (com um som próprio) em cada reação e nota.
+- Crítico no estilo D&D: cada golpe rola um d20 e crita no 20. Acertar todas as notas PERFECT faz critar de 18 a 20, e reações perfeitas no turno do Hefesto dão inspiração (+1 cada, até +2). Crítico dobra o dano.
+- A câmera de reação ficou bem mais leve (mais FPS).
+
 ## Alpha 0.11.10 (experimental) · 26/11/2026
 
 - Ranking da Forja na tela de vitória: os servos que derrotaram Hefesto mais rápido, com o apelido e o tempo. Vitórias com o combate automático não entram.

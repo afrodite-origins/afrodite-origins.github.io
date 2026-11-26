@@ -38,6 +38,7 @@ details.more{margin-top:6px}details.more>summary{cursor:pointer;color:var(--acc)
 .lvp{background:var(--pan2);border:1px solid var(--line);border-radius:8px;padding:8px 10px;margin-bottom:8px}.lvp b{font-size:14px}.lvp .m{color:var(--mut);font-size:12px}.hpb{display:grid;grid-template-columns:62px 1fr 34px;gap:6px;align-items:center;font-size:11.5px;color:var(--mut);margin-top:3px}.hpb .t{height:7px;background:#0f1115;border-radius:4px;overflow:hidden}.hpb .f{height:100%;border-radius:4px}
 .feed{max-height:230px;overflow:auto;font-size:12.5px}.feed div{display:grid;grid-template-columns:58px 110px 1fr;gap:8px;padding:3px 0;border-bottom:1px solid var(--line)}.feed .new{animation:nw 2.5s ease-out}@keyframes nw{from{background:#2a4a36}to{background:transparent}}
 .kpi.lk b{color:#8ee0b3}
+.obsg{display:grid;grid-template-columns:minmax(320px,2fr) 1fr;gap:14px;align-items:start}@media (max-width:860px){.obsg{grid-template-columns:1fr}}#obsC{width:100%;height:auto;background:#0b0907;border-radius:10px;border:1px solid var(--line)}
 </style></head><body><div class="w">
 <header><h1>Afrodite Alpha <small>análise dos testes</small></h1><span class="src" id="src">carregando…</span></header>
 <div class="filters"><label>Período <select id="fp"><option value="0">tudo</option><option value="0.0417">última hora</option><option value="1">últimas 24 h</option><option value="7">últimos 7 dias</option><option value="30">últimos 30 dias</option></select></label>
@@ -47,7 +48,10 @@ details.more{margin-top:6px}details.more>summary{cursor:pointer;color:var(--acc)
 <div class="kpis" id="kpis"></div>
 <div class="box live" style="margin-bottom:14px"><h2><span class="dot off" id="lvDot"></span>Ao vivo: jogando agora <span class="per" id="lvSub">conectando…</span></h2>
 <p class="note" style="margin:0 0 10px">Atualiza sozinho a cada 10 segundos. Cada jogador aparece com as decisões dos últimos 3 minutos ao redor: a mais recente fica mais forte e mais perto dele. As outras seções abaixo olham para o passado (escolha o período no filtro).</p>
-<div class="lvw"><div><svg class="lvsvg" id="lvSvg" viewBox="0 0 760 440"></svg></div><div><div id="lvList"></div><h3>Últimas decisões</h3><div class="feed" id="lvFeed"></div></div></div></div>
+<div class="lvw"><div><svg class="lvsvg" id="lvSvg" viewBox="0 0 760 440"></svg></div><div><div id="lvList"></div><h3>Últimas decisões</h3><div class="feed" id="lvFeed"></div></div></div>
+<div id="obsW" hidden style="margin-top:14px;border-top:1px solid var(--line);padding-top:12px"><div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:8px"><b id="obsT" style="font-size:15px">Observando</b><span class="per" id="obsS">carregando…</span><span style="flex:1"></span><button id="obsLive">⏭ Ir para o mais recente</button><button id="obsX">Fechar</button></div>
+<div class="obsg"><canvas id="obsC" width="1100" height="600"></canvas><div><h3 style="margin-top:0">O que ele está fazendo</h3><div id="obsI" class="feed" style="max-height:none"></div><h3>Decisões</h3><div id="obsE" class="feed"></div></div></div>
+<p class="note">Versão simplificada da tela do jogador, repetida com uns 10 a 15 segundos de atraso. Círculos brancos são toques e cliques (onde ele encostou na tela dele); as teclas aparecem embaixo. Só funciona com jogadores na versão 0.11.12 ou mais nova.</p></div></div>
 <div class="box" style="margin-bottom:14px"><h2>Grupos de jogadores por comportamento <span class="per"></span></h2><p class="note" style="margin:0 0 10px">Os jogadores são agrupados automaticamente pelo jeito de jogar: uso do automático, tempo montando build, controle ou toque, acerto nas reações, abandono e quantas lutas jogam.</p><div id="clu"></div></div>
 <div class="box" style="margin-bottom:14px"><h2>Constelação de ações por jogador <span class="per"></span></h2><p class="note" style="margin:0 0 10px">O apelido fica no centro e as ações em volta. Quanto mais vezes o jogador repetiu uma ação, mais forte ela fica e mais longe do centro. Verde = acertos e conquistas, vermelho = falhas, azul = automático, amarelo = pressa ou cenas puladas.</p><div class="prof stars" id="stars"></div></div>
 <div class="box" style="margin-bottom:14px"><h2>Comportamento durante a luta</h2><div id="beh"></div></div>
@@ -84,7 +88,7 @@ async function load(){const c=window.AFRO_ANALYTICS||{};let rows=[],src='dados l
  if(!rows.length){try{rows=Object.values(JSON.parse(localStorage.getItem('afroTelSessions')||'{}'))}catch(e){rows=[]}}
  let bugs=[],bsrc='';if(c.provider==='supabase'&&c.url&&c.anonKey){try{const r=await fetch(c.url.replace(/\/$/,'')+'/rest/v1/'+(c.bugTable||'afrodite_bugs')+'?select=*&order=created_at.desc&limit=500',{headers:Object.assign({apikey:c.anonKey},/^eyJ/.test(c.anonKey)?{Authorization:'Bearer '+c.anonKey}:{})});if(!r.ok)throw new Error('HTTP '+r.status);bugs=await r.json()}catch(e){bsrc='Não foi possível ler a tabela de bugs ('+e.message+').'+(/40[46]/.test(e.message)?' A tabela afrodite_bugs provavelmente ainda não foi criada no Supabase: rode o SQL do TELEMETRIA.md.':/401|403/.test(e.message)?' Falta a permissão de leitura (policy "anon select") na tabela afrodite_bugs.':'')+' Mostrando só os deste navegador.'}}
  if(!bugs.length){try{bugs=JSON.parse(localStorage.getItem('afroBugs')||'[]').reverse()}catch(e){}}BUGS=bugs.map(b=>({...b,context:obj(b.context)}));BSRC=bsrc;
- SES=rows.map(r=>{const sc=obj(r.screens),fr=arr(r.fights),er=arr(r.events),fb=arr(sc._fights),eb=arr(sc._events);delete sc._fights;delete sc._events;delete sc._cur;delete sc._live;return{...r,screens:sc,skills:obj(r.skills),reactions:obj(r.reactions),fights:fr.length?fr:fb,events:er.length?er:eb,_fromScreens:!fr.length&&fb.length>0}});$('src').textContent=src;render()}
+ SES=rows.map(r=>{const sc=obj(r.screens),fr=arr(r.fights),er=arr(r.events),fb=arr(sc._fights),eb=arr(sc._events);delete sc._fights;delete sc._events;delete sc._cur;delete sc._live;delete sc._obs;return{...r,screens:sc,skills:obj(r.skills),reactions:obj(r.reactions),fights:fr.length?fr:fb,events:er.length?er:eb,_fromScreens:!fr.length&&fb.length>0}});$('src').textContent=src;render()}
 function render(){const days=+$('fp').value,dev=$('fd').value,noAuto=$('fa').checked,now=Date.now();
  const S=SES.filter(s=>(!days||now-new Date(s.started_at).getTime()<days*864e5)&&(!dev||s.device===dev));
  const who=s=>(s.nick||'').trim()||('anônimo '+String(s.visitor_id||'').slice(0,4));
@@ -334,10 +338,64 @@ async function liveTick(){let rows;try{rows=await liveFetch()}catch(e){$('lvSub'
  $('lvSvg').innerHTML=o;
  const hb=(n,v,c)=>`<div class="hpb"><span>${n}</span><div class="t"><div class="f" style="width:${v}%;background:${c}"></div></div><span>${v}%</span></div>`;
  $('lvList').innerHTML=P.length?P.map(r=>{const sc=r.screens||{},lv=sc._live,last=D.filter(d=>d.sid===r.session_id).sort((a,b)=>b.at-a.at)[0],dur=Math.max(0,Math.round((now-new Date(r.started_at).getTime())/60000));
-  return`<div class="lvp"><b>${esc(who(r))}</b> <span class="m">· ${r.device==='Mobile'?'celular':'PC'} · ${esc(sc._cur||'?')} · ${dur} min de sessão${lv?` · rodada ${lv.r}${lv.auto?' · <span style="color:#8ec9f0">automático</span>':''}`:''}</span>${lv?hb('Afrodite',lv.a,'#e7b9d6')+hb('Hefesto',lv.h,'#e06a5a'):''}<div class="m" style="margin-top:3px">Última decisão: ${last?`<span style="color:${last.col}">${esc(last.l)}</span> há ${fmt(now-last.at)}`:'—'}</div></div>`}).join(''):'<div class="empty">Ninguém jogando agora.</div>';
+  return`<div class="lvp"><button class="obsB" data-sid="${esc(r.session_id)}" data-nk="${esc(who(r))}" style="float:right;padding:3px 9px;font-size:12px">📺 Observar</button><b>${esc(who(r))}</b> <span class="m">· ${r.device==='Mobile'?'celular':'PC'} · ${esc(sc._cur||'?')} · ${dur} min de sessão${lv?` · rodada ${lv.r}${lv.auto?' · <span style="color:#8ec9f0">automático</span>':''}`:''}</span>${lv?hb('Afrodite',lv.a,'#e7b9d6')+hb('Hefesto',lv.h,'#e06a5a'):''}<div class="m" style="margin-top:3px">Última decisão: ${last?`<span style="color:${last.col}">${esc(last.l)}</span> há ${fmt(now-last.at)}`:'—'}</div></div>`}).join(''):'<div class="empty">Ninguém jogando agora.</div>';
  const fd=rec.slice(0,25);$('lvFeed').innerHTML=fd.length?fd.map(d=>{const nw=!LV.first&&!LV.feedKeys.has(d.k);return`<div class="${nw?'new':''}"><span class="tlt">${new Date(d.at).toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit',second:'2-digit'})}</span><b>${esc(d.who.length>13?d.who.slice(0,12)+'…':d.who)}</b><span style="color:${d.col}">${esc(d.l)}</span></div>`}).join(''):'<div class="empty">Sem decisões nos últimos 3 minutos.</div>';
  fd.forEach(d=>LV.feedKeys.add(d.k));LV.first=false}
+
+/* ===== Observador ("telar" um jogador) ===== */
+const OB={sid:null,nk:'',fr:[],ev:[],st:0,play:0,last:0,tm:0,raf:0,ses:null};
+const N6=6,CW=84,CH=46,SKX=14,X0=235,Y0=258,OXo=70,PP=(c,r)=>[X0+c*CW+(N6-1-r)*SKX+OXo,Y0+r*CH];
+const SCRN={mode:'Escolhendo como vai jogar',fsask:'Pergunta da tela cheia',nick:'Digitando o apelido',pick:'Escolhendo o caminho (classe)',build:'Montando a build personalizada',origin:'Assistindo à abertura (origem)'};
+async function obsFetch(){const c=window.AFRO_ANALYTICS||{};let rows=[];
+ if(c.provider==='supabase'&&c.url&&c.anonKey){const r=await fetch(c.url.replace(/\/$/,'')+'/rest/v1/'+(c.table||'afrodite_sessions')+'?select=session_id,nick,device,started_at,updated_at,screens,events&session_id=eq.'+encodeURIComponent(OB.sid),{headers:Object.assign({apikey:c.anonKey},/^eyJ/.test(c.anonKey)?{Authorization:'Bearer '+c.anonKey}:{}),cache:'no-store'});if(!r.ok)throw new Error('HTTP '+r.status);rows=await r.json()}
+ else{try{const a=JSON.parse(localStorage.getItem('afroTelSessions')||'{}');rows=Object.values(a).filter(x=>x.session_id===OB.sid)}catch(e){}}
+ const r=rows[0];if(!r)return;const sc=obj(r.screens);OB.ses=r;const fr=arr(sc._obs);const have=new Set(OB.fr.map(f=>f.T));fr.forEach(f=>{if(f&&f.T&&!have.has(f.T))OB.fr.push(f)});OB.fr.sort((a,b)=>a.T-b.T);if(OB.fr.length>800)OB.fr=OB.fr.slice(-800);
+ const st=new Date(r.started_at).getTime();OB.ev=arr(r.events).map(e=>({at:st+(+e.t||0)*1000,l:LABG(e),col:COLRG(LABG(e)||'')})).filter(e=>e.l);OB.last=Date.now()}
+function obsOpen(sid,nk){OB.sid=sid;OB.nk=nk;OB.fr=[];OB.ev=[];OB.play=0;$('obsW').hidden=false;$('obsT').textContent='Observando '+nk;$('obsS').textContent='carregando…';
+ const tick=async()=>{try{await obsFetch()}catch(e){$('obsS').textContent='falha ao ler ('+e.message+')'}};clearInterval(OB.tm);tick();OB.tm=setInterval(()=>{if(!document.hidden)tick()},4000);
+ cancelAnimationFrame(OB.raf);let lt=performance.now();const loop=n=>{const dt=n-lt;lt=n;obsStep(dt);OB.raf=requestAnimationFrame(loop)};OB.raf=requestAnimationFrame(loop);$('obsW').scrollIntoView({behavior:'smooth',block:'start'})}
+function obsClose(){clearInterval(OB.tm);cancelAnimationFrame(OB.raf);OB.sid=null;$('obsW').hidden=true}
+function obsStep(dt){const F=OB.fr;if(!F.length){obsDraw(null);$('obsS').textContent=OB.last?'sem retratos da tela ainda (o jogador precisa estar na 0.11.12 ou mais nova, com a aba aberta)':'carregando…';return}
+ const newest=F[F.length-1].T,DL=11000;if(!OB.play||OB.play<F[0].T-500||newest-OB.play>45000)OB.play=Math.max(F[0].T,newest-DL);
+ if(OB.play<newest)OB.play=Math.min(newest,OB.play+dt*(newest-OB.play>DL+6000?1.6:1));
+ let i=0;while(i+1<F.length&&F[i+1].T<=OB.play)i++;const f=F[i],nx=F[i+1];
+ const lag=Math.max(0,Math.round((Date.now()-OB.play)/1000));$('obsS').textContent=(OB.play>=newest-50?'esperando novos dados · ':'')+'atraso de ~'+lag+' s · '+new Date(OB.play).toLocaleTimeString('pt-BR')+(f.fps?' · '+f.fps+' FPS':'');
+ obsDraw(f,nx,F);obsSide(f)}
+function obsSide(f){const L=[];if(f.s!=='fight')L.push(['Tela',SCRN[f.s]||f.s]);else{L.push(['Rodada',f.rd+(f.ph>1?' · fase 2':'')]);L.push(['Vez de',f.st==='enemy'?'Hefesto (reagindo)':f.st==='player'?'Afrodite':f.st==='deploy'?'posicionando':f.st||'—']);if(f.md)L.push(['Menu',f.md==='menu'?'menu de ações aberto':f.md.startsWith('aim')?'mirando: '+f.md.slice(4):f.md]);if(f.q)L.push(['Conjurando',f.q.n+' · nota '+Math.min(f.q.i+1,f.q.N)+'/'+f.q.N]);if(f.k&&!f.k.rs)L.push(['Golpe do Hefesto',f.k.n+(f.k.ty?' ('+({parry:'aparar',jump:'pular',dodge:'desviar'}[f.k.ty]||f.k.ty)+')':'')]);if(f.au)L.push(['Automático','ligado']);if(f.ps)L.push(['Pausado','sim'])}
+ $('obsI').innerHTML=L.map(([a,b])=>`<div style="grid-template-columns:110px 1fr"><span class="tlt">${esc(a)}</span><span>${esc(b)}</span></div>`).join('');
+ const E=OB.ev.filter(e=>e.at<=OB.play).slice(-14).reverse();$('obsE').innerHTML=E.length?E.map(e=>`<div><span class="tlt">${new Date(e.at).toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit',second:'2-digit'})}</span><span></span><span style="color:${e.col}">${esc(e.l)}</span></div>`).join(''):'<div class="empty">—</div>'}
+function obsDraw(f,nx,F){const cv=$('obsC'),g=cv.getContext('2d');g.setTransform(1,0,0,1,0,0);g.fillStyle='#0b0907';g.fillRect(0,0,1100,600);g.strokeStyle='#2a2420';g.strokeRect(OXo+.5,.5,959,599);
+ if(!f){g.fillStyle='#6f7786';g.font='16px system-ui';g.textAlign='center';g.fillText('Sem dados ainda',550,300);return}
+ const poly=(c,r,col,str)=>{const[x,y]=PP(c,r),s=SKX/2;g.beginPath();g.moveTo(x-CW/2+s,y-CH/2);g.lineTo(x+CW/2+s,y-CH/2);g.lineTo(x+CW/2-s,y+CH/2);g.lineTo(x-CW/2-s,y+CH/2);g.closePath();if(col){g.fillStyle=col;g.fill()}if(str){g.strokeStyle=str;g.stroke()}};
+ const now=performance.now()/1000;g.textAlign='center';
+ if(f.s!=='fight'){g.fillStyle='#d8c8a8';g.font='600 26px Georgia,serif';g.fillText(SCRN[f.s]||f.s,OXo+480,290);g.fillStyle='#6f7786';g.font='14px system-ui';g.fillText('fora da luta',OXo+480,318)}
+ else{for(let c=0;c<N6;c++)for(let r=0;r<N6;r++)poly(c,r,'rgba(255,255,255,.035)','rgba(232,200,115,.16)');
+  (f.f||[]).forEach(([c,r])=>poly(c,r,`rgba(255,110,30,${.35+.15*Math.sin(now*8+c+r)})`));
+  if(f.k&&f.k.z&&!f.k.rs)f.k.z.forEach(([c,r])=>poly(c,r,`rgba(255,200,40,${.25+.25*Math.sin(now*12)})`));
+  (f.an||[]).forEach(([c,r])=>{const[x,y]=PP(c,r);g.fillStyle='#6b6258';g.fillRect(x-14,y-22,28,18);g.fillStyle='#3a3430';g.fillRect(x-8,y-6,16,8)});
+  if(f.pl){g.fillStyle='#e0c27a';f.pl.forEach(([c,r])=>{const[x,y]=PP(c,r);g.beginPath();g.arc(x,y,5,0,7);g.fill()})}
+  if(f.cu)poly(f.cu[0],f.cu[1],'rgba(143,200,255,.25)','#8fc8ff');
+  const tw=(a,b,k)=>a&&b?[a[0]+(b[0]-a[0])*k,a[1]+(b[1]-a[1])*k]:a;const k=nx?Math.max(0,Math.min(1,(OB.play-f.T)/Math.max(1,nx.T-f.T))):0;
+  const unit=(cr,col,lb,hp)=>{if(!cr)return;const[x,y]=PP(cr[0],cr[1]);g.fillStyle='rgba(0,0,0,.4)';g.beginPath();g.ellipse(x,y+6,22,8,0,0,7);g.fill();g.fillStyle=col;g.beginPath();g.arc(x,y-18,18,0,7);g.fill();g.fillStyle='#120d0a';g.font='800 15px system-ui';g.fillText(lb,x,y-13);g.fillStyle='#000a';g.fillRect(x-24,y-48,48,6);g.fillStyle=col;g.fillRect(x-24,y-48,48*hp/100,6)};
+  unit(tw(f.he,nx&&nx.he,k),'#e06a5a','H',f.eh);unit(tw(f.me,nx&&nx.me,k),'#e7b9d6','A',f.hp);
+  // HUD
+  g.textAlign='left';g.font='600 14px system-ui';g.fillStyle='#e8dcc8';g.fillText('Afrodite '+f.hp+'%   ·   Hefesto '+f.eh+'%',OXo+16,28);g.fillStyle='#d4a85a';g.fillText('PA '+(f.pa??'—')+'   PM '+(f.pm??'—')+'   rodada '+(f.rd||'—'),OXo+16,50);
+  if(f.fps){g.textAlign='right';g.fillStyle=f.fps>=50?'#7ee08a':f.fps>=30?'#f0cf8e':'#ff7a6a';g.fillText(f.fps+' FPS',OXo+944,28)}
+  g.textAlign='center';
+  if(f.k&&!f.k.rs){g.fillStyle='rgba(20,8,6,.85)';g.fillRect(OXo+300,70,360,46);g.fillStyle='#ffb070';g.font='700 15px system-ui';g.fillText('Hefesto: '+(f.k.n||f.k.id),OXo+480,90);g.fillStyle='#3a2a20';g.fillRect(OXo+320,100,320,6);g.fillStyle=f.k.p>=.85?'#fff2a0':'#ff8a3a';g.fillRect(OXo+320,100,320*Math.min(1,f.k.p),6);g.fillStyle='#b8ad9c';g.font='12px system-ui';g.fillText(({parry:'precisa APARAR',jump:'precisa PULAR',dodge:'precisa SAIR DA ÁREA'}[f.k.ty]||''),OXo+480,128)}
+  if(f.fp){g.fillStyle='#8f8578';g.font='italic 12px system-ui';g.fillText('(na tela dele: câmera de reação em primeira pessoa)',OXo+480,146)}
+  if(f.q){const w=60;g.fillStyle='rgba(4,3,2,.8)';g.fillRect(OXo+290,170,380,110);g.fillStyle='#ecd9b0';g.font='700 15px system-ui';g.fillText('Conjurando: '+f.q.n,OXo+480,194);[...f.q.r].forEach((ch,i)=>{const x=OXo+480+(i-(f.q.N-1)/2)*(w+8);g.fillStyle=ch==='p'?'#ffe27a':ch==='g'?'#8ee0b3':ch==='o'?'#ff9a3a':ch==='w'||ch==='m'?'#ff5a4a':i===f.q.i?'#fff':'#3a332b';g.fillRect(x-w/2,214,w,40);g.fillStyle='#120d0a';g.font='700 12px system-ui';g.fillText(({p:'PERFECT',g:'ACERTOU',o:'FORA',w:'ERRADA',m:'PERDEU','-':i===f.q.i?'agora':''}[ch]||''),x,239)})}
+  if(f.md==='menu'){g.fillStyle='rgba(212,168,90,.15)';g.beginPath();g.arc(OXo+480,330,120,0,7);g.fill();g.fillStyle='#d4a85a';g.font='700 15px system-ui';g.fillText('menu de ações aberto',OXo+480,335)}
+  if(f.j){g.font='900 34px Georgia,serif';g.fillStyle=/PERFECT/.test(f.j)?'#ffe27a':/ACERTOU/.test(f.j)?'#8ee0b3':'#ff7a6a';g.fillText(f.j,OXo+480,210)}
+  if(f.d20){g.font='800 22px Georgia,serif';g.fillStyle='#ffcf5a';g.fillText('d20: '+f.d20,OXo+480,560)}
+  if(f.au){g.fillStyle='#8ec9f0';g.font='700 13px system-ui';g.fillText('AUTOMÁTICO LIGADO',OXo+480,590)}
+  if(f.ps){g.fillStyle='rgba(0,0,0,.55)';g.fillRect(OXo,0,960,600);g.fillStyle='#fff';g.font='700 28px system-ui';g.fillText('PAUSADO',OXo+480,300)}
+  if(f.ov){g.fillStyle='rgba(0,0,0,.5)';g.fillRect(OXo,0,960,600);g.fillStyle=f.ov==='win'?'#ffe2a0':'#ff7a6a';g.font='800 40px Georgia,serif';g.fillText(f.ov==='win'?'VENCEU':'MORREU',OXo+480,300)}}
+ // toques e teclas recentes
+ const rec=F.filter(x=>x.T<=OB.play&&OB.play-x.T<1400);rec.forEach(x=>{const age=(OB.play-x.T)/1400;(x.tp||[]).forEach(([tx,ty])=>{g.strokeStyle=`rgba(255,255,255,${1-age})`;g.lineWidth=3;g.beginPath();g.arc(tx+OXo,ty,10+26*age,0,7);g.stroke();g.fillStyle=`rgba(255,255,255,${.5*(1-age)})`;g.beginPath();g.arc(tx+OXo,ty,6,0,7);g.fill()})});
+ const ks=F.filter(x=>x.T<=OB.play&&OB.play-x.T<2500).flatMap(x=>(x.ky||[]).map(k=>[k,(OB.play-x.T)/2500]));let kx=OXo+20;ks.slice(-10).forEach(([k,a])=>{g.globalAlpha=1-a;g.font='700 13px system-ui';const w=g.measureText(k).width+16;g.fillStyle='#1c212a';g.fillRect(kx,560,w,26);g.strokeStyle='#d4a85a';g.strokeRect(kx+.5,560.5,w-1,25);g.fillStyle='#fff';g.textAlign='center';g.fillText(k,kx+w/2,578);kx+=w+6;g.globalAlpha=1})}
+document.addEventListener('click',e=>{const b=e.target.closest&&e.target.closest('.obsB');if(b)obsOpen(b.dataset.sid,b.dataset.nk)});
 let lvTimer=0;function liveStart(){clearInterval(lvTimer);liveTick();lvTimer=setInterval(()=>{if(!document.hidden)liveTick()},10000)}
 document.addEventListener('visibilitychange',()=>{if(!document.hidden)liveTick()});
-['fp','fd','fa'].forEach(id=>$(id).onchange=render);$('reload').onclick=()=>{load();liveTick()};load();liveStart();
+['fp','fd','fa'].forEach(id=>$(id).onchange=render);$('obsX').onclick=obsClose;$('obsLive').onclick=()=>{const F=OB.fr;if(F.length)OB.play=F[F.length-1].T-1500};$('reload').onclick=()=>{load();liveTick()};load();liveStart();
 </script></body></html>
