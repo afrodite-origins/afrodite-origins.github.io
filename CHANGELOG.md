@@ -1,5 +1,12 @@
 # Últimas atualizações
 
+## Alpha 0.10 (experimental) · 26/11/2026
+
+- Escolha como vai jogar logo na entrada: Celular (toque), PC (teclado) ou PC (controle). Dá para trocar depois no menu inicial.
+- Câmera de reação: quando Hefesto ataca, a luta vira uma câmera de perto, com ele avançando na sua direção e um anel que fecha no instante exato do impacto. No celular, deslize para desviar. Dá para desligar no menu inicial.
+- Habilidades e feitiços agora pedem um comando para sair: no celular, arraste na direção da seta; no teclado ou controle, aperte a sequência de setas. O ataque da arma continua direto.
+- A versão anterior continua jogável em /estavel.
+
 ## Alpha 0.9.9 · 26/11/2026
 
 - Ao posicionar Afrodite, uma luz percorre as casas da esquerda para a direita: escolha qualquer uma delas.
