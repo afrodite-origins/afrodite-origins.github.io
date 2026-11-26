@@ -6,28 +6,25 @@ Protótipo de RPG tático por turnos, de tom sombrio: Afrodite enfrenta Hefesto,
 
 ## Últimas atualizações
 
+**Alpha 0.11.17 (experimental) · 26/11/2026**
+
+- Visual mais limpo: todos os textos do jogo agora em maiúsculas, na mesma fonte do título.
+
+**Alpha 0.11.16 (experimental) · 26/11/2026**
+
+- Brasões novos para as quatro classes e emblemas novos para todas as habilidades, com cores fortes de cada caminho.
+
+**Alpha 0.11.15 (experimental) · 26/11/2026**
+
+- Luta rebalanceada para quem está começando: Hefesto tem menos vida e bate mais fraco, Afrodite bate mais forte e aguenta mais. O Martelo do Fim não mata mais de uma vez.
+- Corrida da Forja: casas seguras em verde, caminho até elas, setas na tela no celular, toque ou clique na casa ao lado para fugir, e desviar dela não gasta PM.
+- Ninfa da Água com animações novas: gêiser ao surgir, serpente de água no Ataque do Mar e um fio de água desenhando o Glifo de Cura.
+
 **Alpha 0.11.14 (experimental) · 26/11/2026**
 
 - 🛍 Lojinha da Forja: cada vitória sem o automático vale 🪙1 (no pódio, 🪙2). Troque por cores de cabelo, penteados, chapéus, roupinhas e armas alternativas para cada classe (só visual).
 - Abertura: “A disputa pelo poder”, e o golpe de Cronos agora acerta Urano bem onde dói.
 - Quem fica mais de 2 minutos parado (fora do automático) não conta tempo de jogo.
-
-**Alpha 0.11.13 (experimental) · 26/11/2026**
-
-- Três rankings: ⏳ Dedicação (quem mais joga sem o automático), 🔥 Devastação (mais dano por minuto de luta) e 🛡 Intocável (vencer Hefesto recebendo menos dano).
-- O termo de dados foi atualizado (agora cita onde você toca ou clica na tela) e aparece de novo uma vez.
-
-**Alpha 0.11.12 (experimental) · 26/11/2026**
-
-- Quem chega ao pódio (1º, 2º ou 3º) ganha medalha animada, confete, fanfarra e um selo na tela inicial.
-- O desenvolvedor pode acompanhar, com atraso, uma versão simplificada da partida para entender onde o jogo confunde (só com o termo aceito).
-
-**Alpha 0.11.11 (experimental) · 26/11/2026**
-
-- Reações e comandos sem atraso: o jogo agora conta o momento exato em que você aperta, descontando o atraso da tela e do toque.
-- “AGORA!” na hora certa, “ACERTOU!” e “PERFECT!” (com um som próprio) em cada reação e nota.
-- Crítico no estilo D&D: cada golpe rola um d20 e crita no 20. Acertar todas as notas PERFECT faz critar de 18 a 20, e reações perfeitas no turno do Hefesto dão inspiração (+1 cada, até +2). Crítico dobra o dano.
-- A câmera de reação ficou bem mais leve (mais FPS).
 
 ## Controles
 | | PC | Controle |
