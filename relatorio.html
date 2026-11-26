@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Relatório de testes · Afrodite Alpha</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=EB+Garamond:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0b0908;--pan:#15120e;--line:#2e2822;--tx:#ddd4c6;--mut:#8f8578;--acc:#e0c27a;--red:#c94a3a}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 20% 0,#22140c,var(--bg) 60%);color:var(--tx);font:16px "EB Garamond",Georgia,serif;min-height:100vh}
+.w{max-width:1180px;margin:0 auto;padding:22px 16px 60px}
+h1{font:700 26px Cinzel,serif;letter-spacing:3px;margin:0 0 4px;color:#e8d4a8}h2{font:700 14px Cinzel,serif;letter-spacing:3px;color:var(--mut);margin:28px 0 10px}
+.sub{color:var(--mut);margin:0 0 18px}.src{display:inline-block;border:1px solid var(--line);padding:2px 8px;font:600 12px Cinzel,serif;color:var(--acc);margin-left:6px}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}
+.card{background:var(--pan);border:1px solid var(--line);padding:12px 14px}.card b{display:block;font:700 26px Cinzel,serif;color:#f0dca8;font-variant-numeric:tabular-nums}.card span{color:var(--mut);font-size:13px;letter-spacing:1px;text-transform:uppercase}
+.bars{background:var(--pan);border:1px solid var(--line);padding:14px}.bar{display:grid;grid-template-columns:190px 1fr 90px;gap:10px;align-items:center;margin:6px 0}.bar .t{height:16px;background:#1e1a16;border:1px solid var(--line)}.bar .f{height:100%;background:linear-gradient(90deg,#8a5a24,#e0c27a)}.bar .v{text-align:right;font-variant-numeric:tabular-nums;color:var(--acc)}
+.tw{overflow:auto;border:1px solid var(--line)}table{width:100%;border-collapse:collapse;font-size:14px;background:var(--pan)}th,td{padding:7px 9px;border-bottom:1px solid var(--line);text-align:left;white-space:nowrap}th{font:600 12px Cinzel,serif;letter-spacing:1px;color:var(--mut);position:sticky;top:0;background:#1a1612}td.n{text-align:right;font-variant-numeric:tabular-nums}
+.tools{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0}button{background:#1a1612;color:var(--tx);border:1px solid #4a4038;padding:8px 14px;font:600 13px Cinzel,serif;letter-spacing:1px;cursor:pointer}button:hover{border-color:var(--acc);color:#fff0c8}
+.note{color:var(--mut);font-size:14px;margin-top:8px}.empty{padding:30px;text-align:center;color:var(--mut)}
+@media (max-width:640px){.bar{grid-template-columns:120px 1fr 70px}}
+</style></head><body><div class="w">
+<h1>RELATÓRIO DE TESTES</h1><p class="sub">Afrodite Alpha · sessões dos jogadores <span class="src" id="src">…</span></p>
+<div class="cards" id="cards"></div>
+<h2>ONDE OS JOGADORES PASSAM MAIS TEMPO</h2><div class="bars" id="bars"></div>
+<h2>HABILIDADES E REAÇÕES MAIS USADAS</h2><div class="bars" id="bars2"></div>
+<h2>SESSÕES</h2><div class="tools"><button id="csv">Exportar CSV</button><button id="json">Exportar JSON</button><button id="reload">Atualizar</button></div>
+<div class="tw"><table id="tb"></table></div>
+<p class="note" id="note"></p>
+</div>
+<script src="analytics-config.js"></script>
+<script>
+const $=id=>document.getElementById(id),fmt=ms=>{ms=+ms||0;const s=Math.round(ms/1000),m=Math.floor(s/60);return m>=60?Math.floor(m/60)+'h '+(m%60)+'min':m?m+'min '+(s%60)+'s':s+'s'},esc=v=>String(v??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const obj=v=>typeof v==='string'?(()=>{try{return JSON.parse(v)}catch(e){return{}}})():(v||{});
+let ROWS=[];
+async function load(){const c=window.AFRO_ANALYTICS||{};let rows=[],src='local (só este navegador)';
+ if(c.provider==='supabase'&&c.url&&c.anonKey){try{const r=await fetch(c.url.replace(/\/$/,'')+'/rest/v1/'+(c.table||'afrodite_sessions')+'?select=*&order=started_at.desc&limit=5000',{headers:{apikey:c.anonKey,Authorization:'Bearer '+c.anonKey}});if(!r.ok)throw new Error(r.status);rows=await r.json();src='Supabase (todos os jogadores)'}catch(e){src='local — falha ao ler o Supabase ('+e.message+')'}}
+ if(!rows.length){try{rows=Object.values(JSON.parse(localStorage.getItem('afroTelSessions')||'{}')).sort((a,b)=>(b.started_at||'').localeCompare(a.started_at||''))}catch(e){rows=[]}}
+ ROWS=rows.map(r=>({...r,screens:obj(r.screens),skills:obj(r.skills),reactions:obj(r.reactions)}));$('src').textContent=src;render()}
+function render(){const R=ROWS,n=R.length,sum=k=>R.reduce((a,r)=>a+(+r[k]||0),0),vis=new Set(R.map(r=>r.visitor_id||r.nick)).size,autoS=R.filter(r=>(+r.auto_clicks||0)>0).length;
+ const card=(v,l)=>`<div class="card"><b>${v}</b><span>${l}</span></div>`;
+ $('cards').innerHTML=card(vis,'Visitantes únicos')+card(n,'Sessões')+card(fmt(n?sum('total_ms')/n:0),'Tempo médio')+card(sum('deaths'),'Mortes totais')+card(sum('wins'),'Vitórias')+card(sum('dmg_out').toLocaleString('pt-BR')+' PV','Dano causado total')+card((n?Math.round(sum('dmg_out')/n):0)+' PV','Dano médio por sessão')+card(sum('dmg_in').toLocaleString('pt-BR')+' PV','Dano recebido total')+card(sum('escapes'),'Tentativas de fuga')+card((n?Math.round(100*autoS/n):0)+'%','Sessões com Automático');
+ const sc={};R.forEach(r=>Object.entries(r.screens).forEach(([k,v])=>sc[k]=(sc[k]||0)+(+v||0)));const ent=Object.entries(sc).sort((a,b)=>b[1]-a[1]),mx=ent.length?ent[0][1]:1;
+ $('bars').innerHTML=ent.length?ent.map(([k,v])=>`<div class="bar"><span>${esc(k)}</span><div class="t"><div class="f" style="width:${100*v/mx}%"></div></div><span class="v">${fmt(v/Math.max(1,n))}</span></div>`).join('')+'<p class="note">Tempo médio por sessão em cada tela.</p>':'<div class="empty">Sem dados ainda.</div>';
+ const us={};R.forEach(r=>{Object.entries(r.skills).forEach(([k,v])=>us[k]=(us[k]||0)+v);Object.entries(r.reactions).forEach(([k,v])=>us['Reação: '+k]=(us['Reação: '+k]||0)+v)});const ue=Object.entries(us).sort((a,b)=>b[1]-a[1]).slice(0,14),um=ue.length?ue[0][1]:1;
+ $('bars2').innerHTML=ue.length?ue.map(([k,v])=>`<div class="bar"><span>${esc(k)}</span><div class="t"><div class="f" style="width:${100*v/um}%"></div></div><span class="v">${v}×</span></div>`).join(''):'<div class="empty">Sem dados ainda.</div>';
+ const top=o=>Object.entries(o).sort((a,b)=>b[1]-a[1]).slice(0,3).map(([k,v])=>k+' ('+v+')').join(', ');
+ $('tb').innerHTML=n?'<tr><th>Jogador</th><th>Início</th><th>Dispositivo</th><th>Entrada</th><th>Classes</th><th>Tempo total</th><th>Combate</th><th>Mortes</th><th>Vitórias</th><th>Dano causado</th><th>Dano recebido</th><th>Fugas (falhas)</th><th>Auto (cliques / tempo)</th><th>Mais usadas</th></tr>'+R.map(r=>`<tr><td>${esc(r.nick||'(sem apelido)')}</td><td>${esc((r.started_at||'').replace('T',' ').slice(0,16))}</td><td>${esc(r.device)}</td><td>${esc(r.inputs)}</td><td>${esc(r.classes)}</td><td class="n">${fmt(r.total_ms)}</td><td class="n">${fmt(r.screens['Combate'])}</td><td class="n">${+r.deaths||0}</td><td class="n">${+r.wins||0}</td><td class="n">${+r.dmg_out||0} PV</td><td class="n">${+r.dmg_in||0} PV</td><td class="n">${+r.escapes||0} (${+r.escape_fails||0})</td><td class="n">${+r.auto_clicks||0} / ${fmt(r.auto_ms)}</td><td>${esc(top({...r.skills,...Object.fromEntries(Object.entries(r.reactions).map(([k,v])=>['Reação: '+k,v]))}))}</td></tr>`).join(''):'<tr><td class="empty">Nenhuma sessão registrada.</td></tr>';
+ $('note').textContent=(window.AFRO_ANALYTICS||{}).url?'':'O Supabase ainda não foi configurado em analytics-config.js: este relatório mostra só as partidas jogadas neste navegador.'}
+function dl(name,txt,type){const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([txt],{type}));a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000)}
+$('json').onclick=()=>dl('afrodite-sessoes.json',JSON.stringify(ROWS,null,2),'application/json');
+$('csv').onclick=()=>{const cols=['session_id','visitor_id','nick','started_at','updated_at','device','inputs','classes','total_ms','deaths','wins','dmg_out','dmg_in','escapes','escape_fails','auto_clicks','auto_ms','screens','skills','reactions'];const q=v=>'"'+String(typeof v==='object'?JSON.stringify(v):(v??'')).replace(/"/g,'""')+'"';dl('afrodite-sessoes.csv','﻿'+cols.join(';')+'\n'+ROWS.map(r=>cols.map(c=>q(r[c])).join(';')).join('\n'),'text/csv')};
+$('reload').onclick=load;load();
+</script></body></html>

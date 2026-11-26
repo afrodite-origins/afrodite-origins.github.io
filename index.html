@@ -160,6 +160,8 @@ body{background:radial-gradient(ellipse at 0% 0%,#2a1810 0,transparent 55%),url(
 #game canvas#c{width:min(100%,calc((100svh - 8px)*1.6));margin:0 auto;touch-action:manipulation;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
 #rot{display:none}
 #gbar{display:none!important}
+body.lite .card svg *{filter:none!important;animation:none!important}body.lite .card{transition:none}
+.nick{margin:6px 0}.nick input{background:#100e0c;border:1px solid #3a332b;color:#cfc4b4;font:14px 'EB Garamond',Georgia,serif;padding:6px 10px;width:220px;border-radius:2px}.nick input:focus{outline:none;border-color:#b08d4a}
 @media (min-width:700px){.pickrow .cls{grid-template-columns:repeat(5,1fr)!important}}
 .skl{display:grid;grid-template-columns:1fr;gap:0 14px}@media (min-width:700px){.skl.two{grid-template-columns:1fr 1fr}}
 #modal .mbox.cls-m .bar{position:sticky;bottom:-14px;background:#15120e;padding:10px 0 4px;margin-top:6px;border-top:1px solid #2a2520}
@@ -185,6 +187,7 @@ body{background:radial-gradient(ellipse at 0% 0%,#2a1810 0,transparent 55%),url(
 <p class="steptip">Escolha como Afrodite enfrenta Hefesto.</p>
 <div class="pickrow"><div class="cls" id="cls"></div><div class="pprev"><canvas id="pkv" width="300" height="320" aria-label="Prévia da postura de Afrodite"></canvas><p id="pkn"></p></div></div>
 <p class="khint">Direcional ou mouse escolhem · ✕ / Enter confirma</p>
+<div class="nick"><input id="nick" maxlength="24" placeholder="Seu apelido (opcional)" aria-label="Seu apelido (opcional)"></div>
 </section>
 <section id="build" hidden>
 <h1>Afrodite nasce da espuma</h1>
@@ -219,6 +222,7 @@ body{background:radial-gradient(ellipse at 0% 0%,#2a1810 0,transparent 55%),url(
 <div id="fx" aria-hidden="true"></div>
 <audio id="bgm" src="forging_flames.mp3" loop preload="auto"></audio>
 <div id="player" hidden><button id="pp" aria-label="Pausar trilha"><svg viewBox="0 0 16 16" width="14" height="14"><path id="ppi" d="M4 3h3v10H4zM9 3h3v10H9z" fill="currentColor"/></svg></button><span class="eq" aria-hidden="true"><i></i><i></i><i></i></span><span class="tt">Forging Flames</span><small>Patrick Maney · CC-BY 3.0</small></div>
+<script src="analytics-config.js"></script>
 <script>
 {
 const $=id=>document.getElementById(id);
@@ -242,34 +246,34 @@ function snd(id,ph){if(id==='mortal')id='bigorna';if(id==='corrida')id='fole';co
  if(id==='calor'){if(a){sw(70,38,1.2,'sine',.14);nz(1,90,1,.1)}else{sw(110,40,.6,'sine',.16);nz(.5,120,1,.12)}}}
 
 /* ---------- atributos e habilidades ---------- */
-const AT=[{k:'for',s:'FOR',n:'Força',d:'Impacto físico: dano da arma, do contra-ataque ao aparar e do Golpe Atordoante.'},
-{k:'dex',s:'DEX',n:'Destreza',d:'Mobilidade e reflexo: soma no dado para escapar de perto de Hefesto e alarga um pouco a janela de pular e aparar.'},
-{k:'con',s:'CON',n:'Constituição',d:'+15 de vida máxima por ponto e menos dano do calor contínuo.'},
-{k:'int',s:'INT',n:'Inteligência',d:'Força dos efeitos arcanos e dos ataques à distância.'},
+const AT=[{k:'for',s:'FOR',n:'Força',d:'Impacto físico: dano da arma, do contra-ataque ao aparar e das habilidades de escudo e lança.'},
+{k:'dex',s:'DEX',n:'Destreza',d:'Mobilidade e reflexo: soma no dado para escapar de perto dos inimigos e alarga um pouco a janela de pular e aparar.'},
+{k:'con',s:'CON',n:'Constituição',d:'+12 de vida máxima por ponto e menos dano de ataques de calor.'},
+{k:'int',s:'INT',n:'Inteligência',d:'Força dos glifos, da Ninfa da Água e dos efeitos arcanos.'},
 {k:'sab',s:'SAB',n:'Sabedoria',d:'Percepção e intuição: quanto mais alta, mais Afrodite repara no que acontece na luta.'},
-{k:'car',s:'CAR',n:'Carisma',d:'Encanto, presença e influência: potência da Persuasão e de parte da Paixão.'}];
+{k:'car',s:'CAR',n:'Carisma',d:'Encanto, presença e influência: potência do chicote, do Êxtase e do Masoquismo.'}];
 const A={};AT.forEach(a=>A[a.k]=1);const APTS=6,AMAX=5,SPTS=3;
 const spent=()=>AT.reduce((s,a)=>s+A[a.k]-1,0);
 /* ---------- v8: classes reformuladas ---------- */
 const SKL={
- escudo:{n:'Golpe de Escudo',pa:3,sc:['for','con'],tg:'he',r:()=>[1,1],d:()=>`Postura defensiva. Corpo a corpo: ${6+2*A.for} de dano e tenta atordoar (teste FOR × CON dele). Na postura ofensiva vira Investida da Lança: salta até ele (2 a 4 casas) e causa ${8+3*A.for}.`},
- prece:{n:'Prece do Amor',pa:3,sc:['con'],tg:'self',r:()=>[0,0],d:()=>`Postura defensiva. Restaura ${8+2*A.con} de vida de Afrodite e da aliada invocada. Na postura ofensiva vira Lança Arremessada: de 2 a 5 casas, ${12+3*A.for} de dano e sangramento (teste FOR × CON).`},
- muralha:{n:'Muralha de Afeto',pa:2,sc:['con'],tg:'self',r:()=>[0,0],d:()=>`Postura defensiva. Por 2 turnos, Afrodite e os aliados recebem 25% menos dano. Na postura ofensiva vira Ceifa Giratória: ${8+3*A.for} de dano nas pernas dele e −2 PM no próximo turno (teste FOR × DEX).`},
- investida:{n:'Investida da Lança',pa:3,sc:['for','dex'],tg:'he',r:()=>[2,4],d:()=>`Postura ofensiva. Gap closer: salta para o lado de Hefesto (2 a 4 casas) e causa ${8+3*A.for} de dano.`},
+ escudo:{n:'Golpe de Escudo',pa:3,sc:['for','con'],tg:'he',r:()=>[1,1],d:()=>`Postura defensiva. Corpo a corpo: ${6+2*A.for} de dano e tenta atordoar o inimigo (teste FOR × CON). Na postura ofensiva vira Investida da Lança: salta até o inimigo (2 a 4 casas) e causa ${8+3*A.for}.`},
+ prece:{n:'Prece do Amor',pa:3,sc:['con'],tg:'self',r:()=>[0,0],d:()=>`Postura defensiva. Restaura ${10+2*A.con} de vida de Afrodite e da aliada invocada. Na postura ofensiva vira Lança Arremessada: de 2 a 5 casas, ${12+3*A.for} de dano e sangramento (teste FOR × CON).`},
+ muralha:{n:'Muralha de Afeto',pa:2,sc:['con'],tg:'self',r:()=>[0,0],d:()=>`Postura defensiva. Por 2 turnos, Afrodite e os aliados recebem 25% menos dano. Na postura ofensiva vira Ceifa Giratória: ${8+3*A.for} de dano nas pernas do inimigo e −2 PM no próximo turno dele (teste FOR × DEX).`},
+ investida:{n:'Investida da Lança',pa:3,sc:['for','dex'],tg:'he',r:()=>[2,4],d:()=>`Postura ofensiva. Gap closer: salta para o lado do inimigo (2 a 4 casas) e causa ${8+3*A.for} de dano.`},
  arremesso:{n:'Lança Arremessada',pa:4,sc:['for'],tg:'he',r:()=>[2,5],d:()=>`Postura ofensiva. De 2 a 5 casas: ${12+3*A.for} de dano e sangramento de ${3+A.for} por 3 turnos (teste FOR × CON).`},
- ceifa:{n:'Ceifa Giratória',pa:3,sc:['for'],tg:'he',r:()=>[1,1],d:()=>`Postura ofensiva. Gira a lança nas pernas dele: ${8+3*A.for} de dano e −2 PM no próximo turno dele (teste FOR × DEX).`},
+ ceifa:{n:'Ceifa Giratória',pa:3,sc:['for'],tg:'he',r:()=>[1,1],d:()=>`Postura ofensiva. Gira a lança nas pernas do inimigo: ${8+3*A.for} de dano e −2 PM no próximo turno dele (teste FOR × DEX).`},
  chicote:{n:'Chicotada',pa:2,sc:['car','dex'],tg:'he',r:()=>[1,3],d:()=>`Até 3 casas: ${8+2*A.car} de dano, +1 Masoquismo e sangramento de ${2+A.dex} por 2 turnos (teste DEX × CON). Uma vez por turno.`},
- extase:{n:'Êxtase',pa:3,sc:['car','sab'],tg:'he',r:()=>[1,4],d:()=>`Até 4 casas. Teste CAR × SAB: Hefesto fica extasiado. No próximo turno ele só caminha até Afrodite e ataca com o martelo, sem nenhum outro poder. +1 Masoquismo.`},
- masoq:{n:'Masoquismo',pa:4,sc:['car'],tg:'he',r:()=>[1,3],d:()=>`Até 3 casas. Consome todos os acúmulos: ${8+2*A.car} + ${7+A.car} por acúmulo. Contra um Hefesto extasiado, o dano é 50% maior. Afrodite ganha acúmulos ao usar Chicotada e Êxtase e ao receber dano.`},
- glifob:{n:'Glifo de Brasa',pa:3,sc:['int'],tg:'cell',r:()=>[1,5],d:()=>`Marca no chão uma área 3×3 (centro a até 5 casas). No começo do próximo turno de Hefesto, todos dentro dela queimam: ${12+3*A.int} de dano e ardor por 2 turnos (teste INT × CON). Cuidado: aliados na área também se queimam (60%).`},
- glifod:{n:'Glifo do Desejo',pa:2,sc:['int','sab'],tg:'cell',r:()=>[1,5],d:()=>`Marca no chão uma área 2×2. No começo do próximo turno de Hefesto, se ele estiver dentro, fica marcado (+40% de dano por 2 turnos) e pode ficar preso no lugar (teste INT × SAB).`},
- aracne:{n:'Invocar Náiade',pa:4,sc:['int'],tg:'cell',r:()=>[1,2],d:()=>`Chama uma náiade, ninfa das águas, envolta numa aura de água, numa casa livre a até 2 casas. Ela tem ${24+6*A.int} de vida e age sozinha depois de Afrodite. De perto, Abraço da Maré: ${6+2*A.int} de dano e encharca Hefesto, que perde o próximo Calor da Fornalha. Até 3 casas, Jato d'Água: ${4+2*A.int} de dano e −1 PM (teste INT × DEX). A água dela apaga o fogo do chão.`},
- voo:{n:'Voo Rasante',pa:2,sc:['dex'],tg:'voo',r:()=>[1,2+A.dex],d:()=>`Voa até ${2+A.dex} casas. Se mirar em Hefesto, cai ao lado dele e causa ${11+3*A.dex}; aí pode voar de novo neste turno (1 PA) para se reposicionar. Numa casa vazia, só voa uma vez.`},
+ extase:{n:'Êxtase',pa:3,sc:['car','sab'],tg:'he',r:()=>[1,4],d:()=>`Até 4 casas. Teste CAR × SAB: o inimigo fica extasiado. No próximo turno ele só caminha até Afrodite e ataca com a própria arma, sem usar poderes nem habilidades. +1 Masoquismo.`},
+ masoq:{n:'Masoquismo',pa:4,sc:['car'],tg:'he',r:()=>[1,3],d:()=>`Até 3 casas. Consome todos os acúmulos: ${8+2*A.car} + ${7+A.car} por acúmulo. Contra um inimigo extasiado, o dano é 50% maior. Afrodite ganha acúmulos ao usar Chicotada e Êxtase e ao receber dano.`},
+ glifob:{n:'Glifo da Maré',pa:3,sc:['int'],tg:'cell',r:()=>[1,5],d:()=>`Marca no chão uma área 3×3 (centro a até 5 casas). No começo do próximo turno inimigo, a maré explode: inimigos dentro dela sofrem ${12+3*A.int} de dano e ficam encharcados, com água pesada nas pernas (−1 PM, teste INT × CON). A água também apaga o fogo do chão. Não atinge aliados.`},
+ glifod:{n:'Glifo do Desejo',pa:2,sc:['int','sab'],tg:'cell',r:()=>[1,5],d:()=>`Marca no chão uma área 2×2. No começo do próximo turno inimigo, os inimigos dentro dela ficam marcados (+40% de dano por 2 turnos) e podem ficar presos no lugar (teste INT × SAB).`},
+ aracne:{n:'Invocar Ninfa da Água',pa:4,sc:['int'],tg:'cell',r:()=>[1,2],d:()=>`Chama a Ninfa da Água, envolta numa aura de água, numa casa livre a até 2 casas. Ela tem ${24+6*A.int} de vida e age sozinha depois de Afrodite. Quando alguém está ferido, grava um Glifo de Cura 2×2 que restaura ${6+A.int} de vida aos aliados dentro dele. Senão, usa o Ataque do Mar (até 4 casas): a água circula o inimigo e explode, causando ${8+2*A.int} de dano e encharcando-o, o que apaga o próximo ataque de fogo dele.`},
+ voo:{n:'Voo Rasante',pa:2,sc:['dex'],tg:'voo',r:()=>[1,2+A.dex],d:()=>`Voa até ${2+A.dex} casas. Se mirar num inimigo, cai ao lado dele e causa ${11+3*A.dex}; aí pode voar de novo neste turno (1 PA) para se reposicionar. Numa casa vazia, só voa uma vez.`},
  recuo:{n:'Recuo em Voo',pa:1,sc:['dex'],tg:'cell',r:()=>[1,2+A.dex],d:()=>`Depois de acertar o Voo Rasante: voa para uma casa livre a até ${2+A.dex} casas.`},
- corte:{n:'Corte Duplo Envenenado',pa:3,sc:['dex','con'],tg:'he',r:()=>[1,1],d:()=>`Corpo a corpo: dois cortes de ${6+2*A.dex} e +2 de veneno (teste DEX × CON). O veneno causa 3 por acúmulo a cada turno dele.`},
- arco:{n:'Flecha do Arco',pa:3,sc:['dex'],tg:'he',r:()=>[3,6],d:()=>`De 3 a 6 casas: ${14+3*A.dex} de dano. Uma vez por turno.`}};
+ corte:{n:'Corte Duplo Envenenado',pa:3,sc:['dex','con'],tg:'he',r:()=>[1,1],d:()=>`Corpo a corpo: dois cortes de ${6+2*A.dex}; o veneno escorre e envenena o inimigo por 2 turnos, ${4+A.dex} de dano por turno (teste DEX × CON).`},
+ arco:{n:'Flecha do Cupido',pa:3,sc:['dex'],tg:'he',r:()=>[3,6],d:()=>`De 3 a 6 casas: uma flecha do amor com ${14+3*A.dex} de dano que deixa o inimigo extasiado, como o Êxtase (teste DEX × SAB): no próximo turno ele só caminha até Afrodite e ataca com a própria arma. Conta para o Masoquismo.`}};
 const ALT={escudo:'investida',prece:'arremesso',muralha:'ceifa'},BASE={investida:'escudo',arremesso:'prece',ceifa:'muralha',recuo:'voo'};
-const GAIN={escudo:()=>6+2*A.for+' dano',prece:()=>8+2*A.con+' cura',muralha:()=>"−25% dano",investida:()=>8+3*A.for+' dano',arremesso:()=>12+3*A.for+' dano',ceifa:()=>8+3*A.for+' dano',
+const GAIN={escudo:()=>6+2*A.for+' dano',prece:()=>10+2*A.con+' cura',muralha:()=>"−25% dano",investida:()=>8+3*A.for+' dano',arremesso:()=>12+3*A.for+' dano',ceifa:()=>8+3*A.for+' dano',
  chicote:()=>8+2*A.car+' dano',extase:()=>'CAR '+A.car,masoq:()=>(7+A.car)+'/acúmulo',glifob:()=>12+3*A.int+' dano',glifod:()=>'INT '+A.int,aracne:()=>24+6*A.int+' vida',voo:()=>2+A.dex+' casas',recuo:()=>2+A.dex+' casas',corte:()=>2*(6+2*A.dex)+' dano',arco:()=>14+3*A.dex+' dano'};
 const VMAP={escudo:'atordoa',prece:'cura',muralha:'muralha',investida:'dash',arremesso:'flecha',ceifa:'ceifa',chicote:'chicote',extase:'encanto',masoq:'contra',glifob:'glifo',glifod:'glifo',aracne:'aracne',voo:'dash',recuo:'dash',corte:'corte',arco:'flecha'};
 const SELF={prece:1,muralha:1};
@@ -300,7 +304,7 @@ function pPress(a){if(a==='end')return endTurn('Turno encerrado.');
  if(a==='a'||/^s[123]$/.test(a))return beginAim(a)}
 function landNear(from){let t=null,bd=99;for(let dc=-1;dc<=1;dc++)for(let dr=-1;dr<=1;dr++){const c=S.he.c+dc,r=S.he.r+dr;if((dc||dr)&&!blocked(c,r,'me')){const k=dist({c,r},from);if(k<bd){bd=k;t={c,r}}}}return t}
 function addMaso(n){if(!hasTree('persuasao'))return;S.maso=Math.min(9,S.maso+n)}
-function doAct(a,cell){const f=actInfo(a);if(!f)return false;const u=unavail(f);if(u){say(u);return false}const id=f.id,onHe=cell.c===S.he.c&&cell.r===S.he.r,pt=P(cell.c,cell.r),d=dist(S.me,S.he);
+function doAct(a,cell){const f=actInfo(a);if(!f)return false;const u=unavail(f);if(u){say(u);return false}TEL.count('skills',f.n);const id=f.id,onHe=cell.c===S.he.c&&cell.r===S.he.r,pt=P(cell.c,cell.r),d=dist(S.me,S.he);
  S.pa-=f.pa;if(CD[id]&&id!=='voo')S.cd[id]=CD[id];
  if(id==='a'){if(!onHe){startFly('lunge');vfx('slash',pt);logA('Arma · errou','#8f8578');say('Errou.');return chk(),true}startFly('lunge');vfx('slash');dmgE(6+3*A.for,'Golpe');return chk(),true}
  if(f.tg==='he'&&!onHe){skillImpact(id,pt);vfx(VMAP[id]||'slash',pt);logA(f.n+' · errou','#8f8578');say('Errou.');if(id==='investida'&&!blocked(cell.c,cell.r,'me')){startFly('dash');S.me={...cell}}return chk(),true}
@@ -308,7 +312,7 @@ function doAct(a,cell){const f=actInfo(a);if(!f)return false;const u=unavail(f);
  const m=S.charmNow?1:1;
  switch(id){
  case 'escudo':startFly('lunge');vfx('atordoa');dmgE(6+2*A.for,'Escudo');if(save('for','con','atordoado')){S.stun=true;S.cool=true;say('Hefesto cambaleia, atordoado.')}break;
- case 'prece':vfx('cura');heal(8+2*A.con);if(S.ally){S.ally.hp=Math.min(S.ally.mhp,S.ally.hp+8+2*A.con);pop(AL[0],AL[1]-90,'+'+(8+2*A.con),'#8cffb0')}break;
+ case 'prece':vfx('cura');heal(10+2*A.con);if(S.ally){S.ally.hp=Math.min(S.ally.mhp,S.ally.hp+10+2*A.con);pop(AL[0],AL[1]-90,'+'+(10+2*A.con),'#8cffb0')}break;
  case 'muralha':vfx('muralha');S.wall=2;say('Uma muralha de afeto envolve os aliados.');break;
  case 'investida':{const t=landNear(S.me);startFly('dash');S.me=t;vfx('dash');after(.35,()=>{vfx('slash');dmgE(8+3*A.for,'Investida')});break}
  case 'arremesso':vfx('flecha');after(.33,()=>{dmgE(12+3*A.for,'Lança');if(!S.over&&save('for','con','sangramento')){S.bleed={t:3,d:3+A.for}}});break;
@@ -317,11 +321,11 @@ function doAct(a,cell){const f=actInfo(a);if(!f)return false;const u=unavail(f);
  case 'extase':vfx('encanto');addMaso(1);if(save('car','sab','extasiado')){S.charm=1;say('Hefesto fica extasiado.');heLine('“...que perfume é esse?”')}break;
  case 'masoq':{const st=S.maso,dm=Math.round((8+2*A.car+(7+A.car)*st)*(S.charm||S.charmNow?1.5:1));vfx('contra');dmgE(dm,'Masoquismo ×'+st);S.maso=0;after(.9,()=>speak());break}
  case 'glifob':case 'glifod':{const k=id==='glifob'?'b':'d',cs=glyphCells(k,cell.c,cell.r);S.glyphs.push({k,cells:cs,c:cell.c,r:cell.r,t:S.t});vfx('glifo',pt);say(inCells(cs,S.he)?'O glifo cobre Hefesto: ativa no turno dele.':'O glifo marca o chão: ativa no turno dele.');break}
- case 'aracne':S.ally={c:cell.c,r:cell.r,hp:24+6*A.int,mhp:24+6*A.int,t0:S.t,hf:-9};AL=pt.slice();vfx('aracne',pt);say('Uma náiade ergue-se da água.');logA('A náiade entra na luta','#8fd0ff');douse(cell);break;
+ case 'aracne':S.ally={c:cell.c,r:cell.r,hp:24+6*A.int,mhp:24+6*A.int,t0:S.t,hf:-9};AL=pt.slice();vfx('aracne',pt);say('A Ninfa da Água ergue-se das ondas.');logA('A Ninfa da Água entra na luta','#8fd0ff');douse(cell);break;
  case 'voo':if(onHe){const t=landNear(S.me);startFly('dash');S.me=t;vfx('dash');after(.35,()=>{vfx('slash');dmgE(11+3*A.dex,'Voo Rasante')});S.recuo=true;logA('Afrodite · Voo Rasante (pode recuar)','#e0c27a');say('Acertou! Pode voar de novo.')}else{startFly('dash');S.me={...cell};vfx('dash');S.cd.voo=CD.voo;logA('Afrodite · Voo Rasante','#e0c27a')}break;
  case 'recuo':startFly('dash');S.me={...cell};vfx('dash');S.recuo=false;S.cd.voo=CD.voo;logA('Afrodite · Recuo em Voo','#e0c27a');break;
- case 'corte':startFly('lunge');vfx('corte');dmgE(6+2*A.dex,'Corte');after(.22,()=>{if(S.over)return;dmgE(6+2*A.dex,'Corte');if(save('dex','con','veneno +2'))S.poison=(S.poison||0)+2});break;
- case 'arco':vfx('flecha');after(.33,()=>dmgE(14+3*A.dex,'Flecha'));break}
+ case 'corte':startFly('lunge');vfx('corte');dmgE(6+2*A.dex,'Corte');after(.22,()=>{if(S.over)return;dmgE(6+2*A.dex,'Corte');S.puddles=(S.puddles||[]).concat([{x:HE[0]+(Math.random()-.5)*20,y:HE[1]+14,t:S.t}]);if(save('dex','con','envenenado por 2 turnos'))S.poison={t:2,d:4+A.dex}});break;
+ case 'arco':vfx('cupido');beep(1046,.15,'sine',.05);after(.33,()=>{dmgE(14+3*A.dex,'Flecha do Cupido');addMaso(1);if(!S.over&&save('dex','sab','extasiado')){S.charm=1;say('O inimigo fica extasiado.')}});break}
  return chk(),true}
 
 const TREES=[
@@ -333,7 +337,7 @@ const treeOf=id=>TREES.find(T=>T.k.includes(id)||T.k.includes(BASE[id]));
 const SLOTN=['cima · Y / 1','esquerda · X / 2','direita · B / 3'];
 let build=[],cur={row:0,col:0},pulse={},scr='build',step=1,foc='core';
 
-function renderBuild(){
+function renderBuild(){TEL.screen(step===1?'Características':'Árvore de Habilidades');
  const now=performance.now(),s1=step===1;
  $('steps').innerHTML=[['1','Características'],['2','Árvore de habilidades'],['3','Luta']].map(([n,t],i)=>`<li class="${i+1===step?'on':i+1<step?'done':''}"><b>${n}</b>${t}</li>`).join('');
  $('stepTip').innerHTML=s1?'Etapa 1: distribua os pontos de atributo. As habilidades que escalam com cada ponto brilham na árvore. Depois confirme para seguir.':'Etapa 2: escolha as habilidades. Mova o foco com direcional, analógico ou mouse; confirme com ✕ (Espaço) ou clique.';
@@ -448,15 +452,15 @@ const pop=(x,y,txt,col='#fff')=>S.pop.push({x,y,t:S.t,txt,col});
 const hline=(k,t)=>{if(S.said[k])return;S.said[k]=1;heLine(t)};
 const aSay=(k,t)=>{if(S.said[k])return;S.said[k]=1;afLine(t)};
 let HEF_HP=420,HEF_DMG=1.3;
-function newGame(){const mhp=80+12*A.con;try{sadStop();lamentStop();if(scr==='fight'&&bgm.paused&&!bgmUserPaused)bgmPlay()}catch(e){}
- S={st:'deploy',maso:0,gT:{},plan:[],walk:null,hoverBad:null,vfx:[],msgT:-9,line:null,aline:null,hp:mhp,mhp,eh:HEF_HP,meh:HEF_HP,cd:{},stance:'def',glyphs:[],blood:[],stains:[],fire:[],meteors:[],mfall:[],ally:null,bleed:null,poison:0,hslow:0,wall:0,recuo:false,swUsed:false,charm:0,pa:6,pm:3,me:{c:1,r:4},he:{c:4,r:1},anv:[],booms:[],fx:[],guard:false,fasc:false,curse:0,cc:0,mark:0,burn:0,stun:false,dizzy:false,slow:false,cool:false,free:false,phase:1,said:{},t:0,q:[],atk:null,over:null,jumpT:-9,parryT:-9,msg:'Posicione Afrodite.',fly:null,lock:0,hs:0,shake:0,flashW:0,sparks:[],round:1,mode:null,aim:null,cur:null,mi:0,pop:[],last:'',lastDodge:null,dice:null,n:0,li:0,eshake:0,hflash:0};
+function newGame(){if(scr==='fight')TEL.screen('Combate');const mhp=80+12*A.con;try{sadStop();lamentStop();if(scr==='fight'&&bgm.paused&&!bgmUserPaused)bgmPlay()}catch(e){}
+ S={st:'deploy',maso:0,gT:{},plan:[],walk:null,hoverBad:null,vfx:[],msgT:-9,line:null,aline:null,hp:mhp,mhp,eh:HEF_HP,meh:HEF_HP,cd:{},stance:'def',poison:null,puddles:[],hglyph:null,glyphs:[],blood:[],stains:[],fire:[],meteors:[],mfall:[],ally:null,bleed:null,poison:0,hslow:0,wall:0,recuo:false,swUsed:false,charm:0,pa:6,pm:3,me:{c:1,r:4},he:{c:4,r:1},anv:[],booms:[],fx:[],guard:false,fasc:false,curse:0,cc:0,mark:0,burn:0,stun:false,dizzy:false,slow:false,cool:false,free:false,phase:1,said:{},t:0,q:[],atk:null,over:null,jumpT:-9,parryT:-9,msg:'Posicione Afrodite.',fly:null,lock:0,hs:0,shake:0,flashW:0,sparks:[],round:1,mode:null,aim:null,cur:null,mi:0,pop:[],last:'',lastDodge:null,dice:null,n:0,li:0,eshake:0,hflash:0};
  S.hpG=S.hp;S.ehG=S.eh;S.hbar=S.ebar=-9;H=P(1,4).slice();HE=P(4,1).slice();S.pz=postureFinal();
  say('Posicione Afrodite e dê Pronto.')}
-function hurt(n){grunt('af');n=Math.round(n*(S.guard?.65:1)*(S.wall>0?.75:1));addMaso(1);logA((S.atk&&!S.atk.logged?S.atk.name:'Explosão de bigorna')+' −'+n,'#ff8a7a');S.hp=Math.max(0,S.hp-n);spawnBlood(H[0],H[1]-45,Math.min(20,5+(n/3|0)),H[1]+14);S.hflash=S.t+.3;S.hbar=S.t+.6;pop(H[0],H[1]-90,'-'+n,'#ff7a7a');beep(110,.25,'sawtooth',.07);if(S.hp<=0&&!S.over){S.over='lose';S.st='end';onDeath()}}
+function hurt(n){grunt('af');n=Math.round(n*(S.guard?.65:1)*(S.wall>0?.75:1));rumble(n>=S.hp*.5);S.hitT=S.t;TEL.add('dmg_in',Math.min(n,S.hp));addMaso(1);logA((S.atk&&!S.atk.logged?S.atk.name:'Explosão de bigorna')+' −'+n,'#ff8a7a');S.hp=Math.max(0,S.hp-n);spawnBlood(H[0],H[1]-45,Math.min(20,5+(n/3|0)),H[1]+14);S.hflash=S.t+.3;S.hbar=S.t+.6;pop(H[0],H[1]-90,'-'+n,'#ff7a7a');beep(110,.25,'sawtooth',.07);if(S.hp<=0&&!S.over){S.over='lose';S.st='end';onDeath()}}
 function heal(n){logA('Cura +'+n,'#8cffb0');S.hp=Math.min(S.mhp,S.hp+n);pop(H[0],H[1]-100,'+'+n,'#8cffb0');beep(520,.2,'sine')}
 const FIS=new Set(['Golpe','Atordoar','Contra-ataque','Masoquismo']);
-function dmgE(n,lb,dot){if(!dot)grunt('he');if(!dot){if(S.mark>0)n*=1.4;const fis=FIS.has(lb);n*=S.phase<2?(fis?.9:1):(fis?1:1.15);n=Math.round(n)}logA((lb||'Dano')+' −'+n,dot?'#d6a8ff':'#ffd27a');S.eh=Math.max(0,S.eh-n);spawnBlood(HE[0],HE[1]-70,dot?3:Math.min(26,6+(n/2|0)),HE[1]+16);S.eshake=S.t+.25;S.ebar=S.t+.6;pop(HE[0],HE[1]-170,(lb?lb+' ':'')+'-'+n,'#ffd27a');beep(180,.12,'sawtooth');
- if(S.eh<=0){S.over='win';S.st='end';onWin();return}
+function dmgE(n,lb,dot){if(!dot)grunt('he');if(!dot){if(S.mark>0)n*=1.4;const fis=FIS.has(lb);n*=S.phase<2?(fis?.9:1):(fis?1:1.15);n=Math.round(n)}logA((lb||'Dano')+' −'+n,dot?'#d6a8ff':'#ffd27a');TEL.add('dmg_out',Math.min(n,S.eh));if(!dot)S.ehitT=S.t;S.eh=Math.max(0,S.eh-n);spawnBlood(HE[0],HE[1]-70,dot?3:Math.min(26,6+(n/2|0)),HE[1]+16);S.eshake=S.t+.25;S.ebar=S.t+.6;pop(HE[0],HE[1]-170,(lb?lb+' ':'')+'-'+n,'#ffd27a');beep(180,.12,'sawtooth');
+ if(S.eh<=0){S.over='win';S.st='end';startOutro();return}
  if(S.phase<2&&S.eh<=S.meh/2){S.phase=2;pop(HE[0],HE[1]-200,'A prótese de ouro quebra!','#ffd27a');beep(90,.5,'sawtooth',.09);say('A prótese quebra. Hefesto volta a mancar.');startCut()}
  else if(S.phase>1&&S.eh<=S.meh*.2&&!S.said.adm){S.said.adm=1;S.line={t:S.t,txt:'…'}}}
 function shoot(){}
@@ -473,11 +477,11 @@ function doMove(dir){if(S.st!=='player')return;const[dc,dr]=DV[dir],c=S.me.c+dc,
  if(S.pm<1){say('Sem PM.');return}
  if(dist(S.me,S.he)<=1&&dist({c,r},S.he)>1&&!S.free)return startDice({c,r});
  S.pm--;S.me={c,r};beep(400,.05,'sine');if(fireAt(c,r))hurtSrc(6,'Brasa no chão');chk()}
-function startDice(dest){S.st='dice';const roll=1+Math.random()*20|0,mod=2*(A.dex-1)+(S.mark>0?A.dex:0);S.dice={t0:S.t,roll,mod,dc:13,dest,shown:1+Math.random()*20|0,nt:S.t,done:false};S.dice.ok=roll===20||(roll!==1&&roll+mod>=13)}
+function startDice(dest){TEL.add('escapes');S.st='dice';const roll=1+Math.random()*20|0,mod=2*(A.dex-1)+(S.mark>0?A.dex:0);S.dice={t0:S.t,roll,mod,dc:13,dest,shown:1+Math.random()*20|0,nt:S.t,done:false};S.dice.ok=roll===20||(roll!==1&&roll+mod>=13)}
 function diceTick(){const D=S.dice,el=S.t-D.t0;
  if(el<1.7){if(S.t>=D.nt){D.shown=1+Math.random()*20|0;D.nt=S.t+.035+.3*(el/1.7)**2;beep(1100+Math.random()*300,.02,'square',.03)}return}
  if(!D.done){D.done=true;D.shown=D.roll;if(D.ok){beep(880,.15,'triangle');setTimeout(()=>beep(1320,.2,'triangle'),110)}else sw(300,80,.5,'sawtooth',.06)}
- if(el>=2.9){S.dice=null;S.st='player';if(D.ok){S.free=true;S.pm--;if(!blocked(D.dest.c,D.dest.r,'me'))S.me=D.dest;say('Escapou do alcance dele.')}else{S.pm=0;say('Presa ao lado dele: perdeu todos os PM.')}chk()}}
+ if(el>=2.9){S.dice=null;S.st='player';if(D.ok){S.free=true;S.pm--;if(!blocked(D.dest.c,D.dest.r,'me'))S.me=D.dest;say('Escapou do alcance dele.');logA('Fuga: '+D.roll+'+'+D.mod+' contra 13, escapou','#9fd8c8')}else{S.pm=0;TEL.add('escape_fails');say('Presa ao lado dele: perdeu todos os PM.');logA('Fuga: '+D.roll+'+'+D.mod+' contra 13, falhou','#ff8a7a');heLine(['“Aonde pensa que vai, espuminha? Ninguém foge da minha forja.”','“Manco, sim. Lento, nunca. Fica.”','“Correr de mim? Nem os deuses do Olimpo conseguiram.”'][Math.random()*3|0])}chk()}}
 
 /* turno de Hefesto */
 function predCell(){const opts=Object.keys(DV).filter(k=>{const[dc,dr]=DV[k];return!blocked(S.me.c+dc,S.me.r+dr,'me')});if(!opts.length)return null;
@@ -498,17 +502,18 @@ function nextAtk0(){const d=dist(S.he,S.me),ph=S.phase;
   k.type='dodge';k.dur=1.25+.12*d}
  if(id==='mortal'){Object.assign(k,{type:'parry',name:'Martelo do Fim',dmg:999,dur:1.9});S.shake=S.t+.5;pop(HE[0],HE[1]-210,'GOLPE MORTAL','#ff3a2a');logA('Hefesto ergue o Martelo do Fim!','#ff5a3a')}
  if(id==='corrida')corridaSetup(k);
+ if(ph>1&&id!=='mortal')hefP2(k);
  k.dur+=slow;k.beats=(k.type==='heat'?[.4,.9,1.4,1.9]:(k.type==='dodge'?[2,1]:[3,2,1]).map(i=>k.dur-i*.3)).filter(b=>b>.1);k.bi=0;S.atk=k;say(k.name);logA('Hefesto · '+k.name,'#c98a7a');snd(id,'a');
  if(k.pred&&A.sab>=3)aSay('pred','“Ele não mira onde eu estou... mira onde eu vou estar.”');
  if(id==='calor'&&A.sab>=4)aSay('heat','“Esse calor não se desvia. Ou eu aguento, ou corto antes.”')}
-function react(a){if(S.st!=='enemy')return;const k=S.atk&&!S.atk.res?S.atk:null;
+function react(a){if(S.st!=='enemy')return;TEL.count('reactions',a==='parry'?'Aparar':a==='a'?'Pular':'Desviar');const k=S.atk&&!S.atk.res?S.atk:null;
  if(!k||S.t<S.lock)return; // reações só valem no momento do ataque
  if(S.pm<1){beep(90,.08,'sawtooth');pop(H[0],H[1]-100,'Sem PM','#ff9a8a');return}
  S.pm--;S.lock=S.t+(DV[a]?.1:.32);
  if(a==='a'){S.jumpT=S.t;sw(320,640,.12,'sine',.05)}
  else if(a==='parry'){S.parryT=S.t;nz(.08,3800,2,.05)}
  else if(DV[a]){const[dc,dr]=DV[a],c=S.me.c+dc,r=S.me.r+dr;S.lastDodge=a;if(blocked(c,r,'me')){pop(H[0],H[1]-90,'Bateu na parede!','#ff9a8a');thud()}else{S.me={c,r};whoosh()}}}
-function resolve(){const k=S.atk;k.res=true;if(k.id==='corrida'){k.path.slice(0,-1).forEach(p=>addFire(p.c,p.r,2));S.he={...k.path[k.path.length-1]};logA('Hefesto se reposiciona pela borda','#c98a7a')}k.rt=S.t;const rel=x=>x-k.t0,lw=.01*A.dex;let ok=false,perfect=false,why='';
+function resolve(){const k=S.atk;k.res=true;if(k.id==='corrida'){k.path.slice(0,-1).forEach(p=>addFire(p.c,p.r,k.p2?3:2));S.he={...k.path[k.path.length-1]};logA('Hefesto se reposiciona pela borda','#c98a7a')}k.rt=S.t;const rel=x=>x-k.t0,lw=.01*A.dex;let ok=false,perfect=false,why='';
  if(k.type==='parry'){const r=rel(S.parryT);ok=r>=k.dur-.13-lw&&r<=k.dur+.06;perfect=ok&&Math.abs(r-k.dur)<=.05;if(!ok&&S.parryT>k.t0)why=r<k.dur?'Cedo!':'Tarde!'}
  if(k.type==='jump'){const r=rel(S.jumpT);ok=r>=k.dur-.22-lw&&r<=k.dur+.08;if(!ok&&S.jumpT>k.t0)why=r<k.dur?'Cedo!':'Tarde!'}
  if(k.type==='dodge')ok=!k.zone.some(z=>z[0]===S.me.c&&z[1]===S.me.r);
@@ -517,12 +522,12 @@ function resolve(){const k=S.atk;k.res=true;if(k.id==='corrida'){k.path.slice(0,
    for(let i=0;i<(perfect?22:14);i++){const an=Math.random()*Math.PI*2,v=120+Math.random()*260;S.sparks.push({x:H[0]+(HE[0]>H[0]?14:-14),y:H[1]-46,vx:Math.cos(an)*v,vy:Math.sin(an)*v-80,t:S.t})}
    pop(H[0],H[1]-110,perfect?'PERFEITO!':'APARADO!',perfect?'#ffe27a':'#ffffff');dmgE(Math.round((10+2*A.for)*(perfect?1.5:1)),'Contra-ataque')}
   else{pop(H[0],H[1]-100,k.type==='jump'?'Pulou!':'Desviou!','#8cffb0');beep(900,.1,'triangle',.05)}}
- else{if(why)pop(H[0]+30,H[1]-130,why,'#ff9a8a');snd(k.id,'c');S.shake=S.t+.12;hurt(k.dmg*HEF_DMG*(S.phase>1?1.25:1)*(S.fasc?.6:1));S.fasc=false}
+ else{logA('Falhou: '+k.name+(why?' ('+why.replace('!','')+')':''),'#c98a7a');if(why)pop(H[0]+30,H[1]-130,why,'#ff9a8a');snd(k.id,'c');S.shake=S.t+.12;hurt(k.dmg*HEF_DMG*(S.fasc?.6:1));S.fasc=false}
  afterAtk()}
 function afterAtk(){after(.9,()=>{if(S.st==='end')return;S.atk=null;if(--S.n>0)hefMove();else endEnemy()})}
-function endEnemy(){S.atk=null;S.fire=(S.fire||[]).map(f=>({...f,ttl:f.ttl-1})).filter(f=>f.ttl>0);if(fireAt(S.me.c,S.me.r))hurtSrc(8,'Brasa no chão');if(S.over)return;if(S.phase>1)meteorMark();S.cool=false;S.guard=false;S.charmNow=false;S.rootNow=false;S.tgtAlly=false;if(S.wall>0)S.wall--;S.swUsed=false;
+function endEnemy(){if(S.phase>1&&!S.forgeDone&&!S.over){S.forgeDone=true;S.atk=null;forgeCast();return after(2.4,endEnemy)}S.forgeDone=false;healGlyphTick();S.atk=null;S.fire=(S.fire||[]).map(f=>({...f,ttl:f.ttl-1})).filter(f=>f.ttl>0);if(fireAt(S.me.c,S.me.r))hurtSrc(8,'Brasa no chão');if(S.over)return;if(S.phase>1)meteorMark();S.cool=false;S.guard=false;S.charmNow=false;S.rootNow=false;S.tgtAlly=false;if(S.wall>0)S.wall--;S.swUsed=false;
  if(S.phase>1){const free=[];for(let c=0;c<N;c++)for(let r=0;r<N;r++)if(!blocked(c,r,'x'))free.push({c,r});const n=1+(Math.random()<.4?1:0);
-  for(let i=0;i<n&&free.length;i++){const a=free.splice(Math.random()*free.length|0,1)[0];S.anv.push({c:a.c,r:a.r,h:0,t:S.t})}
+  (S.forgeTargets||[]).forEach(a=>{if(!blocked(a.c,a.r,'x'))S.anv.push({c:a.c,r:a.r,h:0,t:S.t})});S.forgeTargets=null;
   beep(1500,.2,'triangle',.05);if(A.sab>=2)aSay('anv','“Essas bigornas estão esquentando... não quero estar do lado quando estourarem.”')}
  for(const k in S.cd){S.cd[k]--;if(S.cd[k]<=0)delete S.cd[k]}S.pa=6;S.round++;logA('— seu turno —','#6a6056');S.st='player';say('Seu turno.')}
 
@@ -549,6 +554,7 @@ addEventListener('keydown',e=>{
  const a=KM[e.key];if(a){e.preventDefault();if(!e.repeat)press(a)}});
 addEventListener('keyup',e=>{if(e.key==='Shift'||e.key==='c'||e.key==='C')kmod=false;const dr=KD[e.key];if(dr)kd=kd.filter(x=>x!==dr)});
 addEventListener('blur',()=>{kd=[];kmod=false});
+setTimeout(()=>{const ni=$('nick');ni.value=TEL.getNick();ni.addEventListener('change',()=>TEL.nick(ni.value.trim()));ni.addEventListener('keydown',e=>e.stopPropagation())});
 $('bFull').onclick=()=>{const el=document.documentElement;try{const p=(el.requestFullscreen||el.webkitRequestFullscreen).call(el);if(p&&p.then)p.then(()=>{try{screen.orientation.lock('landscape').catch(()=>{})}catch(e){}}).catch(()=>{})}catch(e){}$('bFull').blur()};
 document.querySelectorAll('[data-a]').forEach(b=>b.onclick=()=>{press(b.dataset.a);b.blur()});
 document.querySelectorAll('[data-m]').forEach(b=>{b.onclick=()=>{if(S.st==='player')doMove(b.dataset.m);else react(b.dataset.m);b.blur()};b.onmouseenter=()=>bdir=b.dataset.m;b.onmouseleave=()=>bdir=null});
@@ -573,16 +579,16 @@ function bgmPlay(){if(!bgmOk||bgmUserPaused)return bgmUI();const p=bgm.play();if
 bgm.addEventListener('error',()=>{bgmOk=false;$('player').querySelector('small').textContent='arquivo da trilha não encontrado';bgmUI()});
 bgm.addEventListener('play',bgmUI);bgm.addEventListener('pause',bgmUI);
 $('pp').onclick=()=>{if(!bgmOk)return;if(bgm.paused){bgmUserPaused=false;bgmPlay()}else{bgmUserPaused=true;bgm.pause()}$('pp').blur()};
-function startFight(){document.body.classList.add('fighting');$('player').hidden=true;bgmPlay();$('modal').hidden=true;scr='fight';$('fx').innerHTML='';$('build').hidden=true;$('pick').hidden=true;$('game').hidden=false;newGame();startIntro();buildBar();try{ac().resume()}catch(e){}}
+function startFight(){TEL.screen('Combate');try{TEL.cls((PRESETS.find(p=>p.sk&&p.sk.join()===build.join())||{n:'Personalizada'}).n)}catch(e){}document.body.classList.add('fighting');$('player').hidden=true;bgmPlay();$('modal').hidden=true;scr='fight';$('fx').innerHTML='';$('build').hidden=true;$('pick').hidden=true;$('game').hidden=false;newGame();startIntro();buildBar();try{ac().resume()}catch(e){}}
 function showBuild(){scr='build';$('player').hidden=true;bgm.pause();$('pick').hidden=true;$('build').hidden=false;$('game').hidden=true;renderBuild()}
 $('mok').onclick=applyConfirm;$('mno').onclick=closeConfirm;
 
 /* ---------- tela inicial: classes predefinidas ou personalizada ---------- */
 const PRESETS=[
  {k:'protecao',n:'Paladina do Amor',at:{for:3,con:4,sab:2},sk:['escudo','prece','muralha'],d:'Duas posturas: escudo à frente para atordoar, curar e proteger; lança girando para saltar, arremessar e ceifar.'},
- {k:'persuasao',n:'Sedutora',at:{car:4,sab:3,dex:2},sk:['chicote','extase','masoq'],d:'Chicote de longe, sangramento e êxtase que prende Hefesto ao martelo. Acumula dor para soltar de uma vez.'},
- {k:'paixao',n:'Maga da Paixão',at:{int:4,con:2,dex:3},sk:['glifob','glifod','aracne'],d:'Glifos de área que explodem no turno dele e uma náiade das águas lutando ao lado dela.'},
- {k:'atracao',n:'Malandra',at:{dex:4,con:3,for:2},sk:['voo','corte','arco'],d:'Voa, golpeia e foge voando. Veneno de perto, arco de longe.'},
+ {k:'persuasao',n:'Sedutora',at:{car:4,sab:3,dex:2},sk:['chicote','extase','masoq'],d:'Chicote de longe, sangramento e êxtase que prende o inimigo à própria arma. Acumula dor para soltar de uma vez.'},
+ {k:'paixao',n:'Maga da Paixão',at:{int:4,con:2,dex:3},sk:['glifob','glifod','aracne'],d:'Glifos de água e desejo que explodem no turno inimigo e a Ninfa da Água lutando ao lado dela.'},
+ {k:'atracao',n:'Malandra',at:{dex:4,con:3,for:2},sk:['voo','corte','arco'],d:'Voa, golpeia e foge voando. Veneno de perto, Flecha do Cupido de longe.'},
  {k:'custom',n:'Personalizada',d:'Distribua atributos e combine habilidades de árvores diferentes.'}];
 let pickI=0,pickT=0,pickCtx=[];
 function renderPick(){$('cls').innerHTML=PRESETS.map((p,i)=>`<button class="card${i===pickI?' foc':''}" data-i="${i}" style="--c:${p.k==='custom'?'#b08d4a':TREES.find(T=>T.id===p.k).c}">${classSVG(p.k,i)}<b>${p.n}</b><span>${p.d}</span></button>`).join('');
@@ -590,7 +596,7 @@ function renderPick(){$('cls').innerHTML=PRESETS.map((p,i)=>`<button class="card
  document.querySelectorAll('.card').forEach(b=>{b.onclick=()=>{pickI=+b.dataset.i;markPick(true);choosePick()};b.onmouseenter=()=>{if(pickI!==+b.dataset.i){pickI=+b.dataset.i;markPick()}}})}
 function markPick(q){document.querySelectorAll('.card').forEach(b=>b.classList.toggle('foc',+b.dataset.i===pickI));if(!q)beep(520,.025,'triangle',.03)}
 function pickKey(a){if(a==='left'||a==='up')pickI=(pickI+4)%5;else if(a==='right'||a==='down')pickI=(pickI+1)%5;else if(a==='ok')return choosePick();markPick()}
-const SHORT={"escudo": "Bate com o escudo e pode atordoar Hefesto.", "prece": "Cura Afrodite e a aliada.", "muralha": "Aliados recebem menos dano por 2 turnos.", "investida": "Salta até Hefesto e golpeia.", "arremesso": "Lança de longe que faz sangrar.", "ceifa": "Fere as pernas dele: −2 PM.", "chicote": "Chicotada de longe: sangramento e +1 Masoquismo.", "extase": "Extasia Hefesto: só o martelo no próximo turno.", "masoq": "Gasta toda a dor acumulada num golpe.", "glifob": "Área 3×3 que explode em fogo no turno dele.", "glifod": "Área 2×2 que marca e prende Hefesto.", "aracne": "Invoca uma náiade que luta sozinha.", "voo": "Voa, golpeia e pode recuar voando.", "corte": "Dois cortes envenenados de perto.", "arco": "Flecha de longe, uma vez por turno."};
+const SHORT={"escudo": "Bate com o escudo e pode atordoar o inimigo.", "prece": "Cura Afrodite e a aliada.", "muralha": "Aliados recebem menos dano por 2 turnos.", "investida": "Salta até o inimigo e golpeia.", "arremesso": "Lança de longe que faz sangrar.", "ceifa": "Fere as pernas do inimigo: −2 PM.", "chicote": "Chicotada de longe: sangramento e +1 Masoquismo.", "extase": "Extasia o inimigo: só a arma, sem poderes, no próximo turno.", "masoq": "Gasta toda a dor acumulada num golpe.", "glifob": "Área 3×3 de maré que explode no turno inimigo.", "glifod": "Área 2×2 que marca e prende os inimigos.", "aracne": "Invoca a Ninfa da Água: cura em área e Ataque do Mar.", "voo": "Voa, golpeia e pode recuar voando.", "corte": "Dois cortes envenenados de perto.", "arco": "Flecha do amor de longe: extasia o inimigo."};
 function iconURL(k,col){const c=document.createElement('canvas');c.width=c.height=80;const G=g;g=c.getContext('2d');try{iconAct(k,40,40,52,col)}catch(e){}finally{g=G}return c.toDataURL()}
 function skRow(id,col){const s=SKL[id];return`<div class="sk"><img alt="" src="${iconURL(id,col)}"><div><b>${s.n}</b><small>${s.pa} PA${CD[id]?' · recarga '+(CD[id]===1?'1 por turno':CD[id]+' turnos'):''}</small><p>${SHORT[id]||''}</p></div></div>`}
 function choosePick(){const p=PRESETS[pickI];if(p.k==='custom'){step=1;return showBuild()}
@@ -606,7 +612,7 @@ function drawPickPreview(dt){pkT+=dt;const p=PRESETS[pickI],pz=p.k==='custom'?CY
  c.fillStyle='rgba(150,120,95,.08)';c.beginPath();c.ellipse(150,298,110,18,0,0,7);c.fill();
  drawAfro(c,150,298,1.18,pz,pkT);
  const n=p.k==='custom'?'Personalizada · '+T.arch:p.n;if($('pkn').dataset.n!==n){$('pkn').dataset.n=n;$('pkn').innerHTML=`<b style="color:${p.k==='custom'?'#b08d4a':T.c}">${n}</b>`}}
-function showPick(){scr='pick';document.body.classList.remove('fighting');try{sadStop();lamentStop()}catch(e){}$('player').hidden=true;bgm.pause();$('pick').hidden=false;$('build').hidden=true;$('game').hidden=true;try{speechSynthesis.cancel()}catch(e){}renderPick()}
+function showPick(){scr='pick';TEL.screen('Tela Inicial');document.body.classList.remove('fighting');try{sadStop();lamentStop()}catch(e){}$('player').hidden=true;bgm.pause();$('pick').hidden=false;$('build').hidden=true;$('game').hidden=true;try{speechSynthesis.cancel()}catch(e){}renderPick()}
 function cardArt(c,k,t){const W=240,Hh=170,pu=.5+.5*Math.sin(t*3);c.clearRect(0,0,W,Hh);
  const bg=c.createRadialGradient(120,95,8,120,95,150);bg.addColorStop(0,'#2a140c');bg.addColorStop(1,'#080706');c.fillStyle=bg;c.fillRect(0,0,W,Hh);
  const ench=f=>{c.save();c.shadowColor='#b36bff';c.shadowBlur=14+14*pu;f();c.restore()};
@@ -639,7 +645,7 @@ function addPlan(d){if(S.st!=='player'||S.mode||S.walk)return;S.hoverBad=null;if
 function bfsPlan(t){const key=p=>p.c+','+p.r,prev={},q=[S.me];prev[key(S.me)]=null;
  while(q.length){const p=q.shift();if(p.c===t.c&&p.r===t.r)break;for(const d in DV){const n={c:p.c+DV[d][0],r:p.r+DV[d][1]};if(!(key(n) in prev)&&!blocked(n.c,n.r,'me')){prev[key(n)]=[p,d];q.push(n)}}}
  if(!(key(t) in prev))return null;const path=[];let k=key(t);while(prev[k]){path.unshift(prev[k][1]);k=key(prev[k][0])}return path}
-function walkPlan(){if(!S.plan.length||S.st!=='player'||S.mode)return false;S.walk=[...S.plan];S.plan=[];S.wt=S.t;return true}
+function walkPlan(){if(!S.plan.length||S.st!=='player'||S.mode)return false;logA('Afrodite anda '+S.plan.length+(S.plan.length>1?' casas':' casa'),'#b8ad9c');S.walk=[...S.plan];S.plan=[];S.wt=S.t;return true}
 function walkTick(){if(!S.walk||S.st==='dice')return;if(S.st!=='player'||!S.walk.length){S.walk=null;return}if(S.t<S.wt)return;
  const d=S.walk.shift(),pm=S.pm,c0=S.me.c,r0=S.me.r;doMove(d);S.wt=S.t+.22;if(S.st==='player'&&S.pm===pm&&S.me.c===c0&&S.me.r===r0)S.walk=null}
 function drawPlan(){S.pv=0;if(S.st!=='player'||S.mode||S.over)return;
@@ -719,10 +725,10 @@ function drawCue(k,el){if(!k||k.type==='heat')return;const w0=k.dur-.15,w1=k.dur
  g.strokeStyle=`rgba(255,250,235,${1-f})`;g.lineWidth=2;g.beginPath();g.arc(x,y,s+10*f,0,7);g.stroke();g.restore()}
 
 /* ---------- v5: arte vetorial das classes, falas, vozes, reações, masoquismo ---------- */
-const CLASS_TXT={protecao:'Alterna duas posturas. Na defensiva, esconde-se atrás de um escudo enorme para atordoar, curar e proteger os aliados. Na ofensiva, joga o escudo nas costas e gira a lança com as duas mãos para saltar sobre Hefesto, arremessar a lança e ferir as pernas dele.',
- persuasao:'Luta de longe com o chicote: cada chicotada faz sangrar e soma Masoquismo, assim como cada golpe que ela recebe. O Êxtase prende Hefesto ao próprio martelo, e o Masoquismo despeja toda a dor acumulada de uma vez.',
- paixao:'Marca áreas no chão com glifos que explodem no turno de Hefesto: o de Brasa queima tudo em 3×3, o do Desejo (2×2) marca e prende. Invoca uma náiade, ninfa das águas, que luta sozinha ao lado dela e apaga o fogo da forja.',
- atracao:'Avança voando, golpeia e foge voando no mesmo turno, se o voo acertar Hefesto. De perto, um corte duplo envenenado; de longe, o arco.'};
+const CLASS_TXT={protecao:'Alterna duas posturas. Na defensiva, esconde-se atrás de um escudo enorme para atordoar, curar e proteger os aliados. Na ofensiva, joga o escudo nas costas e gira a lança com as duas mãos para saltar sobre o inimigo, arremessar a lança e ferir as pernas dele.',
+ persuasao:'Luta de longe com o chicote: cada chicotada faz sangrar e soma Masoquismo, assim como cada golpe que ela recebe. O Êxtase prende o inimigo à própria arma, e o Masoquismo despeja toda a dor acumulada de uma vez.',
+ paixao:'Nascida da espuma do mar, marca áreas no chão com glifos de água e desejo que explodem no turno inimigo: o da Maré (3×3) fere e pesa as pernas, o do Desejo (2×2) marca e prende. Invoca a Ninfa da Água, que cura os aliados e ataca com o mar.',
+ atracao:'Avança voando, golpeia e foge voando no mesmo turno, se o voo acertar um inimigo. De perto, um corte duplo envenenado; de longe, a Flecha do Cupido, que deixa o inimigo extasiado.'};
 const svgHeart=(x,y,s)=>`M${x} ${y+s*.9}C${x-s*1.6} ${y-s*.2} ${x-s*.8} ${y-s*1.3} ${x} ${y-s*.5}C${x+s*.8} ${y-s*1.3} ${x+s*1.6} ${y-s*.2} ${x} ${y+s*.9}Z`;
 function classSVG(k,i){const id='g'+i,glow=`<filter id="${id}" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="4" result="b"/><feFlood flood-color="#a46cf0" flood-opacity=".9"/><feComposite in2="b" operator="in"/><feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge></filter>`,
  bg=`<radialGradient id="${id}bg" cx="50%" cy="55%" r="70%"><stop offset="0" stop-color="#2a140c"/><stop offset="1" stop-color="#070605"/></radialGradient><linearGradient id="${id}bl" x1="0" x2="1"><stop offset="0" stop-color="#f2ecff"/><stop offset=".5" stop-color="#cbbcec"/><stop offset="1" stop-color="#7d6aa6"/></linearGradient>`;
@@ -799,11 +805,11 @@ function iconAct(k,x,y,s,col){g.save();g.translate(x,y);g.scale(s/24,s/24);g.str
 function predictTxt(a,onHe){const k=actKey(a),f=actInfo(a),m=S.mark>0?1.4:1,P2=(ak,hk)=>Math.round(saveP(ak,hk)*100)+'%';if(!f||k==='end')return'';
  if(f.self&&k==='stance')return S.stance==='off'?'troca para defensiva':'troca para ofensiva';
  if(f.tg==='he'&&!onHe)return'errar';const D=v=>'−'+Math.round(v*m);
- switch(k){case 'a':return D(6+3*A.for);case 'escudo':return D(6+2*A.for)+' · atordoa '+P2('for','con');case 'prece':return'+'+(8+2*A.con)+' vida';case 'muralha':return'−25% de dano, 2 turnos';
+ switch(k){case 'a':return D(6+3*A.for);case 'escudo':return D(6+2*A.for)+' · atordoa '+P2('for','con');case 'prece':return'+'+(10+2*A.con)+' vida';case 'muralha':return'−25% de dano, 2 turnos';
   case 'investida':return'salta · '+D(8+3*A.for);case 'arremesso':return D(12+3*A.for)+' · sangra '+P2('for','con');case 'ceifa':return D(8+3*A.for)+' · −2 PM '+P2('for','dex');
-  case 'chicote':return D(7+2*A.car)+' · sangra '+P2('dex','con');case 'extase':return'extasia '+P2('car','sab');case 'masoq':return D((8+2*A.car+(5+A.car)*S.maso)*(S.charm?1.5:1))+' · ×'+S.maso;
-  case 'glifob':case 'glifod':{const cs=glyphCells(k==='glifob'?'b':'d',S.cur?S.cur.c:S.he.c,S.cur?S.cur.r:S.he.r),hit=inCells(cs,S.he),me=inCells(cs,S.me);return(hit?(k==='glifob'?'−'+(12+3*A.int)+' no turno dele':'prende '+P2('int','sab')):'Hefesto fora da área')+(me&&k==='glifob'?' · você está na área!':'')}case 'aracne':return'invoca ('+(30+8*A.int)+' vida)';
-  case 'voo':return onHe?D(11+3*A.dex)+' · pode recuar':'voa';case 'recuo':return'recua';case 'corte':return D(2*(5+2*A.dex))+' · veneno '+P2('dex','con');case 'arco':return D(12+3*A.dex)}return''}
+  case 'chicote':return D(8+2*A.car)+' · sangra '+P2('dex','con');case 'extase':return'extasia '+P2('car','sab');case 'masoq':return D((8+2*A.car+(7+A.car)*S.maso)*(S.charm?1.5:1))+' · ×'+S.maso;
+  case 'glifob':case 'glifod':{const cs=glyphCells(k==='glifob'?'b':'d',S.cur?S.cur.c:S.he.c,S.cur?S.cur.r:S.he.r),hit=inCells(cs,S.he),me=inCells(cs,S.me);return hit?(k==='glifob'?'−'+(12+3*A.int)+' no turno inimigo':'prende '+P2('int','sab')):'inimigo fora da área'}case 'aracne':return'invoca ('+(24+6*A.int)+' vida)';
+  case 'voo':return onHe?D(11+3*A.dex)+' · pode recuar':'voa';case 'recuo':return'recua';case 'corte':return D(2*(6+2*A.dex))+' · veneno '+P2('dex','con');case 'arco':return D(14+3*A.dex)+' · extasia '+P2('dex','sab')}return''}
 function menuGeo(){const it=menuItems(),n=it.length,cx=480,cy=328,R=150;return{cx,cy,R,it:it.map((a,i)=>{const an=-Math.PI/2+i*2*Math.PI/n;return{a,an,x:cx+Math.cos(an)*R,y:cy+Math.sin(an)*R}})}}
 function drawMenu(){const G=menuGeo(),pu=.5+.5*Math.sin(S.t*5),sel=G.it[S.mi];g.save();
  g.fillStyle='rgba(4,3,2,.62)';g.fillRect(0,0,960,600);
@@ -841,7 +847,7 @@ function turnCard(cd,on,cx,y0,pu){const w=154,x0=cx-w/2,n=cd.st.length,rows=Math
   S.tlIcons.push({x:ix,y:iy,n:st.n+(st.v?' '+st.v:'')})});g.restore();return h}
 function drawTimeline(){const pu=.6+.4*Math.sin(S.t*5),who=S.st==='player'||S.st==='dice'||S.st==='deploy'?0:S.st==='ally'?2:1;
  const U=[{i:0,n:'Afrodite',v:S.hp/S.mhp,gh:S.hpG/S.mhp,ally:true,fl:S.hbar,txt:Math.ceil(S.hp)+' / '+S.mhp,st:afStates()}];
- if(S.ally)U.push({i:2,n:'Náiade',v:S.ally.hp/S.ally.mhp,gh:S.ally.hp/S.ally.mhp,ally:true,fl:S.ally.hf+.6,txt:Math.max(0,S.ally.hp)+' / '+S.ally.mhp,st:[]});
+ if(S.ally)U.push({i:2,n:'Ninfa',v:S.ally.hp/S.ally.mhp,gh:S.ally.hp/S.ally.mhp,ally:true,fl:S.ally.hf+.6,txt:Math.max(0,S.ally.hp)+' / '+S.ally.mhp,st:[]});
  U.push({i:1,n:'Hefesto',v:S.eh/S.meh,gh:S.ehG/S.meh,ally:false,fl:S.ebar,txt:S.eh+' / '+S.meh,st:hefIcons()});
  g.save();let y=70;const hs=[];U.forEach(cd=>{const h=82+Math.max(1,Math.ceil(cd.st.length/5))*28;hs.push(h)});const tot=hs.reduce((a,b)=>a+b,0)+(U.length-1)*16+12;
  g.fillStyle='rgba(22,19,16,.9)';g.strokeStyle='#4a4238';g.lineWidth=1;rr(6,64,170,tot,4);g.fill();g.stroke();
@@ -851,7 +857,7 @@ function drawTimeline(){const pu=.6+.4*Math.sin(S.t*5),who=S.st==='player'||S.st
 
 /* ---------- luta automática: planejador de dano + reações no tempo certo ---------- */
 let AUTO=false;
-function setAuto(v){AUTO=v;const b=$('bAuto');if(b){b.innerHTML='Luta automática: '+(AUTO?'ligada':'desligada')+' <small>P</small>';b.classList.toggle('on',AUTO)}if(typeof S!=='undefined'&&S){S.autoNext=S.t+.6;if(AUTO){S.plan=[];S.mode=null;S.aim=null}}beep(AUTO?880:440,.06,'triangle')}
+function setAuto(v){if(v!==AUTO)TEL.auto(v);AUTO=v;const b=$('bAuto');if(b){b.innerHTML='Luta automática: '+(AUTO?'ligada':'desligada')+' <small>P</small>';b.classList.toggle('on',AUTO)}if(typeof S!=='undefined'&&S){S.autoNext=S.t+.6;if(AUTO){S.plan=[];S.mode=null;S.aim=null}}beep(AUTO?880:440,.06,'triangle')}
 function reachCells(){const key=p=>p.c+','+p.r,seen={},out=[{c:S.me.c,r:S.me.r,path:[]}];seen[key(S.me)]=1;let fr=[out[0]];
  for(let k=0;k<S.pm;k++){const nx=[];fr.forEach(p=>{for(const d in DV){const n={c:p.c+DV[d][0],r:p.r+DV[d][1]};if(seen[key(n)]||blocked(n.c,n.r,'me'))continue;seen[key(n)]=1;const q={...n,path:[...p.path,d]};out.push(q);nx.push(q)}});fr=nx}return out}
 function avancoLand(from){let t=null,bd=99;for(let dc=-1;dc<=1;dc++)for(let dr=-1;dr<=1;dr++){const c=S.he.c+dc,r=S.he.r+dr;if((dc||dr)&&!blocked(c,r,'me')){const k=dist({c,r},from);if(k<bd){bd=k;t={c,r}}}}return t}
@@ -871,10 +877,16 @@ function autoTick(){if(!AUTO||scr!=='fight'||!S||S.over)return;
  if(S.st!=='player'||S.walk||S.dice||S.mode)return;if(S.t<(S.autoNext||0))return;S.autoNext=S.t+.85;autoStep()}
 
 /* ---------- histórico de ações + botões no canto da tela ---------- */
-function logA(txt,col){if(typeof S==='undefined'||!S)return;(S.log=S.log||[]).push({txt,col:col||'#b8ad9c',t:S.t});if(S.log.length>30)S.log.shift()}
-function drawLog(){const L=(S.log||[]).slice(S.ally?-6:-9);if(!L.length)return;g.save();const x=14,yb=588,lh=17;
- g.fillStyle='rgba(16,13,11,.72)';g.fillRect(x-6,yb-L.length*lh-6,262,L.length*lh+12);g.fillStyle='#4a4238';g.fillRect(x-6,yb-L.length*lh-6,2,L.length*lh+12);
- g.textAlign='left';g.font='13px "EB Garamond",Georgia,serif';L.forEach((e,i)=>{const k=L.length-1-i,y=yb-k*lh,nw=S.t-e.t<.6;g.globalAlpha=Math.max(.35,1-k*.13);g.fillStyle=e.col;g.beginPath();g.arc(x+3,y-4,2.2,0,7);g.fill();g.fillStyle=nw?'#fff6e0':e.col;g.fillText(e.txt,x+11,y)});g.restore()}
+function logA(txt,col){txt=String(txt).replace(/\s*[−-](\d+)$/,': -$1 PV').replace(/\s*\+(\d+)$/,': +$1 PV').toUpperCase();if(typeof S==='undefined'||!S)return;(S.log=S.log||[]).push({txt,col:col||'#b8ad9c',t:S.t});if(S.log.length>30)S.log.shift()}
+let LOGV=true,LOGR=null;
+function drawLog(){LOGR=null;const L=(S.log||[]).slice(S.ally?-6:-8),x=16,yb=590,lh=20;g.save();
+ if(!LOGV){LOGR=[x-6,yb-22,118,30];g.globalAlpha=.75;g.strokeStyle='#6a6056';g.lineWidth=1;rr(x-6,yb-22,118,30,3);g.stroke();g.fillStyle='#cfc4b4';g.font='600 12px Cinzel,serif';g.textAlign='left';g.fillText('☰ Histórico',x+8,yb-2);g.restore();return}
+ if(!L.length){g.restore();return}
+ g.textAlign='left';g.font='600 14px "EB Garamond",Georgia,serif';try{g.letterSpacing='.6px'}catch(e){}g.lineJoin='round';let w=0;
+ L.forEach((e,i)=>{const k=L.length-1-i,y=yb-k*lh,nw=S.t-e.t<.6;let tx=e.txt;while(tx.length>4&&g.measureText(tx).width>254)tx=tx.slice(0,-2);if(tx!==e.txt)tx=tx.trimEnd()+'…';e={...e,txt:tx};w=Math.max(w,g.measureText(tx).width);g.globalAlpha=Math.max(.4,1-k*.11);
+  g.strokeStyle='rgba(0,0,0,.85)';g.lineWidth=4;g.strokeText(e.txt,x+12,y);g.fillStyle=e.col;g.beginPath();g.arc(x+3,y-5,3,0,7);g.fill();g.fillStyle=nw?'#fff6e0':e.col;g.shadowColor='#000';g.shadowBlur=4;g.fillText(e.txt,x+12,y);g.shadowBlur=0});
+ LOGR=[x-8,yb-L.length*lh-4,Math.min(272,w+30),L.length*lh+10];
+ if(TOUCH||(mouse&&mouse[0]<LOGR[0]+LOGR[2]&&mouse[1]>LOGR[1])){g.globalAlpha=.6;g.font='11px "EB Garamond",Georgia,serif';g.fillStyle='#9a8f80';g.fillText(TOUCH?'toque para esconder':'clique para esconder',x+12,LOGR[1]-2)}g.restore()}
 const CORNER={mus:[628,560,196,30],auto:[832,560,120,30]};
 function inR(r){return mouse&&mouse[0]>=r[0]&&mouse[0]<=r[0]+r[2]&&mouse[1]>=r[1]&&mouse[1]<=r[1]+r[3]}
 function drawCorner(){g.save();const pill=(r,on,hot)=>{g.fillStyle=on?'rgba(70,52,30,.92)':'rgba(22,19,16,.88)';rr(r[0],r[1],r[2],r[3],15);g.fill();g.strokeStyle=on?'#e0c27a':hot?'#8a7e6e':'#4a4238';g.lineWidth=1;g.stroke()};
@@ -887,7 +899,7 @@ function drawCorner(){g.save();const pill=(r,on,hot)=>{g.fillStyle=on?'rgba(70,5
 function cornerClick(){if(inR(CORNER.mus)){if(bgmOk){if(bgm.paused){bgmUserPaused=false;bgmPlay()}else{bgmUserPaused=true;bgm.pause()}}return true}if(inR(CORNER.auto)){setAuto(!AUTO);return true}return false}
 
 /* ---------- v7: recargas, impacto extravagante das habilidades, tela de morte ---------- */
-const CD={a:1,escudo:4,prece:4,muralha:5,investida:3,arremesso:3,ceifa:3,chicote:1,extase:4,masoq:3,glifob:2,glifod:3,aracne:6,voo:3,corte:2,arco:1};
+const CD={a:1,escudo:4,prece:4,muralha:5,investida:3,arremesso:3,ceifa:3,chicote:1,extase:4,masoq:3,glifob:2,glifod:3,aracne:6,voo:3,corte:2,arco:3};
 let AI_ACC=1;
 function cdLeft(id){return id&&S.cd&&S.cd[id]>0?S.cd[id]:0}
 function cdTxt(id){const n=CD[id]||0;return n?(n===1?'Recarga: 1 por turno':'Recarga: '+n+' turnos'):''}
@@ -917,11 +929,11 @@ function sadStart(){sadStop();try{const a=ac(),m=a.createGain();m.gain.value=0;m
   ml.forEach((f,j)=>{const o=a.createOscillator(),gn=a.createGain(),t0=t+.4+j*1.25;o.type='sine';o.frequency.value=f;o.connect(gn);gn.connect(m);gn.connect(dl);gn.gain.setValueAtTime(0,t0);gn.gain.linearRampToValueAtTime(.08,t0+.03);gn.gain.exponentialRampToValueAtTime(.001,t0+1.6);o.start(t0);o.stop(t0+1.7)});i++};
  bar();SAD={m,iv:setInterval(bar,4000)}}catch(e){}}
 function sadStop(){if(!SAD)return;try{const a=ac();SAD.m.gain.cancelScheduledValues(a.currentTime);SAD.m.gain.setValueAtTime(SAD.m.gain.value,a.currentTime);SAD.m.gain.linearRampToValueAtTime(0,a.currentTime+.6);clearInterval(SAD.iv)}catch(e){}SAD=null}
-function onDeath(){S.deathT=S.t;lamentStop();try{bgm.pause()}catch(e){}try{const a=ac(),t=a.currentTime;sw(90,30,2.4,'sine',.35);nz(2.2,240,.7,.22,60);[110,130.8,164.8].forEach(f=>{const o=a.createOscillator(),n=a.createGain();o.type='sawtooth';o.frequency.value=f;const lp=a.createBiquadFilter();lp.type='lowpass';lp.frequency.value=500;o.connect(lp);lp.connect(n);n.connect(a.destination);n.gain.setValueAtTime(0,t+.2);n.gain.linearRampToValueAtTime(.05,t+1.2);n.gain.linearRampToValueAtTime(0,t+4.5);o.start(t+.2);o.stop(t+4.6)})}catch(e){}setTimeout(sadStart,2600)}
+function onDeath(){S.deathT=S.t;S.overRT=performance.now();TEL.add('deaths');TEL.screen('Tela Final');lamentStop();try{bgm.pause()}catch(e){}try{const a=ac(),t=a.currentTime;sw(90,30,2.4,'sine',.35);nz(2.2,240,.7,.22,60);[110,130.8,164.8].forEach(f=>{const o=a.createOscillator(),n=a.createGain();o.type='sawtooth';o.frequency.value=f;const lp=a.createBiquadFilter();lp.type='lowpass';lp.frequency.value=500;o.connect(lp);lp.connect(n);n.connect(a.destination);n.gain.setValueAtTime(0,t+.2);n.gain.linearRampToValueAtTime(.05,t+1.2);n.gain.linearRampToValueAtTime(0,t+4.5);o.start(t+.2);o.stop(t+4.6)})}catch(e){}setTimeout(sadStart,2600)}
 function drawDeath(){const el=S.t-(S.deathT||S.t),a=Math.min(1,el/2.2);g.save();g.fillStyle=`rgba(0,0,0,${.78*a})`;g.fillRect(0,0,960,600);
  const ta=Math.max(0,Math.min(1,(el-.6)/1.6)),y=300;g.globalAlpha=ta;const gr=g.createLinearGradient(0,y-60,0,y+60);gr.addColorStop(0,'rgba(0,0,0,0)');gr.addColorStop(.25,'rgba(0,0,0,.92)');gr.addColorStop(.75,'rgba(0,0,0,.92)');gr.addColorStop(1,'rgba(0,0,0,0)');g.fillStyle=gr;g.fillRect(0,y-60,960,120);
  const sc=1+.04*Math.min(1,el/6);g.translate(480,y);g.scale(sc,sc);g.textAlign='center';try{g.letterSpacing='14px'}catch(e){}g.font='400 66px "EB Garamond",Georgia,serif';g.shadowColor='#5a0a06';g.shadowBlur=24;g.fillStyle='#9e1b14';g.fillText('VOCÊ MORREU',0,22);try{g.letterSpacing='0px'}catch(e){}g.restore();
- if(el>3.2){g.save();g.globalAlpha=Math.min(1,(el-3.2)/1)*(.6+.25*Math.sin(S.t*2));g.textAlign='center';g.font='15px "EB Garamond",Georgia,serif';g.fillStyle='#9a8f80';g.fillText('✕ / clique: tentar de novo   ·   Select / R: trocar de classe',480,420);g.restore()}}
+ if(el>3.2){g.save();g.globalAlpha=Math.min(1,(el-3.2)/1)*(.6+.25*Math.sin(S.t*2));g.textAlign='center';g.font='15px "EB Garamond",Georgia,serif';g.fillStyle='#9a8f80';g.fillText('',480,420);g.restore()}}
 
 /* ---------- v8: turno inimigo, glifos, aliada, estados, IA, sons ---------- */
 let AL=[0,0],PST='def';
@@ -935,7 +947,7 @@ function enemyTurn(){S.st='enemy';S.pm=3;S.free=false;
  dl+=meteorFall();if(S.over)return;
  if(S.mark>0)S.mark--;
  if(S.bleed&&S.bleed.t>0){S.bleed.t--;dmgE(S.bleed.d,'Sangramento',1);if(S.bleed&&S.bleed.t<=0)S.bleed=null}
- if(!S.over&&S.poison>0){dmgE(3*S.poison,'Veneno',1);S.poison--}
+ if(!S.over&&S.poison&&S.poison.t>0){dmgE(S.poison.d,'Veneno',1);S.puddles=(S.puddles||[]).concat([{x:HE[0]+(Math.random()-.5)*30,y:HE[1]+16,t:S.t}]);S.poison.t--;if(S.poison.t<=0)S.poison=null}
  if(!S.over&&S.burn>0){S.burn--;dmgE(3+A.int,'Ardor',1)}
  if(S.over)return;
  S.rootNow=resolveGlyphs();if(S.over)return;
@@ -947,24 +959,24 @@ function enemyTurn(){S.st='enemy';S.pm=3;S.free=false;
  after(.8+dl,hefMove)}
 function hefMove(){const ph1=S.phase<2;let steps=ph1?4:1;if(S.pz==='paixao'&&ph1)steps++;
  if(S.hslow){steps=Math.max(0,steps-S.hslow);logA('Hefesto anda '+steps+' casa(s) (PM perdidos)','#b8ad9c');S.hslow=0}if(S.rootNow)steps=0;
- S.tgtAlly=!!(S.ally&&!S.charmNow&&Math.random()<.4);const tg=S.tgtAlly?S.ally:S.me,want=S.charmNow||S.tgtAlly?1:ph1?[1,1,2,3][Math.random()*4|0]:1;
+ S.tgtAlly=!!(S.ally&&!S.charmNow&&Math.random()<.4);const st0={...S.he},tg=S.tgtAlly?S.ally:S.me,want=S.charmNow||S.tgtAlly?1:ph1?[1,1,2,3][Math.random()*4|0]:1;
  for(let i=0;i<steps;i++){const d0=dist(S.he,tg);if(d0===want)break;let best=null,bs=Math.abs(d0-want);
   for(let dc=-1;dc<=1;dc++)for(let dr=-1;dr<=1;dr++){const c=S.he.c+dc,r=S.he.r+dr;if((!dc&&!dr)||blocked(c,r,'he'))continue;const s=Math.abs(dist({c,r},tg)-want)+Math.random()*.1;if(s<bs){bs=s;best={c,r}}}
   if(!best)break;S.he=best}
- if(S.over)return;
+ if(S.over)return;{const mv=dist(st0,S.he);if(mv)logA('Hefesto anda '+mv+(mv>1?' casas':' casa'),'#b8ad9c')}
  if(ph1)nz(.25,200,1,.05);else{sw(60,40,.15,'sine',.1);setTimeout(()=>sw(55,35,.2,'sine',.12),260)}
  after(ph1?.6:.9,nextAtk)}
 function nextAtk(){if(S.over)return;
  if(S.tgtAlly&&S.ally&&dist(S.he,S.ally)<=1)return hitAlly();
  if(S.charmNow){if(dist(S.he,S.me)>1){say('Hefesto vaga, extasiado.');logA('Hefesto não alcança Afrodite','#d6a8ff');return after(1.2,afterAtk)}S.forceAtk='bigorna'}
  nextAtk0()}
-function hurtAlly(n,lb){if(!S.ally)return;n=Math.round(n*(S.wall>0?.75:1));S.ally.hp-=n;S.ally.hf=S.t;pop(AL[0],AL[1]-80,'-'+n,'#ff7a7a');logA(lb+' na náiade −'+n,'#ff8a7a');
- if(S.ally.hp<=0){S.ally=null;logA('A náiade se desfaz em água','#8f8578');say('A náiade se desfaz em água.');sw(500,90,.7,'triangle',.05)}}
-function hitAlly(){S.atkA={t0:S.t};say('Hefesto ergue o martelo contra a náiade!');snd('bigorna','a');after(.9,()=>{snd('bigorna','c');S.shake=S.t+.2;hurtAlly(22*HEF_DMG,'Golpe de Bigorna');S.atkA=null;afterAtk()})}
+function hurtAlly(n,lb){if(!S.ally)return;n=Math.round(n*(S.wall>0?.75:1));S.ally.hp-=n;S.ally.hf=S.t;pop(AL[0],AL[1]-80,'-'+n,'#ff7a7a');logA(lb+' na Ninfa da Água −'+n,'#ff8a7a');
+ if(S.ally.hp<=0){S.ally=null;logA('A Ninfa da Água se desfaz em espuma','#8f8578');say('A Ninfa da Água se desfaz em espuma.');sw(500,90,.7,'triangle',.05)}}
+function hitAlly(){S.atkA={t0:S.t};say('Hefesto ergue o martelo contra a Ninfa da Água!');snd('bigorna','a');after(.9,()=>{snd('bigorna','c');S.shake=S.t+.2;hurtAlly(22*HEF_DMG,'Golpe de Bigorna');S.atkA=null;afterAtk()})}
 function endTurn(m){S.lastTap=null;if(m)say(m);S.mode=null;S.aim=null;if(S.recuo){S.recuo=false;S.cd.voo=CD.voo}S.st='wait';after(.7,S.ally?allyTurn:enemyTurn)}
 function afStates(){const st=[];if(hasTree('protecao'))st.push({k:S.stance==='off'?'investida':'escudo',n:S.stance==='off'?'Postura ofensiva':'Postura defensiva'});if(S.wall>0)st.push({k:'muralha',n:'Muralha de Afeto',v:S.wall});
  if(hasTree('persuasao')&&S.maso>0)st.push({k:'masoq',n:'Masoquismo',v:S.maso});if(S.recuo)st.push({k:'recuo',n:'Pode recuar em voo'});if(S.free)st.push({k:'voo',n:'Livre para escapar'});return st}
-function hefIcons(){const st=[];if(S.stun)st.push({k:'tonto',n:'Atordoado'});if(S.charm||S.charmNow)st.push({k:'extase',n:'Extasiado'});if(S.bleed)st.push({k:'sangue',n:'Sangramento',v:S.bleed.t});if(S.poison>0)st.push({k:'veneno',n:'Veneno',v:S.poison});
+function hefIcons(){const st=[];if(S.stun)st.push({k:'tonto',n:'Atordoado'});if(S.charm||S.charmNow)st.push({k:'extase',n:'Extasiado'});if(S.bleed)st.push({k:'sangue',n:'Sangramento',v:S.bleed.t});if(S.poison)st.push({k:'veneno',n:'Envenenado ('+S.poison.d+' por turno)',v:S.poison.t});
  if(S.burn>0)st.push({k:'chama',n:'Ardor',v:S.burn});if(S.mark>0)st.push({k:'marca',n:'Marcado (+40% de dano)',v:S.mark});if(S.hslow)st.push({k:'raiz',n:'PM perdidos',v:S.hslow});return st}
 /* IA da luta automática para as classes novas */
 function sidOf(i,st){let id=build[i];if(!id)return null;if(ALT[id]&&st.stance==='off')id=ALT[id];if(id==='voo'&&st.recuo)id='recuo';return id}
@@ -975,7 +987,7 @@ function aiOpts(a,pos,st){const out=[];let id,pa;if(a==='a'){id='a';pa=3}else if
  switch(id){
  case 'a':if(d===1)add((6+3*A.for)*m,n);break;
  case 'escudo':if(inR){n.stun=1;add((6+2*A.for)*m+(st.stun?0:30*saveP('for','con')),n)}break;
- case 'prece':{const h=8+2*A.con,miss=S.mhp-st.hp;n.hp=Math.min(S.mhp,st.hp+h);add(Math.min(h,miss)*(st.hp<S.mhp*.5?1.3:.5),n,pos,pos);break}
+ case 'prece':{const h=10+2*A.con,miss=S.mhp-st.hp;n.hp=Math.min(S.mhp,st.hp+h);add(Math.min(h,miss)*(st.hp<S.mhp*.5?1.3:.5),n,pos,pos);break}
  case 'muralha':if(!st.wall){n.wall=1;add(14,n,pos,pos)}break;
  case 'investida':if(inR){const t=landFor(pos);if(t)add((8+3*A.for)*m+2,n,t)}break;
  case 'arremesso':if(inR){n.bleed=1;add((12+3*A.for)*m+(st.bleed?0:3*(3+A.for)*saveP('for','con')),n)}break;
@@ -983,13 +995,13 @@ function aiOpts(a,pos,st){const out=[];let id,pa;if(a==='a'){id='a';pa=3}else if
  case 'chicote':if(inR){n.maso=st.maso+1;n.bleed=1;add((8+2*A.car)*m+(st.bleed?0:2*(2+A.dex)*saveP('dex','con'))+4,n)}break;
  case 'extase':if(inR&&!st.charm){n.charm=1;n.maso=st.maso+1;add(34*saveP('car','sab')+6,n)}break;
  case 'masoq':if(inR){const dm=(8+2*A.car+(7+A.car)*st.maso)*(st.charm?1.5:1)*m;n.maso=0;add(dm-(st.maso<3?8*(3-st.maso):0),n)}break;
- case 'glifob':if(!st.gB){let bc=null;for(let dc=-1;dc<=1;dc++)for(let dr=-1;dr<=1;dr++){const q={c:S.he.c+dc,r:S.he.r+dr},dq=dist(q,pos);if(!inB(q.c,q.r)||dq<R[0]||dq>R[1])continue;if(inCells(glyphCells('b',q.c,q.r),pos)||(S.ally&&inCells(glyphCells('b',q.c,q.r),S.ally)))continue;bc=q;break}if(bc){n.gB=1;add((12+3*A.int)*.95+2*(3+A.int)*saveP('int','con'),n,pos,bc)}}break;
+ case 'glifob':if(!st.gB){let bc=null;for(let dc=-1;dc<=1;dc++)for(let dr=-1;dr<=1;dr++){const q={c:S.he.c+dc,r:S.he.r+dr},dq=dist(q,pos);if(!inB(q.c,q.r)||dq<R[0]||dq>R[1])continue;bc=q;break}if(bc){n.gB=1;add((12+3*A.int)*.95+2*(3+A.int)*saveP('int','con'),n,pos,bc)}}break;
  case 'glifod':if(!st.gD){let bc=null;for(let dc=-1;dc<=0;dc++)for(let dr=-1;dr<=0;dr++){const q={c:S.he.c+dc,r:S.he.r+dr},dq=dist(q,pos);if(!inB(q.c,q.r)||dq<R[0]||dq>R[1])continue;bc=q;break}if(bc){n.gD=1;n.mark=1;add(12+10*saveP('int','sab'),n,pos,bc)}}break;
  case 'aracne':if(!st.ally){let best=null,bd=99;for(let c=0;c<N;c++)for(let r=0;r<N;r++){const q={c,r},dq=dist(q,pos);if(dq<R[0]||dq>R[1]||blocked(c,r,'me')||(c===pos.c&&r===pos.r))continue;const k=dist(q,S.he);if(k<bd){bd=k;best=q}}if(best){n.ally=1;add(38,n,pos,best)}}break;
  case 'voo':if(inR){const t=landFor(pos);if(t){n.recuo=1;add((11+3*A.dex)*m+3,n,t)}}break;
  case 'recuo':{let best=null,bv=-99;for(let c=0;c<N;c++)for(let r=0;r<N;r++){const q={c,r},dq=dist(q,pos);if(dq<R[0]||dq>R[1]||blocked(c,r,'me'))continue;const v=posScore(q)+(dist(q,S.he)>1?6:0);if(v>bv){bv=v;best=q}}if(best){n.recuo=0;n.cd={...n.cd,voo:CD.voo};add(Math.max(.2,bv-posScore(pos)),n,best,best)}break}
  case 'corte':if(inR)add(2*(6+2*A.dex)*m+12*saveP('dex','con'),n);break;
- case 'arco':if(inR)add((14+3*A.dex)*m,n);break}
+ case 'arco':if(inR){n.charm=1;add((14+3*A.dex)*m+(st.charm?0:30*saveP('dex','sab')),n)}break}
  return out}
 function aiPlan(pos,st,depth){let best={v:0,seq:[]};if(depth<=0)return best;
  for(const a of['a','s1','s2','s3','stance'])for(const o of aiOpts(a,pos,st)){if(o.v<=0)continue;const nx=aiPlan(o.pos,o.st,depth-1),tot=o.v+nx.v;if(tot>best.v)best={v:tot,seq:[{a,cell:o.cell},...nx.seq]}}return best}
@@ -1025,7 +1037,7 @@ function moan(){try{const a=ac(),t=a.currentTime,v=Math.random(),dur=.42+Math.ra
 function brass(a,f,t0,d,v,dest){const o=a.createOscillator(),o2=a.createOscillator(),lp=a.createBiquadFilter(),gn=a.createGain();o.type='sawtooth';o2.type='sawtooth';o.frequency.value=f;o2.frequency.value=f*1.006;lp.type='lowpass';lp.frequency.setValueAtTime(400,t0);lp.frequency.linearRampToValueAtTime(2400,t0+.12);lp.frequency.linearRampToValueAtTime(1200,t0+d);
  o.connect(lp);o2.connect(lp);lp.connect(gn);gn.connect(dest);gn.gain.setValueAtTime(0,t0);gn.gain.linearRampToValueAtTime(v,t0+.06);gn.gain.setValueAtTime(v*.8,t0+d*.7);gn.gain.linearRampToValueAtTime(0,t0+d);o.start(t0);o2.start(t0);o.stop(t0+d+.05);o2.stop(t0+d+.05)}
 function timp(a,t0,f,dest){const o=a.createOscillator(),gn=a.createGain();o.type='sine';o.frequency.setValueAtTime(f*1.6,t0);o.frequency.exponentialRampToValueAtTime(f,t0+.08);o.connect(gn);gn.connect(dest);gn.gain.setValueAtTime(.5,t0);gn.gain.exponentialRampToValueAtTime(.001,t0+1.2);o.start(t0);o.stop(t0+1.25)}
-function onWin(){S.winT=S.t;lamentStop();try{bgm.pause()}catch(e){}sadStop();try{const a=ac(),m=a.createGain();m.gain.value=.55;m.connect(a.destination);const t=a.currentTime+.05;
+function onWin(){S.winT=S.t;S.overRT=performance.now();TEL.add('wins');TEL.screen('Tela Final');lamentStop();try{bgm.pause()}catch(e){}sadStop();try{const a=ac(),m=a.createGain();m.gain.value=.55;m.connect(a.destination);const t=a.currentTime+.05;
  [[220,0,.5],[261.6,.5,.5],[329.6,1,.5],[392,1.5,1.4]].forEach(([f,o,d])=>brass(a,f,t+o,d,.06,m));[174.6,220,261.6,349.2].forEach(f=>{brass(a,f,t+2.9,1.9,.035,m);choirNote(a,f,t+2.9,2.2,.03,m,'o')});[261.6,329.6,392,523.3].forEach(f=>{brass(a,f,t+4.7,3.2,.035,m);choirNote(a,f,t+4.7,3.6,.035,m,'a')});[0,2.9,4.7].forEach(o=>timp(a,t+o,o?55:65,m));
  nz(3.5,6000,.5,.06,3000);
  const CH=[[220,261.6,329.6],[174.6,220,261.6],[261.6,329.6,392],[196,246.9,293.7]],ML=[659.3,523.3,587.3,493.9];let i=0;
@@ -1038,10 +1050,10 @@ function drawWin(){const el=S.t-(S.winT||S.t),a=Math.min(1,el/1.6);g.save();g.fi
  const ta=Math.max(0,Math.min(1,(el-.4)/1.2));g.globalAlpha=ta;const y=268,sc=1+.04*Math.min(1,el/5);g.translate(480,y);g.scale(sc,sc);g.textAlign='center';try{g.letterSpacing='12px'}catch(e){}
  g.font='600 60px Cinzel,serif';g.shadowColor='#ffb03a';g.shadowBlur=30;g.fillStyle='#ffe2a0';g.fillText('TRIUNFO',0,0);try{g.letterSpacing='3px'}catch(e){}g.shadowBlur=8;g.font='600 18px Cinzel,serif';g.fillStyle='#e8cf98';g.fillText('HEFESTO RECONHECE AFRODITE',0,44);g.setTransform(1,0,0,1,0,0);
  if(el>2){g.globalAlpha=Math.min(1,(el-2));g.textAlign='center';try{g.letterSpacing='0px'}catch(e){}g.font='17px "EB Garamond",Georgia,serif';g.fillStyle='#d8c8a8';g.fillText('Ela passou no teste e recebeu a parte da forja do cinto (Kestos).',480,350);g.font='italic 16px Georgia,serif';g.fillStyle='#ffd9a0';g.fillText(L_ADM,480,380)}
- if(el>3.2){g.globalAlpha=Math.min(1,(el-3.2))*(.6+.25*Math.sin(S.t*2));g.font='15px "EB Garamond",Georgia,serif';g.fillStyle='#b8ad9c';g.fillText('✕ / clique: lutar de novo   ·   Select / R: trocar de classe',480,440)}g.restore()}
+ if(el>3.2){g.globalAlpha=Math.min(1,(el-3.2))*(.6+.25*Math.sin(S.t*2));g.font='15px "EB Garamond",Georgia,serif';g.fillStyle='#b8ad9c';g.fillText('',480,440)}g.restore()}
 
 /* ---------- v8: desenhos novos ---------- */
-Object.assign(VD,{muralha:1.3,ceifa:.8,chicote:.55,glifo:1,aracne:1.5,corte:.6,teia:.9,splash:.9,jato:.5});
+Object.assign(VD,{cupido:.9,muralha:1.3,ceifa:.8,chicote:.55,glifo:1,aracne:1.5,corte:.6,teia:.9,splash:.9,jato:.5});
 function drawVFX2(){S.vfx.forEach(v=>{if(!['muralha','ceifa','chicote','glifo','aracne','corte','teia','splash','jato'].includes(v.k))return;const f=(S.t-v.t)/VD[v.k],e=1-f,[ax,ay]=v.a,[bx,by]=v.b,[fx,fy]=v.f;g.save();g.lineCap='round';
  if(v.k==='muralha'){const tg=[[H[0],H[1]]];if(S.ally)tg.push(AL);tg.forEach(([x,y])=>{const R=70*Math.min(1,f*3);g.globalAlpha=e;g.strokeStyle='#8fc8ff';g.shadowColor='#8fc8ff';g.shadowBlur=20;g.lineWidth=3;g.beginPath();g.ellipse(x,y-40,R*.8,R,0,Math.PI,0);g.stroke();
   g.fillStyle='rgba(140,200,255,.12)';g.fill();for(let i=0;i<6;i++){const an=Math.PI+i*Math.PI/5;g.beginPath();g.moveTo(x,y-40);g.lineTo(x+Math.cos(an)*R*.8,y-40+Math.sin(an)*R);g.globalAlpha=e*.4;g.stroke()}})}
@@ -1070,7 +1082,7 @@ function iconAct2(k,s,B,St,F){const hrt=(x,y,r)=>{B();g.moveTo(x,y+r*.9);g.bezie
  case 'chicote':B();g.moveTo(-10,10);g.lineTo(-6,4);g.bezierCurveTo(4,-12,12,0,2,4);g.bezierCurveTo(-6,8,4,-10,10,-10);St();return true;
  case 'masoq':B();for(let q=0;q<=1;q+=.05){const an=q*10,r=2+q*9;g.lineTo(Math.cos(an)*r,Math.sin(an)*r)}St();return true;
  case 'extase':hrt(0,3,8);F();B();g.arc(0,-8,5,0,5);St();return true;
- case 'glifob':B();g.arc(0,0,10,0,7);St();B();g.moveTo(0,7);g.bezierCurveTo(-6,4,-5,-2,0,-7);g.bezierCurveTo(5,-2,6,4,0,7);F();return true;
+ case 'glifob':B();g.arc(0,0,10,0,7);St();B();g.moveTo(-6,2);g.quadraticCurveTo(-3,-3,0,2);g.quadraticCurveTo(3,7,6,2);St();B();g.moveTo(-6,-3);g.quadraticCurveTo(-3,-8,0,-3);g.quadraticCurveTo(3,2,6,-3);St();return true;
  case 'glifod':B();g.arc(0,0,10,0,7);St();hrt(0,1,4.5);F();return true;
  case 'aracne':B();g.moveTo(0,-11);g.quadraticCurveTo(8,0,0,6);g.quadraticCurveTo(-8,0,0,-11);F();B();g.moveTo(-11,9);g.quadraticCurveTo(-6,5,-1,9);g.quadraticCurveTo(4,13,9,9);St();return true;
  case 'voo':B();g.moveTo(-10,6);g.quadraticCurveTo(-2,-10,10,-10);g.quadraticCurveTo(4,-4,8,0);g.quadraticCurveTo(0,0,2,6);g.quadraticCurveTo(-4,4,-10,6);St();return true;
@@ -1098,7 +1110,7 @@ const CUT_LINES=[[1.6,'A prótese... quebrou.'],[3.9,'De novo manco. De novo o d
 function startCut(){S.cut={el:0,dur:13.5,said:{}};S.mode=null;S.aim=null;try{bgm.pause()}catch(e){}lamentStart();sw(120,40,1.6,'sawtooth',.12);nz(1.2,500,1,.2,80)}
 function cutTick(dt){const C=S.cut;C.el+=dt;S.t+=dt*.0001;if(C.el>2&&!C.said.br){C.said.br=1;clang(true);nz(.6,5000,2,.2,1500);C.shards=Array.from({length:26},()=>({vx:(Math.random()-.5)*600,vy:-Math.random()*500-100,r:Math.random()*6}))}
  if(C.el>11.2&&!C.said.ti){C.said.ti=1;sw(60,30,2.2,'sine',.3);nz(1.6,300,.7,.2,60)}if(C.el>=C.dur)endCut()}
-function endCut(){if(S.cut&&S.cut.type==='intro'){S.cut=null;return}S.cut=null;S.said.p2=1;say('Fase 2: Hefesto, o Deus Manco.');logA('— Fase 2: Hefesto, o Deus Manco —','#ff8a5a')}
+function endCut(){if(S.cut&&S.cut.type==='intro'){S.cut=null;return}if(S.cut&&S.cut.type==='outro'){S.cut=null;onWin();return}S.cut=null;S.said.p2=1;say('Fase 2: Hefesto, o Deus Manco.');logA('— Fase 2: Hefesto, o Deus Manco —','#ff8a5a')}
 function drawCut(){const C=S.cut,el=C.el;g.setTransform(1,0,0,1,0,0);g.fillStyle='#000';g.fillRect(0,0,960,600);
  const fade=Math.min(1,el/1.2)*Math.min(1,(C.dur-el)/.8);g.save();g.globalAlpha=fade;
  const gl=g.createRadialGradient(480,380,40,480,380,520);gl.addColorStop(0,'rgba(255,110,40,.35)');gl.addColorStop(.6,'rgba(90,20,8,.25)');gl.addColorStop(1,'rgba(0,0,0,0)');g.fillStyle=gl;g.fillRect(0,0,960,600);
@@ -1122,14 +1134,14 @@ function lamentStart(){lamentStop();try{const a=ac(),m=a.createGain();m.gain.val
  bar();LAM={m,iv:setInterval(bar,5000)}}catch(e){}}
 function lamentStop(){if(!LAM)return;try{const a=ac();LAM.m.gain.cancelScheduledValues(a.currentTime);LAM.m.gain.setValueAtTime(LAM.m.gain.value,a.currentTime);LAM.m.gain.linearRampToValueAtTime(0,a.currentTime+.8);clearInterval(LAM.iv)}catch(e){}LAM=null}
 /* cenário: forjas ao fundo, fogo caindo do céu, casas em chamas */
-function drawForges(){const p2=S.phase>1,n=p2?7:2,t=S.t;for(let i=0;i<n;i++){const x=p2?60+i*140:(i?860:100),y=p2?(i%2?150:120):150,s=p2?1:.8,pu=.6+.4*Math.sin(t*(3+i)+i);g.save();g.translate(x,y);g.scale(s,s);
+function drawForges(){const p2=S.phase>1,n=p2?(LITE?4:7):2,t=S.t;for(let i=0;i<n;i++){const x=p2?60+i*140:(i?860:100),y=p2?(i%2?150:120):150,s=p2?1:.8,pu=.6+.4*Math.sin(t*(3+i)+i);g.save();g.translate(x,y);g.scale(s,s);
  g.fillStyle='#120b08';g.beginPath();g.moveTo(-40,60);g.lineTo(-30,-20);g.lineTo(-12,-34);g.lineTo(-10,-80);g.lineTo(10,-80);g.lineTo(12,-34);g.lineTo(30,-20);g.lineTo(40,60);g.closePath();g.fill();
  const gl=g.createRadialGradient(0,20,2,0,20,p2?90:55);gl.addColorStop(0,`rgba(255,${150+60*pu|0},60,${(p2?.75:.4)*pu})`);gl.addColorStop(1,'rgba(255,80,20,0)');g.fillStyle=gl;g.fillRect(-100,-70,200,180);
  g.fillStyle=`rgba(255,${170+50*pu|0},70,${.85*pu})`;g.beginPath();g.ellipse(0,26,18,14,0,Math.PI,0);g.fill();g.fillRect(-18,26,36,8);
  for(let k=0;k<4;k++){const ph=(t*.4+k*.25+i*.1)%1;g.fillStyle=`rgba(60,50,45,${.35*(1-ph)})`;g.beginPath();g.arc(Math.sin(ph*6+i)*10,-84-ph*90,8+ph*18,0,7);g.fill()}
  if(p2){for(let k=0;k<5;k++){const ph=(t*1.3+k*.2+i*.37)%1;g.fillStyle=`rgba(255,${200-120*ph|0},60,${1-ph})`;g.beginPath();g.arc(Math.sin(ph*9+k)*16,-80-ph*60,2,0,7);g.fill()}}g.restore()}}
 function drawSkyFire(){if(S.phase<2)return;const t=S.t;g.save();g.fillStyle=`rgba(120,20,5,${.12+.05*Math.sin(t*2)})`;g.fillRect(0,0,960,600);
- for(let i=0;i<16;i++){const sp=.35+(i%5)*.08,ph=(t*sp+i*.137)%1,x0=(i*173)%1100-60,x=x0-ph*220,y=-60+ph*700,L=40+(i%3)*25;const gr=g.createLinearGradient(x+L*.4,y-L,x,y);gr.addColorStop(0,'rgba(255,120,30,0)');gr.addColorStop(1,'rgba(255,220,140,.9)');g.strokeStyle=gr;g.lineWidth=2+(i%3);g.beginPath();g.moveTo(x+L*.4,y-L);g.lineTo(x,y);g.stroke();g.fillStyle='#fff0c0';g.beginPath();g.arc(x,y,2+(i%3),0,7);g.fill()}g.restore()}
+ for(let i=0;i<(LITE?7:16);i++){const sp=.35+(i%5)*.08,ph=(t*sp+i*.137)%1,x0=(i*173)%1100-60,x=x0-ph*220,y=-60+ph*700,L=40+(i%3)*25;const gr=g.createLinearGradient(x+L*.4,y-L,x,y);gr.addColorStop(0,'rgba(255,120,30,0)');gr.addColorStop(1,'rgba(255,220,140,.9)');g.strokeStyle=gr;g.lineWidth=2+(i%3);g.beginPath();g.moveTo(x+L*.4,y-L);g.lineTo(x,y);g.stroke();g.fillStyle='#fff0c0';g.beginPath();g.arc(x,y,2+(i%3),0,7);g.fill()}g.restore()}
 function drawFireCells(){(S.fire||[]).forEach(f=>{const[x,y]=P(f.c,f.r),t=S.t;poly(f.c,f.r,`rgba(255,90,20,${.18+.08*Math.sin(t*9+f.c)})`,2);for(let i=0;i<4;i++){const fx=x-22+i*15,h=(10+12*f.ttl)*(.6+.4*Math.sin(t*16+i*2+f.r*3));g.fillStyle=i%2?'#ff5a1a':'#ffc23a';g.globalAlpha=.85;g.beginPath();g.moveTo(fx-5,y+4);g.quadraticCurveTo(fx,y-h,fx+5,y+4);g.fill()}g.globalAlpha=1});
  (S.meteors||[]).forEach(m=>{const[x,y]=P(m.c,m.r),pu=.5+.5*Math.sin(S.t*8);poly(m.c,m.r,`rgba(255,40,20,${.15+.25*pu})`,2);polyLine(m.c,m.r,'#ff5a3a',2);g.save();g.strokeStyle=`rgba(255,120,80,${.6+.4*pu})`;g.lineWidth=2;g.beginPath();g.ellipse(x,y,20+6*pu,8+2*pu,0,0,7);g.stroke();g.fillStyle='#ffcf8a';g.font='bold 14px Cinzel,serif';g.textAlign='center';g.fillText('!',x,y+5);g.restore()});
  S.mfall=(S.mfall||[]).filter(m=>S.t-m.t<1.1);S.mfall.forEach(m=>{const f=(S.t-m.t)/.75;if(f<0)return;const[x,y]=P(m.c,m.r);if(f<1){const mx=x+180*(1-f),my=y-520*(1-f);g.save();g.shadowColor='#ff7a2a';g.shadowBlur=30;g.fillStyle='#fff0c0';g.beginPath();g.arc(mx,my,9,0,7);g.fill();g.strokeStyle='rgba(255,140,40,.8)';g.lineWidth=6;g.beginPath();g.moveTo(mx,my);g.lineTo(mx+60,my-170);g.stroke();g.restore()}
@@ -1189,18 +1201,16 @@ function glyphCells(k,c,r){const out=[];if(k==='b'){for(let dc=-1;dc<=1;dc++)for
 const inCells=(cs,p)=>!!p&&cs.some(q=>q.c===p.c&&q.r===p.r);
 function resolveGlyphs(){if(!S.glyphs||!S.glyphs.length)return false;const gs=S.glyphs;S.glyphs=[];let root=false;
  gs.forEach(q=>{const cs=q.cells;S.gfx=(S.gfx||[]).concat([{cells:cs,k:q.k,t:S.t}]);S.shake=S.t+.3;
-  if(q.k==='b'){sw(90,40,.5,'sawtooth',.12);nz(.6,500,1,.2,120);logA('Glifo de Brasa explode','#ff9a5a');
-   if(inCells(cs,S.he)&&!S.over){dmgE(12+3*A.int,'Glifo de Brasa');if(!S.over&&save('int','con','ardor'))S.burn=2}
-   if(inCells(cs,S.me)&&!S.over)hurtSrc(Math.round((12+3*A.int)*.6),'Glifo de Brasa (fogo amigo)');
-   if(S.ally&&inCells(cs,S.ally))hurtAlly(Math.round((12+3*A.int)*.6),'Glifo de Brasa')}
+  if(q.k==='b'){nz(.7,1600,1.2,.18,500);sw(300,90,.5,'sine',.1);logA('Glifo da Maré explode','#8fd0ff');S.fire=(S.fire||[]).filter(f=>!inCells(cs,f));
+   if(inCells(cs,S.he)&&!S.over){dmgE(12+3*A.int,'Glifo da Maré');S.cool=true;if(!S.over&&save('int','con','água pesada (−1 PM)'))S.hslow=Math.max(S.hslow||0,1)}}
   else{beep(880,.3,'triangle',.05);logA('Glifo do Desejo pulsa','#ff7ac8');if(inCells(cs,S.he)){S.mark=Math.max(S.mark,2);logA('Hefesto marcado (+40% de dano)','#d6a8ff');if(save('int','sab','preso no glifo')){root=true;say('O glifo prende Hefesto no lugar.')}}}});return root}
-function drawGlyphs(){const pu=.6+.4*Math.sin(S.t*3);(S.glyphs||[]).forEach(q=>{const col=q.k==='b'?'255,122,42':'255,90,180',born=Math.min(1,(S.t-q.t)/.6);
+function drawGlyphs(){const pu=.6+.4*Math.sin(S.t*3);(S.glyphs||[]).forEach(q=>{const col=q.k==='b'?'90,180,255':'255,90,180',born=Math.min(1,(S.t-q.t)/.6);
   q.cells.forEach(cl=>{poly(cl.c,cl.r,`rgba(${col},${(.12+.1*pu)*born})`,2);polyLine(cl.c,cl.r,`rgba(${col},${(.5+.4*pu)*born})`,1.5)});
   const cx=q.cells.reduce((a,b)=>a+P(b.c,b.r)[0],0)/q.cells.length,cy=q.cells.reduce((a,b)=>a+P(b.c,b.r)[1],0)/q.cells.length;
   g.save();g.globalAlpha=born;g.translate(cx,cy);g.scale(1,.36);g.shadowColor=`rgb(${col})`;g.shadowBlur=18*pu;g.strokeStyle=`rgba(${col},.9)`;g.lineWidth=3;const R=q.k==='b'?86:52;g.beginPath();g.arc(0,0,R,0,7);g.stroke();g.lineWidth=1.5;g.beginPath();g.arc(0,0,R*.75,0,7);g.stroke();
   g.rotate(S.t*.6*(q.k==='b'?1:-1));for(let i=0;i<8;i++){const an=i*Math.PI/4;g.beginPath();g.moveTo(Math.cos(an)*R*.75,Math.sin(an)*R*.75);g.lineTo(Math.cos(an+2.36)*R*.75,Math.sin(an+2.36)*R*.75);g.stroke();g.fillStyle=`rgba(${col},.95)`;g.fillRect(Math.cos(an)*R*.88-3,Math.sin(an)*R*.88-3,6,6)}g.restore()});
- S.gfx=(S.gfx||[]).filter(e=>S.t-e.t<1);S.gfx.forEach(e=>{const f=(S.t-e.t),a=1-f;e.cells.forEach(cl=>{const[x,y]=P(cl.c,cl.r);g.save();g.globalAlpha=a;g.fillStyle=e.k==='b'?'#ffb050':'#ff8ad0';g.beginPath();g.ellipse(x,y,14+40*f,6+16*f,0,0,7);g.fill();
-  for(let i=0;i<4;i++){g.fillStyle=e.k==='b'?'#ff5a1a':'#ff5ab4';g.beginPath();g.moveTo(x-12+i*8,y);g.quadraticCurveTo(x-8+i*8,y-60*a-10,x-4+i*8,y);g.fill()}g.restore()})})}
+ S.gfx=(S.gfx||[]).filter(e=>S.t-e.t<1);S.gfx.forEach(e=>{const f=(S.t-e.t),a=1-f;e.cells.forEach(cl=>{const[x,y]=P(cl.c,cl.r);g.save();g.globalAlpha=a;g.fillStyle=e.k==='b'?'#9ad8ff':'#ff8ad0';g.beginPath();g.ellipse(x,y,14+40*f,6+16*f,0,0,7);g.fill();
+  for(let i=0;i<4;i++){g.fillStyle=e.k==='b'?'#3a9aff':'#ff5ab4';g.beginPath();g.moveTo(x-12+i*8,y);g.quadraticCurveTo(x-8+i*8,y-60*a-10,x-4+i*8,y);g.fill()}g.restore()})})}
 /* náiade (ninfa das águas) */
 function drawAlly(){const al=S.ally;if(!al)return;const[tx,ty]=P(al.c,al.r);AL[0]+=(tx-AL[0])*.15;AL[1]+=(ty-AL[1])*.15;const x=AL[0],y=AL[1],t=S.t,hit=al.hf>t-.3,born=Math.min(1,(t-al.t0)/.9),bob=Math.sin(t*2.2)*3;
  g.save();g.globalAlpha=born;g.translate(x,y+4);
@@ -1218,18 +1228,11 @@ function drawAlly(){const al=S.ally;if(!al)return;const[tx,ty]=P(al.c,al.r);AL[0
  g.restore();const v=al.hp/al.mhp;g.save();g.fillStyle='rgba(0,0,0,.6)';g.fillRect(x-24,y-112,48,6);g.fillStyle=v<.3&&Math.sin(t*12)>0?'#ff5a4a':'#4dcc6a';g.fillRect(x-24,y-112,48*Math.max(0,v),6);g.restore()}
 function drawAraPortrait(x,y,R){g.save();g.beginPath();g.rect(x-R,y-R,2*R,2*R);g.clip();const bg=g.createLinearGradient(0,y-R,0,y+R);bg.addColorStop(0,'#0e3050');bg.addColorStop(1,'#06182a');g.fillStyle=bg;g.fillRect(x-R,y-R,2*R,2*R);
  g.fillStyle='#4aa8f0';g.beginPath();g.ellipse(x,y+R*.1,R*.62,R*.8,0,0,7);g.fill();g.fillStyle='#cdeeff';g.beginPath();g.ellipse(x,y,R*.38,R*.48,0,0,7);g.fill();g.fillStyle='#2a70b0';g.beginPath();g.arc(x-R*.13,y-R*.04,R*.06,0,7);g.arc(x+R*.13,y-R*.04,R*.06,0,7);g.fill();g.restore()}
-function allyTurn(){if(!S.ally||S.over)return enemyTurn();S.st='ally';say('A náiade age.');const al=S.ally;
- if(dist(al,S.he)>1)for(let i=0;i<2;i++){let best=null,bd=dist(al,S.he);for(let dc=-1;dc<=1;dc++)for(let dr=-1;dr<=1;dr++){const c=al.c+dc,r=al.r+dr;if((!dc&&!dr)||blocked(c,r,'ally'))continue;const k=dist({c,r},S.he);if(k<bd){bd=k;best={c,r}}}if(!best)break;al.c=best.c;al.r=best.r;if(bd<=1)break}
- after(.7,()=>{if(!S.ally||S.over)return after(.3,enemyTurn);const d=dist(S.ally,S.he);
-  if(d<=1){vfx('splash');dmgE(6+2*A.int,'Abraço da Maré');S.cool=true;logA('Hefesto encharcado: a fornalha esfria','#8fd0ff');douse(S.he)}
-  else if(d<=3){vfx('jato');after(.35,()=>{if(S.over)return;vfx('splash');dmgE(4+2*A.int,"Jato d'Água");douse(S.he);if(!S.over&&save('int','dex','água nas pernas (−1 PM)'))S.hslow=Math.max(S.hslow||0,1)})}
-  else logA('A náiade avança','#8fd0ff');
-  if(!S.over)after(1.2,enemyTurn)})}
 function douse(p){const n0=(S.fire||[]).length;S.fire=(S.fire||[]).filter(f=>dist(f,p)>1);if(S.fire.length<n0)logA('A água apaga o fogo ao redor','#8fd0ff')}
 /* sangue */
-function spawnBlood(x,y,n,gy,spread){S.blood=S.blood||[];for(let i=0;i<n;i++){const an=-Math.PI/2+(Math.random()-.5)*(spread||2.6),v=80+Math.random()*220;S.blood.push({x,y,vx:Math.cos(an)*v,vy:Math.sin(an)*v,t:S.t,gy:gy+(Math.random()-.5)*14,s:1.5+Math.random()*2.5})}}
+function spawnBlood(x,y,n,gy,spread){S.blood=S.blood||[];if(LITE)n=Math.ceil(n/2);for(let i=0;i<n;i++){const an=-Math.PI/2+(Math.random()-.5)*(spread||2.6),v=80+Math.random()*220;S.blood.push({x,y,vx:Math.cos(an)*v,vy:Math.sin(an)*v,t:S.t,gy:gy+(Math.random()-.5)*14,s:1.5+Math.random()*2.5})}}
 function drawStains(){(S.stains||[]).forEach(s=>{g.save();g.globalAlpha=s.a*Math.max(.25,1-(S.t-s.t)/90);g.fillStyle='#5a0606';g.beginPath();g.ellipse(s.x,s.y,s.r,s.r*.42,0,0,7);g.fill();g.fillStyle='#7a0c0c';g.beginPath();g.ellipse(s.x-s.r*.2,s.y-s.r*.08,s.r*.55,s.r*.22,0,0,7);g.fill();g.restore()})}
-function drawBlood(){if(!S.blood)return;S.stains=S.stains||[];const keep=[];S.blood.forEach(p=>{const tt=S.t-p.t,x=p.x+p.vx*tt,y=p.y+p.vy*tt+700*tt*tt;if(y>=p.gy&&tt>.05){S.stains.push({x,y:p.gy,r:p.s*1.6+Math.random()*2,a:.85,t:S.t});return}keep.push(p);g.fillStyle='#9a0a0a';g.beginPath();g.ellipse(x,y,p.s*.8,p.s*1.2,0,0,7);g.fill()});S.blood=keep;if(S.stains.length>220)S.stains.splice(0,S.stains.length-220);
+function drawBlood(){if(!S.blood)return;S.stains=S.stains||[];const keep=[];S.blood.forEach(p=>{const tt=S.t-p.t,x=p.x+p.vx*tt,y=p.y+p.vy*tt+700*tt*tt;if(y>=p.gy&&tt>.05){S.stains.push({x,y:p.gy,r:p.s*1.6+Math.random()*2,a:.85,t:S.t});return}keep.push(p);g.fillStyle='#9a0a0a';g.beginPath();g.ellipse(x,y,p.s*.8,p.s*1.2,0,0,7);g.fill()});S.blood=keep;{const mx=LITE?70:220;if(S.stains.length>mx)S.stains.splice(0,S.stains.length-mx)}
  if(S.phase>1&&!S.over){const face=H[0]>HE[0]?-1:1;if(S.t>(S.dripT||0)){S.dripT=S.t+.28+Math.random()*.2;spawnBlood(HE[0]+14*face,HE[1]-6,1,HE[1]+16,.6)}
   const k=S.he.c+','+S.he.r;if(k!==S.lastBloodCell){S.lastBloodCell=k;const[x,y]=P(S.he.c,S.he.r);for(let i=0;i<3;i++)S.stains.push({x:x+(Math.random()-.5)*30,y:y+8+(Math.random()-.5)*10,r:5+Math.random()*6,a:.8,t:S.t})}}}
 /* corrida: percorre só um trecho da borda e termina em outro lugar (reposicionamento) */
@@ -1270,8 +1273,8 @@ function uiBtn(r,label,act,o={}){UIB.push({r,act});const hot=mouse&&mouse[0]>=r[
  if(big){g.strokeStyle='rgba(224,194,122,.35)';g.beginPath();g.moveTo(r[0]+10,r[1]+5);g.lineTo(r[0]+r[2]-10,r[1]+5);g.moveTo(r[0]+10,r[1]+r[3]-5);g.lineTo(r[0]+r[2]-10,r[1]+r[3]-5);g.stroke()}
  g.textAlign='center';try{g.letterSpacing=big?'3px':'1px'}catch(e){}g.font=(big?'700 ':'600 ')+(o.fs||(big?16:12))+'px Cinzel,serif';g.fillStyle=big?'#ffe8b8':'#cfc4b4';g.fillText(label,r[0]+r[2]/2,r[1]+r[3]/2+(big?6:4));try{g.letterSpacing='0px'}catch(e){}
  if(o.sub){g.font='10px "EB Garamond",Georgia,serif';g.fillStyle='#8f8578';g.fillText(o.sub,r[0]+r[2]/2,r[1]+r[3]+12)}g.restore()}
-function drawUI(){UIB=[];if(S.over||S.cut)return;
- uiBtn([826,8,126,30],isFull()?'Sair da tela cheia':'⛶ Tela cheia',goFull,{fs:11});uiBtn([716,8,104,30],'↩ Classe',()=>showPick(),{fs:11});
+function drawUI(){UIB=[];if(S.cut)return;if(S.over){if(S.overRT&&performance.now()-S.overRT>2600){const again=()=>{newGame();buildBar()};uiBtn([280,470,200,52],S.over==='lose'?'TENTAR NOVAMENTE':'JOGAR NOVAMENTE',again,{big:true,glow:true,fs:14});uiBtn([496,470,184,52],'VOLTAR',()=>showPick(),{big:true,fs:14})}return}if(LOGR)UIB.push({r:LOGR,act:()=>{LOGV=!LOGV}});
+ uiBtn([826,8,126,30],isFull()?'Sair da tela cheia':'⛶ Tela cheia',goFull,{fs:11});uiBtn([716,8,104,30],'↩ Classe',()=>showPick(),{fs:11});uiBtn([606,8,104,30],LITE?'◐ Gráfico leve':'● Gráfico cheio',()=>setLite(!LITE,true),{fs:10});
  if(AUTO)return;
  if(S.st==='deploy'){uiBtn([370,520,220,54],'ESTOU PRONTO',()=>ready(),{big:true,glow:true,fs:18,sub:TOUCH?'':'Enter / ✕'});return}
  if(S.st!=='player'||S.mode==='menu')return;
@@ -1286,6 +1289,126 @@ function drawDeployGuide(){if(S.st!=='deploy'||S.cut)return;const t=S.t,pu=.5+.5
  let tc=null;for(let c=0;c<N&&!tc;c++)for(let r=N-1;r>=3;r--){if(inZone(c,r)&&!(c===S.me.c&&r===S.me.r)&&dist({c,r},S.me)>=1){tc={c,r};break}}
  const cells=[];for(let c=0;c<N;c++)for(let r=0;r<N;r++)if(inZone(c,r)&&!(c===S.me.c&&r===S.me.r))cells.push({c,r});const k=Math.floor(t/1.6)%Math.max(1,cells.length),tg=cells[k]||tc;
  if(tg){const[x,y]=P(tg.c,tg.r),b=Math.abs(Math.sin(t*4))*14;polyLine(tg.c,tg.r,`rgba(255,226,160,${.5+.5*pu})`,3);g.fillStyle='#ffe2a0';g.shadowColor='#e0a040';g.shadowBlur=14;g.beginPath();g.moveTo(x,y-14-b);g.lineTo(x-14,y-38-b);g.lineTo(x-5,y-38-b);g.lineTo(x-5,y-62-b);g.lineTo(x+5,y-62-b);g.lineTo(x+5,y-38-b);g.lineTo(x+14,y-38-b);g.closePath();g.fill()}g.restore()}
+
+/* ---------- v12: desgaste, reação a dano, vibração, ninfa, cupido, veneno, fase 2, forjas, desfecho ---------- */
+/* vibração do controle (e do celular) */
+function rumble(strong){try{const ms=strong?700:220;for(const gp of (navigator.getGamepads?navigator.getGamepads():[])){if(gp&&gp.vibrationActuator&&gp.vibrationActuator.playEffect)gp.vibrationActuator.playEffect('dual-rumble',{duration:ms,strongMagnitude:strong?1:.45,weakMagnitude:strong?1:.6}).catch(()=>{})}if(navigator.vibrate)navigator.vibrate(strong?[120,60,300]:90)}catch(e){}}
+/* desgaste abaixo de 50% de vida: 0 (inteiro) a 1 (quase morto) */
+const wearOf=(v,m)=>Math.max(0,Math.min(1,(.5-v/m)/.5));
+function tireMod(Q,w,t){if(!w)return Q;const br=Math.sin(t*3.2)*1.5*w;return{...Q,B:Q.B+7*w+br,lean:(Q.lean||0)+.1*w,look:{...(Q.look||{}),lid:Math.min(.85,((Q.look||{}).lid||0)+.35*w)},hl:[Q.hl[0],Q.hl[1]+6*w],hr:[Q.hr[0],Q.hr[1]+6*w]}}
+function wearBlood(x,y,sc,w,seed){if(w<=0)return;g.save();g.globalAlpha=Math.min(.8,w*1.1);const k=sc*1.6,pts=[[-6,-58],[8,-74],[4,-40],[-9,-86],[11,-56],[-3,-30]];pts.slice(0,2+Math.round(w*4)).forEach(([a,b],i)=>{const r=(1.6+((i*7+seed)%3)*.6)*k,px=x+a*k,py=y+b*k;g.fillStyle=i%2?'#5a0606':'#7a0a0a';g.beginPath();g.ellipse(px,py,r,r*1.4,.3,0,7);g.fill();g.fillRect(px-.8,py,1.6,r*3*w)});g.restore()}
+function flinch(cx,cy,since,dir){const k=Math.max(0,1-(S.t-since)/.35);if(!k)return;const e=Math.sin(k*Math.PI)*k;g.translate(cx,cy);g.rotate(-dir*.14*e);g.translate(-cx-dir*12*e,-cy+4*e)}
+const WOFF=document.createElement('canvas');WOFF.width=480;WOFF.height=400;const WCTX=WOFF.getContext('2d');
+function drawWorn(fn,cx,cy,w,tint){if(w<=0)return fn();const G=g;WCTX.setTransform(1,0,0,1,0,0);WCTX.clearRect(0,0,480,400);WCTX.save();WCTX.translate(240-cx,300-cy);g=WCTX;try{fn()}finally{g=G}WCTX.restore();
+ WCTX.globalCompositeOperation='source-atop';WCTX.fillStyle=`rgba(${tint},${.5*w})`;WCTX.fillRect(0,0,480,400);WCTX.globalCompositeOperation='source-over';G.drawImage(WOFF,cx-240,cy-300)}
+function drawHeroW(){const w=wearOf(S.hp,S.mhp),face=HE[0]>H[0]?1:-1;g.save();if(S.hitT)flinch(H[0],H[1]+12,S.hitT,face);drawWorn(drawHero,H[0],H[1],w,'52,46,42');wearBlood(H[0],H[1]+12,.62,w,3);g.restore()}
+function drawHefW(){const w=wearOf(S.eh,S.meh),face=H[0]>HE[0]?-1:1;g.save();if(S.ehitT)flinch(HE[0],HE[1]+14,S.ehitT,-face);if(w>0){g.translate(HE[0],HE[1]+14);g.rotate(face*.06*w);g.translate(-HE[0],-HE[1]-14+5*w)}drawWorn(drawHef,HE[0],HE[1],w,'48,40,36');wearBlood(HE[0]+4,HE[1]+14,.95,w,5);g.restore()}
+/* veneno escorrendo */
+function drawPuddles(){S.puddles=(S.puddles||[]).filter(p=>S.t-p.t<14);S.puddles.forEach(p=>{const a=Math.min(1,(S.t-p.t)/.8)*Math.min(1,(14-(S.t-p.t))/3),gr=Math.min(1,(S.t-p.t)/1.2);g.save();g.globalAlpha=.75*a;g.fillStyle='#3a8a2a';g.beginPath();g.ellipse(p.x,p.y,10+18*gr,4+6*gr,0,0,7);g.fill();g.fillStyle='#7ae05a';g.beginPath();g.ellipse(p.x-4,p.y-1,5+8*gr,2+2*gr,0,0,7);g.fill();
+ for(let i=0;i<3;i++){const ph=(S.t*.7+i*.33)%1;g.fillStyle=`rgba(140,240,110,${.6*(1-ph)})`;g.beginPath();g.arc(p.x-10+i*10,p.y-2-ph*10,1.6,0,7);g.fill()}g.restore()});
+ if(S.poison&&S.poison.t>0&&!S.over){if(S.t>(S.pdripT||0)){S.pdripT=S.t+.5;S.pdrops=(S.pdrops||[]).concat([{x:HE[0]+(Math.random()-.5)*30,y:HE[1]-60,t:S.t}])}}
+ S.pdrops=(S.pdrops||[]).filter(d=>S.t-d.t<.8);S.pdrops.forEach(d=>{const tt=S.t-d.t;g.fillStyle='#7ae05a';g.beginPath();g.ellipse(d.x,d.y+tt*90,1.8,3,0,0,7);g.fill()})}
+/* forjas ardentes: Hefesto pega ouro, projeta fogo e arremessa as forjas */
+function forgeCast(){const free=[];for(let c=0;c<N;c++)for(let r=0;r<N;r++)if(!blocked(c,r,'x')&&!(S.ally&&S.ally.c===c&&S.ally.r===r))free.push({c,r});const n=1+(Math.random()<.4?1:0),tg=[];for(let i=0;i<n&&free.length;i++)tg.push(free.splice(Math.random()*free.length|0,1)[0]);
+ S.forgeTargets=tg;S.forgeAnim={t0:S.t,tg};say('Hefesto invoca as Forjas Ardentes!');logA('Hefesto invoca as Forjas Ardentes','#c98a7a');
+ beep(1320,.5,'sine',.04);setTimeout(()=>{sw(120,600,.4,'sawtooth',.08);nz(.5,900,1,.15,300)},700);setTimeout(()=>{thud();nz(.3,500,1,.2,100);S.shake=S.t+.3},2000)}
+function drawForgeAnim(){const F=S.forgeAnim;if(!F)return;const el=S.t-F.t0;if(el>2.4){S.forgeAnim=null;return}const face=H[0]>HE[0]?-1:1,hx=HE[0]+face*26,hy=HE[1]-92;g.save();
+ if(el<.8){for(let i=0;i<18;i++){const a=i*.35+el*3,r=90*(1-el/.8)+6;g.fillStyle='#ffd27a';g.shadowColor='#ffb03a';g.shadowBlur=8;g.beginPath();g.arc(hx+Math.cos(a)*r,hy+Math.sin(a)*r*.6,2.2,0,7);g.fill()}}
+ if(el>.5&&el<1.4){const k=Math.min(1,(el-.5)/.3),e=1-Math.max(0,(el-1.1)/.3);const gl=g.createRadialGradient(hx,hy,2,hx,hy,60*k);gl.addColorStop(0,`rgba(255,240,180,${e})`);gl.addColorStop(.5,`rgba(255,140,40,${.7*e})`);gl.addColorStop(1,'rgba(255,60,0,0)');g.fillStyle=gl;g.fillRect(hx-70,hy-70,140,140)}
+ if(el>.8&&el<1.3){const k=(el-.8)/.5;for(let i=0;i<10;i++){const a=-Math.PI/2+(i-4.5)*.22;g.strokeStyle=`rgba(255,${120+i*10},40,${1-k})`;g.lineWidth=4;g.beginPath();g.moveTo(hx,hy);g.lineTo(hx+Math.cos(a)*120*k,hy+Math.sin(a)*120*k);g.stroke()}}
+ F.tg.forEach((q,i)=>{const f=Math.max(0,Math.min(1,(el-1.1-i*.12)/.85));if(f<=0)return;const[tx,ty]=P(q.c,q.r),x=hx+(tx-hx)*f,y=hy+(ty-12-hy)*f-Math.sin(f*Math.PI)*160;
+  if(f<1){for(let j=1;j<7;j++){const ff=Math.max(0,f-j*.04),xx=hx+(tx-hx)*ff,yy=hy+(ty-12-hy)*ff-Math.sin(ff*Math.PI)*160;g.fillStyle=`rgba(255,${110+j*15},40,${.6-j*.08})`;g.beginPath();g.arc(xx,yy,9-j,0,7);g.fill()}
+   g.save();g.translate(x,y);g.rotate(f*9);g.fillStyle='#3a3430';g.fillRect(-14,-6,28,10);g.fillStyle='#ff8a3a';g.fillRect(-14,-6,28,3);g.restore()}
+  else{const e=Math.min(1,(el-1.95-i*.12)/.4);g.globalAlpha=1-e;g.fillStyle='#ffcf6a';g.beginPath();g.ellipse(tx,ty,14+50*e,6+18*e,0,0,7);g.fill();g.globalAlpha=1;g.fillStyle='#3a3430';g.fillRect(tx-14,ty-14,28,12);g.fillStyle='#ff8a3a';g.fillRect(tx-14,ty-14,28,3)}});
+ g.restore()}
+/* fase 2: ataques aprimorados, com nome e visual próprios */
+function hefP2(k,tc){k.p2=true;const N2={bigorna:['Martelo Rachado',30,.85],escoria:['Maré de Magma',24,.9],calor:['Fornalha Divina',1.4,1],fole:['Jato Infernal',26,.92],tenaz:['Tenazes Gêmeas',32,.9],corrida:['Corrida do Magma',30,1]}[k.id];if(!N2)return;
+ k.name=N2[0];k.dur*=N2[2];if(k.id==='calor')k.dmg=Math.round(k.dmg*N2[1]);else k.dmg=N2[1];
+ if(k.id==='fole'&&k.zone.length){const z0=k.pred&&tc?tc:S.me,row=k.zone[0][1]===k.zone[1][1];for(let i=0;i<N;i++){const z=row?[z0.c,i]:[i,z0.r];if(!k.zone.some(q=>q[0]===z[0]&&q[1]===z[1]))k.zone.push(z)}}
+ if(k.id==='tenaz'){const z=k.zone[0],opts=[];for(const d in DV){const c=z[0]+DV[d][0],r=z[1]+DV[d][1];if(inB(c,r))opts.push([c,r])}if(opts.length)k.zone.push(opts[Math.random()*opts.length|0])}}
+function drawP2Atk(k,el){if(!k||!k.p2)return;const f=Math.min(1,el/k.dur),pu=.5+.5*Math.sin(S.t*20);g.save();
+ if(k.type==='parry'){const face=H[0]>HE[0]?-1:1,hx=HE[0]+face*30,hy=HE[1]-100+f*40;const gl=g.createRadialGradient(hx,hy,2,hx,hy,40+30*f);gl.addColorStop(0,'rgba(255,255,230,.95)');gl.addColorStop(.4,'rgba(255,160,60,.6)');gl.addColorStop(1,'rgba(255,60,0,0)');g.fillStyle=gl;g.fillRect(hx-80,hy-80,160,160);
+  for(let i=0;i<8;i++){const a=S.t*6+i*.8;g.fillStyle='#ffcf6a';g.beginPath();g.arc(hx+Math.cos(a)*30*(1-f*.5),hy+Math.sin(a)*18,2,0,7);g.fill()}
+  if(f>.85){const e=(f-.85)/.15;g.strokeStyle=`rgba(255,200,120,${1-e})`;g.lineWidth=5;g.beginPath();g.ellipse(H[0],H[1]+10,30+80*e,10+26*e,0,0,7);g.stroke()}}
+ if(k.type==='jump'){const fr=el/k.dur*k.dAf;for(let c=0;c<N;c++)for(let r=0;r<N;r++){const cd=dist({c,r},k.src);if(cd>0&&Math.abs(cd-fr)<.6){const[x,y]=P(c,r);g.fillStyle='rgba(30,8,4,.85)';g.beginPath();g.ellipse(x,y-6,34,14,0,0,7);g.fill();g.strokeStyle=`rgba(255,${100+80*pu|0},30,.95)`;g.lineWidth=2;for(let i=0;i<3;i++){g.beginPath();g.moveTo(x-26+i*18,y-10);g.lineTo(x-18+i*18,y-2);g.lineTo(x-10+i*18,y-12);g.stroke()}
+   for(let i=0;i<3;i++){const h=24+18*Math.sin(S.t*14+i+c);g.fillStyle='#ff3a10';g.beginPath();g.moveTo(x-20+i*16,y-8);g.quadraticCurveTo(x-14+i*16,y-8-h,x-8+i*16,y-8);g.fill()}}}}
+ if(k.type==='dodge'&&k.id!=='corrida'){k.zone.forEach(z=>{const[x,y]=P(z[0],z[1]);g.globalAlpha=.6*f;g.fillStyle='rgba(20,6,30,.6)';g.beginPath();g.ellipse(x,y,30,11,0,0,7);g.fill();g.globalAlpha=1;for(let i=0;i<3;i++){const h=(14+40*f)*(.6+.4*Math.sin(S.t*22+i*2+z[0]+z[1]));g.fillStyle=i%2?'#b43aff':'#ff4a1a';g.beginPath();g.moveTo(x-16+i*14,y+2);g.quadraticCurveTo(x-10+i*14,y-h,x-4+i*14,y+2);g.fill()}})}
+ if(k.type==='heat'){g.fillStyle=`rgba(255,40,0,${.18*f*pu})`;g.fillRect(0,0,960,600)}
+ g.restore()}
+/* Ninfa da Água: glifo de cura 2×2 e Ataque do Mar */
+function allyTurn(){if(!S.ally||S.over)return enemyTurn();S.st='ally';say('A Ninfa da Água age.');const al=S.ally;al.hcd=Math.max(0,(al.hcd||0)-1);
+ const needHeal=(S.hp<S.mhp*.75||al.hp<al.mhp*.6)&&!al.hcd;
+ if(!needHeal&&dist(al,S.he)>3)for(let i=0;i<2;i++){let best=null,bd=dist(al,S.he);for(let dc=-1;dc<=1;dc++)for(let dr=-1;dr<=1;dr++){const c=al.c+dc,r=al.r+dr;if((!dc&&!dr)||blocked(c,r,'ally'))continue;const k=dist({c,r},S.he);if(k<bd){bd=k;best={c,r}}}if(!best)break;al.c=best.c;al.r=best.r;if(bd<=3)break}
+ after(.7,()=>{if(!S.ally||S.over)return after(.3,enemyTurn);
+  if(needHeal){let best=null,bs=-1;for(let c=-1;c<N;c++)for(let r=-1;r<N;r++){const cs=glyphCells('d',c,r);if(!cs.length)continue;const sc=(inCells(cs,S.me)?2:0)+(inCells(cs,S.ally)?1:0);if(sc>bs){bs=sc;best=cs}}
+   S.hglyph={cells:best,t:S.t};al.hcd=3;vfx('glifo',P(best[0].c,best[0].r));logA('Ninfa da Água: Glifo de Cura','#8fe0b0');say('A Ninfa grava um Glifo de Cura.');beep(660,.6,'sine',.05)}
+  else if(dist(S.ally,S.he)<=4){S.seaT=S.t;nz(.9,1400,1.2,.1,600);after(.95,()=>{if(S.over)return;vfx('splash');dmgE(8+2*A.int,'Ataque do Mar');douse(S.he);S.cool=true;logA('Hefesto encharcado: o próximo fogo dele falha','#8fd0ff')})}
+  else logA('A Ninfa da Água avança','#8fd0ff');
+  if(!S.over)after(1.6,enemyTurn)})}
+function healGlyphTick(){const G=S.hglyph;if(!G)return;S.hglyph=null;const n=6+A.int;if(inCells(G.cells,S.me)){heal(n)}if(S.ally&&inCells(G.cells,S.ally)){S.ally.hp=Math.min(S.ally.mhp,S.ally.hp+n);pop(AL[0],AL[1]-110,'+'+n,'#8cffb0');logA('Ninfa da Água: cura +'+n,'#8cffb0')}}
+function drawHealGlyph(){const G=S.hglyph;if(!G)return;const pu=.6+.4*Math.sin(S.t*3);G.cells.forEach(q=>{poly(q.c,q.r,`rgba(120,240,170,${.12+.1*pu})`,2);polyLine(q.c,q.r,`rgba(140,255,190,${.6+.3*pu})`,1.5)});const[x,y]=P(G.cells[0].c,G.cells[0].r);
+ g.save();g.globalAlpha=.8;g.fillStyle='#9cffc8';g.font='bold 16px Cinzel,serif';g.textAlign='center';g.fillText('+',x+40,y+20);g.restore()}
+function drawSea(){if(!S.seaT)return;const el=S.t-S.seaT;if(el>1){S.seaT=0;return}const cx=HE[0],cy=HE[1]-60;g.save();g.strokeStyle='rgba(120,200,255,.9)';g.shadowColor='#8fd0ff';g.shadowBlur=14;
+ for(let j=0;j<3;j++){g.lineWidth=6-j*1.5;g.beginPath();for(let q=0;q<=1;q+=.04){const a=el*12+q*5+j*2.1,r=(70-el*40)+Math.sin(q*12)*6;g.lineTo(cx+Math.cos(a)*r,cy+Math.sin(a)*r*.45+(j-1)*30)}g.stroke()}
+ for(let i=0;i<14;i++){const a=el*12+i*.45;g.fillStyle='#e8fbff';g.beginPath();g.arc(cx+Math.cos(a)*(70-el*40),cy+Math.sin(a)*30,2.4,0,7);g.fill()}g.restore()}
+/* flecha do cupido */
+function drawCupid(){S.vfx.forEach(v=>{if(v.k!=='cupido')return;const f=(S.t-v.t)/VD.cupido,[ax,ay]=v.a,[bx,by]=v.b,k=Math.min(1,f/.45),x=ax+(bx-ax)*k,y=ay+(by-ay)*k-Math.sin(k*Math.PI)*50;g.save();
+ for(let i=1;i<10;i++){const kk=Math.max(0,k-i*.04),xx=ax+(bx-ax)*kk,yy=ay+(by-ay)*kk-Math.sin(kk*Math.PI)*50;g.globalAlpha=.6*(1-i/10);g.fillStyle='#ff7ac8';heartP(xx,yy,4-i*.3)}g.globalAlpha=1;
+ if(k<1){const an=Math.atan2((by-ay),(bx-ax));g.translate(x,y);g.rotate(an);g.strokeStyle='#f0e0c0';g.lineWidth=2.5;g.beginPath();g.moveTo(-26,0);g.lineTo(0,0);g.stroke();g.fillStyle='#ff4aa8';g.shadowColor='#ff4aa8';g.shadowBlur=12;g.save();g.rotate(Math.PI/2);heartP(0,-4,6);g.restore();g.fillStyle='#ffd0e8';g.beginPath();g.moveTo(-26,0);g.lineTo(-32,-5);g.lineTo(-29,0);g.lineTo(-32,5);g.fill()}
+ else{const e=(f-.45)/.55;g.globalAlpha=1-e;for(let i=0;i<12;i++){const a=i*.52;g.fillStyle=i%2?'#ff7ac8':'#ffd0e8';heartP(bx+Math.cos(a)*60*e,by+30+Math.sin(a)*40*e,6*(1-e)+2)}}g.restore()})}
+/* desfecho antes do triunfo */
+const OUTRO_LINES=[[5.8,'AFRODITE','Eu estava precisando mesmo de um broche de ouro para o meu cinto.'],[9.2,'HEFESTO','Que deusa... você é grande demais pra mim, Afrodite.'],[11.4,'HEFESTO','Atena me pediu um favor caro demais!']];
+function startOutro(){S.cut={type:'outro',el:0,dur:15,said:{}};try{bgm.pause()}catch(e){}lamentStop();sw(70,40,2,'sine',.2)}
+function outroTick(dt){const C=S.cut;C.el+=dt;S.t+=dt;const el=C.el;
+ for(const st of [1.6,2.4,3.2,4])if(el>st&&!C.said['s'+st]){C.said['s'+st]=1;beep(240,.05,'sine',.03)}
+ if(el>5.2&&!C.said.p){C.said.p=1;clang(false);beep(1320,.5,'sine',.05)}
+ if(el>9.6&&!C.said.r){C.said.r=1;nz(1.4,500,1,.06,200)}
+ if(el>=C.dur){S.cut=null;onWin()}}
+function drawOutro(){const C=S.cut,el=C.el;g.setTransform(1,0,0,1,0,0);g.fillStyle='#000';g.fillRect(0,0,960,600);const fade=Math.min(1,el/1)*Math.min(1,(C.dur-el)/.8);g.save();g.globalAlpha=fade;
+ const bg=g.createLinearGradient(0,0,0,600);bg.addColorStop(0,'#0c0806');bg.addColorStop(.7,'#2a120a');bg.addColorStop(1,'#0a0605');g.fillStyle=bg;g.fillRect(0,0,960,600);
+ const fl=g.createRadialGradient(620,420,20,620,420,420);fl.addColorStop(0,`rgba(255,150,60,${.22+.05*Math.sin(el*5)})`);fl.addColorStop(1,'rgba(0,0,0,0)');g.fillStyle=fl;g.fillRect(0,0,960,600);g.fillStyle='#120a06';g.fillRect(0,470,960,140);
+ for(let i=0;i<30;i++){const ph=(i*.21+el*.15)%1;g.globalAlpha=fade*(1-ph)*.6;g.fillStyle='#ffd27a';g.fillRect((i*157)%960,600-ph*620,2,2)}g.globalAlpha=fade;
+ const picked=el>5.2;
+ // Hefesto: ajoelhado, depois foge mancando
+ {const run=el>9.6?Math.min(1,(el-9.6)/3.2):0,hx=730+run*460,bob=run?Math.abs(Math.sin(el*9))*10:0;const kp=S.phase,kH=H.slice();S.phase=2;H[0]=-999;g.save();g.translate(hx,474+(run?-bob:18));g.scale(1.45,1.45);if(!run){g.rotate(.12)}g.translate(-HE[0],-HE[1]);drawHef();g.restore();S.phase=kp;H[0]=kH[0];H[1]=kH[1];
+  if(!run){for(let i=0;i<3;i++){const ph=(el*.8+i*.33)%1;g.fillStyle=`rgba(255,255,255,${.25*(1-ph)})`;g.beginPath();g.arc(hx-30+i*6,330-ph*30,4+ph*6,0,7);g.fill()}}}
+ if(!picked)drawProsthesis(560,476,1.6,1.5,12+6*Math.sin(el*4));
+ // Afrodite com a classe escolhida
+ {const f=Math.min(1,el/4.6),ax=-60+f*540,crouch=el>4.6&&el<5.8?Math.sin(Math.min(1,(el-4.6)/1.2)*Math.PI)*16:0;drawAfro(g,ax,474+crouch,1.25,S.pz,S.t,{stance:S.stance,walk:f<1?el:null});
+  if(picked){const k=Math.min(1,(el-5.2)/.5);drawProsthesis(ax+(10)*k+(1-k)*(560-ax),476-70*k,1.1,1.5-1.2*k,18)}}
+ g.fillStyle='#000';const bar=70*Math.min(1,el/.8);g.fillRect(0,0,960,bar);g.fillRect(0,600-bar,960,bar);
+ let ln=null;OUTRO_LINES.forEach(L=>{if(el>=L[0])ln=L});if(ln&&el<13.6){const a=Math.min(1,(el-ln[0])/.35);g.globalAlpha=fade*a;g.textAlign='center';g.font='600 12px Cinzel,serif';g.fillStyle=ln[1]==='AFRODITE'?'#ffb0d0':'#ffb070';g.fillText(ln[1],480,548);g.font='italic 21px "EB Garamond",Georgia,serif';g.fillStyle='#f2e6d0';g.shadowColor='#000';g.shadowBlur=6;g.fillText(ln[2],480,574);g.shadowBlur=0}
+ g.globalAlpha=Math.min(1,el/2)*.5;g.font='12px "EB Garamond",Georgia,serif';g.textAlign='right';g.fillStyle='#8f8578';g.fillText('✕ / clique: pular',940,24);g.restore()}
+
+/* ---------- telemetria leve (localStorage + Supabase opcional via analytics-config.js) ---------- */
+const TEL=(()=>{const LS=k=>{try{return localStorage.getItem(k)}catch(e){return null}},SS=(k,v)=>{try{localStorage.setItem(k,v)}catch(e){}};
+ const rid=()=>Math.random().toString(36).slice(2,10)+Date.now().toString(36).slice(-4);
+ let vid=LS('afroVid');if(!vid){vid=rid();SS('afroVid',vid)}
+ const mob=(()=>{try{return matchMedia('(pointer:coarse)').matches||/Android|iPhone|iPad|Mobile/i.test(navigator.userAgent)}catch(e){return false}})();
+ const D={session_id:rid(),visitor_id:vid,nick:LS('afroNick')||'',started_at:new Date().toISOString(),updated_at:'',device:mob?'Mobile':'PC',inputs:[],screens:{},total_ms:0,deaths:0,wins:0,dmg_out:0,dmg_in:0,escapes:0,escape_fails:0,skills:{},reactions:{},auto_clicks:0,auto_ms:0,classes:[]};
+ let cur=null,curT=performance.now(),autoT=0,t0=performance.now();
+ const acc=()=>{const n=performance.now();if(cur)D.screens[cur]=(D.screens[cur]||0)+(n-curT);curT=n;if(autoT){D.auto_ms+=n-autoT;autoT=n}D.total_ms=Math.round(n-t0)};
+ const cfg=()=>window.AFRO_ANALYTICS||{};
+ function save(final){acc();D.updated_at=new Date().toISOString();const doc={...D,inputs:D.inputs.join(','),classes:D.classes.join(','),screens:Object.fromEntries(Object.entries(D.screens).map(([k,v])=>[k,Math.round(v)])),auto_ms:Math.round(D.auto_ms)};
+  try{const all=JSON.parse(LS('afroTelSessions')||'{}');all[D.session_id]=doc;const ks=Object.keys(all);if(ks.length>200)delete all[ks[0]];SS('afroTelSessions',JSON.stringify(all))}catch(e){}
+  const c=cfg();if(c.provider==='supabase'&&c.url&&c.anonKey){try{fetch(c.url.replace(/\/$/,'')+'/rest/v1/'+(c.table||'afrodite_sessions')+'?on_conflict=session_id',{method:'POST',keepalive:!!final,headers:{apikey:c.anonKey,Authorization:'Bearer '+c.anonKey,'Content-Type':'application/json',Prefer:'resolution=merge-duplicates,return=minimal'},body:JSON.stringify(doc)}).catch(()=>{})}catch(e){}}}
+ setInterval(()=>save(false),20000);addEventListener('pagehide',()=>save(true));document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='hidden')save(true)});
+ return{screen(n){if(n===cur)return;acc();cur=n},input(k){if(!D.inputs.includes(k))D.inputs.push(k)},nick(v){D.nick=v;SS('afroNick',v)},getNick:()=>D.nick,
+  add(k,n){D[k]=(D[k]||0)+(n||1)},count(map,k){D[map][k]=(D[map][k]||0)+1},cls(n){if(!D.classes.includes(n))D.classes.push(n)},
+  auto(on){acc();if(on){D.auto_clicks++;autoT=performance.now()}else if(autoT){D.auto_ms+=performance.now()-autoT;autoT=0}},save}})();
+addEventListener('keydown',()=>TEL.input('Teclado'),true);addEventListener('pointerdown',e=>TEL.input(e.pointerType==='touch'?'Toque':'Mouse'),true);
+setInterval(()=>{try{for(const gp of navigator.getGamepads()){if(gp&&gp.buttons.some(b=>b.pressed)){TEL.input('Controle');break}}}catch(e){}},1000);
+
+
+/* desempenho: modo leve (automático no celular ou quando o jogo fica lento) */
+let LITE=false,LITEUSER=null;try{LITEUSER=localStorage.getItem('afroLite')}catch(e){}
+try{LITE=LITEUSER?LITEUSER==='1':matchMedia('(pointer:coarse)').matches}catch(e){}
+try{const d=Object.getOwnPropertyDescriptor(CanvasRenderingContext2D.prototype,'shadowBlur');if(d&&d.set)Object.defineProperty(g,'shadowBlur',{set(v){d.set.call(this,LITE?Math.min(v,3):v)},get(){return d.get.call(this)},configurable:true})}catch(e){}
+function setLite(v,user){LITE=v;document.body.classList.toggle('lite',v);if(user){LITEUSER=v?'1':'0';try{localStorage.setItem('afroLite',LITEUSER)}catch(e){}}}
+setTimeout(()=>setLite(LITE));
+const PERF={avg:16,slow:0};
+function perfTick(ms){PERF.avg=PERF.avg*.95+Math.min(200,ms)*.05;if(!LITE&&LITEUSER===null&&PERF.avg>26){if(++PERF.slow>90)setLite(true)}else PERF.slow=0}
+const BGC=document.createElement('canvas');BGC.width=960;BGC.height=600;{const c=BGC.getContext('2d');const bg=c.createLinearGradient(0,0,0,600);bg.addColorStop(0,'#0c0a09');bg.addColorStop(.55,'#1d0f0a');bg.addColorStop(1,'#080706');c.fillStyle=bg;c.fillRect(0,0,960,600);const L=c.createRadialGradient(60,160,10,60,160,620);L.addColorStop(0,'rgba(255,150,80,.16)');L.addColorStop(.5,'rgba(120,50,25,.06)');L.addColorStop(1,'rgba(0,0,0,0)');c.fillStyle=L;c.fillRect(0,0,960,600)}
 
 /* desenho */
 const lerp=(a,b,t)=>a+(b-a)*t;
@@ -1415,7 +1538,7 @@ function drawAfro(c,x,y,sc,pz,t,o={}){PST=o.stance||(Math.floor(t/6)%2?'off':'de
   c.strokeStyle=steel?'#b8c0d0':pz==='atracao'?'#6a3e22':pz==='persuasao'?'#2a0e24':'#b08d4a';c.lineWidth=steel?4.6:3.6;c.beginPath();c.moveTo(ex+(hx-ex)*.3,ey+(hy-ey)*.3);c.lineTo(ex+(hx-ex)*.85,ey+(hy-ey)*.85);c.stroke();
   if(steel){c.fillStyle='#d0d6e2';c.beginPath();c.arc(ex,ey,2.8,0,7);c.fill()}
   c.fillStyle=skin;c.beginPath();c.arc(hx,hy,2.7,0,7);c.fill()};
- const Q=walkMod(afroPose(pz,t),pz,o.walk),B=Q.B,hip=Q.hip,fl=Q.fl,fr=Q.fr,hl=Q.hl,hr=Q.hr,sw=Math.sin(t*2)*(pz==='paixao'?3.5:2);
+ const Q=tireMod(walkMod(afroPose(pz,t),pz,o.walk),o.tired||0,t),B=Q.B,hip=Q.hip,fl=Q.fl,fr=Q.fr,hl=Q.hl,hr=Q.hr,sw=Math.sin(t*2)*(pz==='paixao'?3.5:2);
  c.save();c.translate(x,y);c.fillStyle='rgba(0,0,0,.45)';c.beginPath();c.ellipse(0,0,(15+(pz==='atracao'?4:0))*sc/.62,5*sc/.62,0,0,7);c.fill();c.translate(0,-(o.up||0)-Q.lift*sc);c.scale(sc,sc);
  // contorno do corpo adulto: busto, cintura, barriga natural e quadris largos
  const torso=()=>{c.beginPath();c.moveTo(-10,-92+B);c.lineTo(10,-92+B);c.bezierCurveTo(14.5,-89+B,15.5,-81+B,12.5,-75.5+B);c.quadraticCurveTo(8.5,-71+B,7.5+hip*.6,-66+B);c.quadraticCurveTo(14+hip,-61+B,15+hip,-54+B);c.lineTo(-15+hip,-54+B);c.quadraticCurveTo(-14+hip,-61+B,-7.5+hip*.6,-66+B);c.quadraticCurveTo(-8.5,-71+B,-12.5,-75.5+B);c.bezierCurveTo(-15.5,-81+B,-14.5,-89+B,-10,-92+B);c.closePath()};
@@ -1498,7 +1621,7 @@ function drawHero(){const j=S.t-S.jumpT;let up=j>=0&&j<.5?Math.sin(Math.PI*j/.5)
  if(S.fly){const f=Math.min(1,(S.t-S.fly.t0)/S.fly.dur);if(f>=1)S.fly=null;else{const e=Math.sin(Math.PI*f);wing=f<.18?f/.18:f>.8?(1-f)/.2:1;
   if(S.fly.kind==='dash')up+=e*46;else{const dx=HE[0]-H[0],dy=HE[1]-H[1],dl=Math.hypot(dx,dy)||1;ox=dx/dl*e*30;up+=e*14-dy/dl*e*10;wing*=.75}}}
  const tm=P(S.me.c,S.me.r),mv=!S.fly&&(Math.hypot(tm[0]-H[0],tm[1]-H[1])>2||!!S.walk);
- S.upNow=up;drawAfro(g,H[0]+ox,H[1]+12,.62,S.pz,S.t,{stance:S.stance,up,wing,walk:mv?S.t:null,hit:S.hflash>S.t,guard:S.guard,parry:pr>=0&&pr<.3?pr+.001:0});
+ S.upNow=up;drawAfro(g,H[0]+ox,H[1]+12,.62,S.pz,S.t,{tired:wearOf(S.hp,S.mhp),stance:S.stance,up,wing,walk:mv?S.t:null,hit:S.hflash>S.t,guard:S.guard,parry:pr>=0&&pr<.3?pr+.001:0});
  if(S.pz==='persuasao'&&!mv&&!S.over){const wc=S.t%5;if(wc<.55){const dc=Math.sign(S.he.c-S.me.c),dr=Math.sign(S.he.r-S.me.r),tc=Math.max(0,Math.min(N-1,S.me.c+2*dc)),tr=Math.max(0,Math.min(N-1,S.me.r+2*dr)),[tx,ty]=P(tc,tr),hx=H[0]+15,hy=H[1]+12-70-(S.Qlift||0),f=Math.min(1,wc/.22);
   const ex=lerp(hx,tx,f),ey=lerp(hy,ty-4,f);g.save();g.strokeStyle='#a46cf0';g.shadowColor='#b36bff';g.shadowBlur=12;g.lineWidth=2.2;g.lineCap='round';g.beginPath();g.moveTo(hx,hy);g.quadraticCurveTo((hx+ex)/2,Math.min(hy,ey)-40*(1-f)-10,ex,ey);g.stroke();
   if(wc>.2&&wc<.42){const q=(wc-.2)/.22;g.strokeStyle=`rgba(255,240,220,${1-q})`;g.lineWidth=2;for(let i=0;i<8;i++){const an=i*.785;g.beginPath();g.moveTo(tx+Math.cos(an)*4,ty-4+Math.sin(an)*3);g.lineTo(tx+Math.cos(an)*(8+22*q),ty-4+Math.sin(an)*(6+12*q));g.stroke()}}g.restore()}}}
@@ -1569,7 +1692,7 @@ function actDesc(a){if(a==='a')return['Arma','3 PA · corpo a corpo · uma vez p
  const id=build[a[1]-1],s=SKL[id];const cl=cdLeft(id);return[s.n,s.pa+' PA · '+(cl?'em recarga: '+cl+' turno(s)':cdTxt(id)||'sem recarga'),s.d()]}
 function drawAim(){const f=S.aim,pu=.5+.5*Math.sin(S.t*8);
  if(!f.self)for(let c=0;c<N;c++)for(let r=0;r<N;r++){const d=dist({c,r},S.me);if(d>=f.r[0]&&d<=f.r[1])poly(c,r,'rgba(179,107,255,.14)',2)}
- if(f.id==='glifob'||f.id==='glifod'){const cs=glyphCells(f.id==='glifob'?'b':'d',S.cur.c,S.cur.r),col=f.id==='glifob'?'255,122,42':'255,90,180';cs.forEach(q=>{poly(q.c,q.r,`rgba(${col},.28)`,2);polyLine(q.c,q.r,`rgb(${col})`,1.5)})}
+ if(f.id==='glifob'||f.id==='glifod'){const cs=glyphCells(f.id==='glifob'?'b':'d',S.cur.c,S.cur.r),col=f.id==='glifob'?'90,180,255':'255,90,180';cs.forEach(q=>{poly(q.c,q.r,`rgba(${col},.28)`,2);polyLine(q.c,q.r,`rgb(${col})`,1.5)})}
  const err=aimErr(),onHe=S.cur.c===S.he.c&&S.cur.r===S.he.r,col=err?'#ff6a6a':(onHe||f.self)?'#4dff88':'#e0c27a';poly(S.cur.c,S.cur.r,err?'rgba(255,106,106,.18)':(onHe||f.self)?'rgba(77,255,136,.22)':'rgba(224,194,122,.2)',2);polyLine(S.cur.c,S.cur.r,col,2+2*pu);
  const[x,y]=P(S.cur.c,S.cur.r);g.strokeStyle=col;g.lineWidth=2;g.beginPath();g.moveTo(x-10,y);g.lineTo(x+10,y);g.moveTo(x,y-7);g.lineTo(x,y+7);g.stroke();
  if(!err){const tx=predictTxt(f.a,onHe||f.self);if(tx){g.save();g.textAlign='center';g.font='700 15px "EB Garamond",Georgia,serif';g.shadowColor='#000';g.shadowBlur=5;g.fillStyle=onHe?'#ff8a6a':f.self?'#8cffb0':'#c9b48a';g.fillText(tx,x,y+34);g.restore()}}}
@@ -1582,11 +1705,11 @@ function drawAnv(a){const[x,y]=P(a.c,a.r),hot=a.h>=1,pu=.5+.5*Math.sin(S.t*(hot?
 const NOISE=(()=>{try{const c=document.createElement('canvas');c.width=c.height=128;const x=c.getContext('2d'),d=x.createImageData(128,128);for(let i=0;i<d.data.length;i+=4){const v=Math.random()*255|0;d.data[i]=d.data[i+1]=d.data[i+2]=v;d.data[i+3]=255}x.putImageData(d,0,0);return g.createPattern(c,'repeat')}catch(e){return null}})();
 function draw(){
  if(S.shake>S.t)g.setTransform(1,0,0,1,(Math.random()-.5)*10,(Math.random()-.5)*8);
- const bg=g.createLinearGradient(0,0,0,600);bg.addColorStop(0,'#0c0a09');bg.addColorStop(.55,'#1d0f0a');bg.addColorStop(1,'#080706');g.fillStyle=bg;g.fillRect(0,0,960,600);
- {const L=g.createRadialGradient(60,160,10,60,160,620);L.addColorStop(0,'rgba(255,150,80,.16)');L.addColorStop(.5,'rgba(120,50,25,.06)');L.addColorStop(1,'rgba(0,0,0,0)');g.fillStyle=L;g.fillRect(0,0,960,600);const F=g.createRadialGradient(HE[0],HE[1]-60,10,HE[0],HE[1]-60,260);F.addColorStop(0,'rgba(255,90,30,.10)');F.addColorStop(1,'rgba(0,0,0,0)');g.fillStyle=F;g.fillRect(0,0,960,600)}
+ g.drawImage(BGC,0,0);
+ {const F=g.createRadialGradient(HE[0],HE[1]-60,10,HE[0],HE[1]-60,260);F.addColorStop(0,'rgba(255,90,30,.10)');F.addColorStop(1,'rgba(0,0,0,0)');g.fillStyle=F;g.fillRect(0,0,960,600)}
  drawForges();drawSkyFire();
  for(let c=0;c<N;c++)for(let r=0;r<N;r++)poly(c,r,(c+r)%2?'rgba(150,120,95,.11)':'rgba(95,88,80,.12)',1);
- const k=S.atk&&!S.atk.res?S.atk:null,el=k?S.t-k.t0:0;drawFireCells();drawCorrida(k,el);
+ const k=S.atk&&!S.atk.res?S.atk:null,el=k?S.t-k.t0:0;drawFireCells();drawPuddles();drawHealGlyph();drawCorrida(k,el);drawP2Atk(k,el);
  if(k&&k.type==='dodge'){const a=.18+.4*Math.min(1,el/k.dur)*(.6+.4*Math.sin(S.t*14));k.zone.forEach(z=>poly(z[0],z[1],`rgba(255,200,40,${a})`,2))}
  if(k&&k.type==='jump'){const fr=el/k.dur*k.dAf;for(let c=0;c<N;c++)for(let r=0;r<N;r++){const cd=dist({c,r},k.src);if(cd>0&&Math.abs(cd-fr)<.55){const[x,y]=P(c,r);poly(c,r,'rgba(255,110,30,.35)',2);for(let i=0;i<4;i++){const fx=x-24+i*16,h=12+8*Math.sin(S.t*20+i+c);g.fillStyle=i%2?'#ff7a2a':'#ffd24a';g.beginPath();g.moveTo(fx-6,y+10);g.lineTo(fx,y+10-h);g.lineTo(fx+6,y+10);g.fill()}}}}
  poly(S.me.c,S.me.r,'rgba(176,141,74,.2)',2);
@@ -1595,9 +1718,9 @@ function draw(){
  if(S.mode==='aim')drawAim();
  drawPlan();drawStains();drawGlyphs();
  // atores por profundidade
- const ents=[...S.anv.map(a=>({y:P(a.c,a.r)[1],f:()=>drawAnv(a)})),{y:HE[1],f:drawHef},{y:H[1]+.1,f:drawHero},...(S.ally?[{y:AL[1],f:drawAlly}]:[])].sort((a,b)=>a.y-b.y);ents.forEach(e=>e.f());
+ const ents=[...S.anv.map(a=>({y:P(a.c,a.r)[1],f:()=>drawAnv(a)})),{y:HE[1],f:drawHefW},{y:H[1]+.1,f:drawHeroW},...(S.ally?[{y:AL[1],f:drawAlly}]:[])].sort((a,b)=>a.y-b.y);ents.forEach(e=>e.f());
  S.booms=S.booms.filter(b=>S.t-b.t<.7);S.booms.forEach(b=>{const[x,y]=P(b.c,b.r),f=(S.t-b.t)/.7;g.globalAlpha=1-f;g.fillStyle='#ffcf6a';g.beginPath();g.ellipse(x,y,20+110*f,10+50*f,0,0,7);g.fill();g.globalAlpha=1});
- drawBlood();drawVFX();drawVFX2();drawBursts();drawFlash();drawCue(k,el);
+ drawBlood();drawVFX();drawVFX2();drawCupid();drawSea();drawForgeAnim();drawBursts();drawFlash();drawCue(k,el);
  S.sparks=S.sparks.filter(p=>S.t-p.t<.45);S.sparks.forEach(p=>{const d=S.t-p.t,x=p.x+p.vx*d,y=p.y+p.vy*d+300*d*d;g.strokeStyle=`rgba(255,${230-200*d|0},120,${1-d/.45})`;g.lineWidth=2;g.beginPath();g.moveTo(x,y);g.lineTo(x-p.vx*.03,y-p.vy*.03);g.stroke()});
  if(S.flashW>S.t){g.fillStyle=`rgba(255,255,255,${(S.flashW-S.t)/.1*.35})`;g.fillRect(0,0,960,600)}
  if(k&&k.id==='fole'){k.zone.forEach(z=>{const[x,y]=P(z[0],z[1]),a=Math.min(1,el/k.dur);for(let i=0;i<4;i++){const fx=x-24+i*16,h=(8+24*a)*(.6+.4*Math.sin(S.t*18+i*2+z[0]));g.fillStyle=i%2?'#ff5a1a':'#ffc23a';g.beginPath();g.moveTo(fx-6,y+12);g.lineTo(fx,y+12-h);g.lineTo(fx+6,y+12);g.fill()}})}
@@ -1622,7 +1745,7 @@ function draw(){
   g.font='16px "EB Garamond",Georgia,serif';g.fillStyle='#fff';g.fillText('d20 + DEX ('+D.mod+') contra CD '+D.dc,480,345);
   if(D.done){g.font='bold 22px "EB Garamond",Georgia,serif';g.fillStyle=D.ok?'#8cffb0':'#ff7a7a';g.fillText(D.ok?'Total '+(D.roll+D.mod)+': escapou!':'Total '+(D.roll+D.mod)+': presa!',480,380)}}
  if(S.mode!=='menu')drawBanner();
- if(S.over==='lose')drawDeath();else if(S.over==='win')drawWin();}
+ if(S.over==='lose')drawDeath();else if(S.over==='win')drawWin();if(S.over)drawUI();}
 let mouse=null;
 const cellAt=(x,y)=>{const r=Math.round((y-Y0)/CH),c=Math.round((x-X0-(N-1-r)*SKX)/CW);return inB(c,r)?{c,r}:null};
 cv.addEventListener('mousemove',ev=>{const b=cv.getBoundingClientRect();mouse=[(ev.clientX-b.left)*960/b.width,(ev.clientY-b.top)*600/b.height];mdir=null;
@@ -1640,12 +1763,12 @@ function drawPreview(dt){pvT+=dt;const pz=posture(),T=TREES.find(x=>x.id===pz);p
  const bg=pg.createRadialGradient(120,120,10,120,120,130);bg.addColorStop(0,'#24160e');bg.addColorStop(1,'#0c0a08');pg.fillStyle=bg;pg.fillRect(0,0,240,210);
  drawAfro(pg,120,206,.92,pz,pvT);$('pzl').innerHTML=`Postura: <b style="color:${T.c}">${T.arch}</b>${build.length?'':' (padrão, sem habilidades)'}`}
 let last=performance.now();
-function loop(n){const dt=Math.min(.05,(n-last)/1e3);last=n;pad();
+function loop(n){const raw=n-last,dt=Math.min(.08,raw/1e3);last=n;if(scr==='fight')perfTick(raw);pad();
  if(scr==='build')drawPreview(dt);
  if(scr==='pick')drawPickPreview(dt);
  
  if(scr==='fight'){$('bReady').hidden=S.st!=='deploy';$('bMenu').hidden=$('bEnd').hidden=S.st==='deploy'}
- if(scr==='fight'&&S.cut){if(S.cut.type==='intro'){introTick(dt);if(S.cut)drawIntro()}else{cutTick(dt);if(S.cut)drawCut()}requestAnimationFrame(loop);return}
+ if(scr==='fight'&&S.cut){if(S.cut.type==='intro'){introTick(dt);if(S.cut)drawIntro()}else if(S.cut.type==='outro'){outroTick(dt);if(S.cut)drawOutro();else draw()}else{cutTick(dt);if(S.cut)drawCut()}requestAnimationFrame(loop);return}
  if(scr==='fight'){S.t+=dt*(performance.now()<S.hs?.08:1);S.hpG=S.hpG>S.hp?S.hpG+(S.hp-S.hpG)*.05:S.hp;S.ehG=S.ehG>S.eh?S.ehG+(S.eh-S.ehG)*.05:S.eh;
   const due=S.q.filter(o=>S.t>=o.t);S.q=S.q.filter(o=>S.t<o.t);due.forEach(o=>o.fn());
   if(S.dice)diceTick();
