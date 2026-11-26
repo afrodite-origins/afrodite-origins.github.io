@@ -1,5 +1,9 @@
 # Últimas atualizações
 
+## Alpha 0.11.27 (experimental) · 26/11/2026
+
+- Errar a sequência ao conjurar agora gasta os PA da habilidade, e Afrodite dá uma bronca: “Presta atenção! Seja mais rápido!”.
+
 ## Alpha 0.11.26 (experimental) · 26/11/2026
 
 - Relatório do GM mais limpo, com abas Manual e Automático.

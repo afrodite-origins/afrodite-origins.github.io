@@ -6,6 +6,10 @@ Protótipo de RPG tático por turnos, de tom sombrio: Afrodite enfrenta Hefesto,
 
 ## Últimas atualizações
 
+**Alpha 0.11.27 (experimental) · 26/11/2026**
+
+- Errar a sequência ao conjurar agora gasta os PA da habilidade, e Afrodite dá uma bronca: “Presta atenção! Seja mais rápido!”.
+
 **Alpha 0.11.26 (experimental) · 26/11/2026**
 
 - Relatório do GM mais limpo, com abas Manual e Automático.
@@ -19,13 +23,6 @@ Protótipo de RPG tático por turnos, de tom sombrio: Afrodite enfrenta Hefesto,
 **Alpha 0.11.24 (experimental) · 26/11/2026**
 
 - O relatório do GM mostra moedas, itens e baús abertos por jogador.
-
-**Alpha 0.11.23 (experimental) · 26/11/2026**
-
-- Cada visual e o baú ganharam ícone na loja e na mochila.
-- A loja troca a cada 30 minutos, com uma barrinha mostrando quanto falta.
-- Sem item escolhido, a loja mostra um set completo na Afrodite.
-- Rankings com a métrica: DPS no Dano e tempo em segundos no Intocável e no Automático.
 
 ## Controles
 | | PC | Controle |

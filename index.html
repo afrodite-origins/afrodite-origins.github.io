@@ -1335,7 +1335,8 @@ function qteSwipe(dx,dy){const Q=S.qte;if(!Q||Q.kind!=='swipe')return;if(Math.hy
 function qteTick(){const Q=S.qte;if(!Q)return;if(Q.auto)aiQTE(Q);const nt=Q.notes[Q.i];if(nt&&S.t-Q.t0-nt.T>.42){nt.res='miss';qteDone(false,'perdeu a nota')}}
 function qteDone(ok,why){const Q=S.qte;if(!Q)return;S.qte=null;if(!Q.auto)TEL.stat(ok?(Q.late?'conj_metade':'conj_ok'):'conj_falha');const half=ok&&Q.late;TEL.ev(ok?(half?'qte_metade':'qte_ok'):'qte_falha',{why:why||''});S.qfx={t:S.t,ok,half,why,notes:Q.notes};
  if(ok){if(half){S.halfUntil=S.t+1.6;sndHalf();padBuzz(240,.8,.2);say('Conjurou pela metade.')}else{sndJackpot();padBuzz(160,.6,1);const cr=critRange(Q),v=1+(Math.random()*20|0),crit=v>=cr;S.cfx={t:S.t,v,r:cr,crit};S.insp=0;if(crit){S.critUntil=S.t+2.4;setTimeout(sndCrit,40);padBuzz(400,1,1);logA('d20: '+v+' · CRÍTICO! dano dobrado','#ffb03a')}else logA('d20: '+v+' (crítico em '+(cr<20?cr+'–20':'20')+')','#8f8578');try{TEL.ev('d20',{v,r:cr,crit,perf:Q.notes.every(n=>n.res==='perfect')})}catch(e){}}doAct(Q.a,Q.cell)}
- else{sndFail();padBuzz(300,1,.3);if(Q.auto){say('Falhou ao conjurar ('+why+').');S.autoNext=S.t+.6}else{say('Falhou ao conjurar: '+why+'. Tente de novo.');beginAim(Q.a);S.cur={...Q.cell}}}}
+ else{sndFail();padBuzz(300,1,.3);if(Q.auto){say('Falhou ao conjurar ('+why+').');S.autoNext=S.t+.6}else{const f0=actInfo(Q.a),c0=f0?(f0.pa||0):0;S.pa=Math.max(0,S.pa-c0);logA('Conjuração falhou · −'+c0+' PA','#ff7a6a');say('Falhou ao conjurar: '+why+'. Perdeu '+c0+' PA.');afLine(QTE_BRONCA[Math.random()*QTE_BRONCA.length|0]);try{TEL.ev('qte_pa_perdido',{pa:c0,h:f0&&f0.n})}catch(e){}chk()}}}
+const QTE_BRONCA=['“Presta atenção! Seja mais rápido!”','“Concentra! Hefesto não vai esperar.”','“Mais rápido! Eu não posso errar assim.”','“Foco! Isso me custou caro.”','“Atenção na sequência! Mais rápido!”'];
 function laneX(i,n,y,top,bot){const t=(y-top)/(bot-top),w=lerp(150,380,t);return 480-w/2+w*(i+.5)/n}
 function drawQTE(){const Q=S.qte,F=S.qfx;if(Q&&Q.auto){g.save();g.textAlign='center';g.font='700 12px Cinzel,serif';g.fillStyle='#8fc8ff';try{g.letterSpacing='3px'}catch(e){}g.fillText('AUTOMÁTICO · A MÁQUINA ESTÁ JOGANDO',480,70);g.restore()}
  if(F){const el=S.t-F.t;if(el>1.1)S.qfx=null;else{const a=el<.08?el/.08:el>.8?1-(el-.8)/.3:1,sc=1+.25*Math.max(0,1-el/.15);g.save();g.globalAlpha=a;g.textAlign='center';g.translate(480,250);g.scale(sc,sc);try{g.letterSpacing='5px'}catch(e){}
@@ -2585,8 +2586,9 @@ function drawTears(){if(!S.tears||S.t>S.tears||S.over)return;if(S.t>(S.tearT||0)
 
 
 /* versão, últimas atualizações e reporte de bug */
-const VERSION='Alpha 0.11.26 (experimental)';const BUILD_TS='2026-11-26T21:31:50Z';
+const VERSION='Alpha 0.11.27 (experimental)';const BUILD_TS='2026-11-26T21:44:55Z';
 const PATCH=[
+ {v:'Alpha 0.11.27 (experimental)',d:'26/11/2026',it:['Errar a sequência ao conjurar agora gasta os PA da habilidade, e Afrodite dá uma bronca: “Presta atenção! Seja mais rápido!”.']},
  {v:'Alpha 0.11.26 (experimental)',d:'26/11/2026',it:['Relatório do GM mais limpo, com abas Manual e Automático.','O observador do GM também acompanha a abertura do baú, a lojinha e a mochila.']},
  {v:'Alpha 0.11.25 (experimental)',d:'26/11/2026',it:['Venceu Hefesto sem o automático? Depois da cena final, Afrodite abre um Baú da Forja e mostra o que você ganhou.','Quem vence no automático continua ganhando moedas e pode comprar baús na loja.']},
  {v:'Alpha 0.11.24 (experimental)',d:'26/11/2026',it:['O relatório do GM passa a mostrar moedas, itens e baús abertos por jogador.']},
