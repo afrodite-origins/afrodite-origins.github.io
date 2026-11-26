@@ -1,5 +1,17 @@
 # Últimas atualizações
 
+## Alpha 0.11.3 (experimental) · 26/11/2026
+
+- Na primeira vez, o jogo explica quais dados de jogo são coletados e pergunta se você aceita. Dá para jogar sem enviar dados e mudar a escolha na engrenagem.
+
+## Alpha 0.11.2 (experimental) · 26/11/2026
+
+- O relatório agora mostra o modelo do aparelho e quantos quadros por segundo o jogo roda nele, para ajustar o desempenho.
+
+## Alpha 0.11.1 (experimental) · 26/11/2026
+
+- A tela do celular não apaga mais durante a luta, nem com o Automático ligado.
+
 ## Alpha 0.11 (experimental) · 26/11/2026
 
 - Desempenho: o fundo, o tabuleiro, a vinheta e os retratos agora são desenhados uma vez e reaproveitados, e a câmera de reação ficou bem mais leve.
