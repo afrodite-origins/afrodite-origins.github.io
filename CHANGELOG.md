@@ -1,5 +1,15 @@
 # Últimas atualizações
 
+## Alpha 0.11.33 (experimental) · 26/11/2026
+
+- Diálogos, cenas e descrições agora seguem as maiúsculas e minúsculas normais do português, na mesma fonte.
+- Ícone de Masoquismo (coração roxo com o número de acúmulos) bem visível na linha de turnos.
+- A guitarra saiu: agora os golpes de Hefesto e as notas de conjurar caem na batida da música da luta (120 BPM).
+- L1/R1 (LB/RB no Xbox, Q/E no teclado) trocam as abas do ranking, da loja e da mochila; na tela inicial trocam o ranking.
+- Na tela final dá para escolher “Menu principal” pelo controle.
+- Controle: R3 liga um cursor no analógico direito para passar por cima de Hefesto e do tabuleiro.
+- Passar o cursor em Hefesto mostra até onde ele pode andar no próximo turno.
+
 ## Alpha 0.11.32 (experimental) · 26/11/2026
 
 - Corrigido: a Paladina travava o jogo ao abrir o menu de ações (descrição da troca de postura).
