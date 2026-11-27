@@ -6,6 +6,14 @@ Teste o potencial de Afrodite contra Hefesto em mais uma provação enviada por 
 
 ## Últimas atualizações
 
+**Alpha 0.13.2 (experimental) · 27/11/2026**
+
+- Faixa de turnos maior no topo (bem maior no celular), sem invadir o tabuleiro.
+- “Novo” por item: na loja e na mochila, o aviso de novidade some do item assim que você toca nele, sem precisar fechar a aba.
+- Malandra: a Flecha do Cupido agora funciona de 1 a 6 casas, com +15% de dano por casa de distância (até +75%). O Voo Rasante tem um minitutorial e, ao acertar, já abre a mira do Recuo em Voo (dá para cancelar). Novos arcos cosméticos (5 épicos, um por conjunto); as adagas continuam na vaga de arma.
+- Ranking: Vitórias por classe e DPS por classe (só vitórias manuais), com a sua posição em cada classe. Intocável e Automático continuam. O Tempo e o Dano geral saíram.
+- Relatório: confiança = 1 − e^(−N/5) e amostra mínima (5 lutas ou 40 decisões) nos perfis e no Big Five, que ganhou explicação e leitura de cada traço; gráficos de retenção pós-luta (com o motivo provável de continuar) e de uso de moedas; sessões que abrem e fecham uma a uma.
+
 **Alpha 0.13.1 (experimental) · 27/11/2026**
 
 - GM observando: quando o GM clica em Observar no relatório, o Zac (de terninho, óculos e cabelo cacheado) aparece na lateral da luta, fora do tabuleiro, com o selo “GM · Zac · observando”. Some quando o GM sai ou troca de jogador.
