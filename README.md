@@ -6,6 +6,12 @@ Teste o potencial de Afrodite contra Hefesto em mais uma provação enviada por 
 
 ## Últimas atualizações
 
+**Alpha 0.13.3 (experimental) · 27/11/2026**
+
+- Amigo da Comunidade: quem atinge o critério estatístico da análise (≥ 3 lutas concluídas, ≥ 40 decisões e confiança ≥ 60%, o mesmo cálculo do relatório) ganha um convite no menu principal para uma pesquisa de 4 perguntas rápidas: o que fazer primeiro (PvP, Co-op ou História), o que mais prendeu, o que faria jogar mais e um recado opcional pro GM.
+- Ao enviar, ganha na hora a Aura Sayajin do Amor (Exclusivo): “O GM te presenteou pessoalmente e te considera oficial co-fundador desse projeto.” Aura de energia rosa com chamas, faíscas e raios, em vaga própria (não mexe em arma, escudo, arco nem no Gorrinho), para todas as classes; equipe ou tire na mochila.
+- Relatório: novo bloco Comunidade com quem atingiu o critério e quem respondeu, resumo PvP × Co-op × História, o que mais prendeu e o que mais falta, e as respostas individuais com os recados. A aura aparece na coleção Exclusivo com prévia. As respostas não entram na lista de bugs.
+
 **Alpha 0.13.2 (experimental) · 27/11/2026**
 
 - Faixa de turnos maior no topo (bem maior no celular), sem invadir o tabuleiro.
