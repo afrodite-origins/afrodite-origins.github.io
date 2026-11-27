@@ -1,5 +1,12 @@
 # Últimas atualizações
 
+## Alpha 0.12.4 (experimental) · 27/11/2026
+
+- HUD novo (teste): novo menu principal simétrico com três locais. A Forja de Hefesto (disponível, com um “?” contando por que ela existe), Caminho para o Olimpo e Coliseu (em breve).
+- Ranking, Perfil e Loja ficam numa barra embaixo do menu; o ranking abre direto da tela inicial.
+- Loja e Mochila viraram abas da mesma janela. No HUD novo a loja só vende; equipar é na mochila.
+- Botão “‹ Início” na escolha do caminho para voltar ao menu (Esc ou ○/B também voltam).
+
 ## Alpha 0.12.3 (experimental) · 27/11/2026
 
 - Sem emojis na interface: moeda, baú, mochila, lojinha, ampulheta e medalhas viraram ícones próprios.
