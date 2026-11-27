@@ -3,8 +3,8 @@
 <title>Afrodite Origins</title>
 <meta name="description" content="Teste o potencial de Afrodite contra Hefesto em mais uma provação enviada por Atena. Divirta-se abrindo baús e ganhando skins raras.">
 <meta name="theme-color" content="#0b0a09">
-<link rel="icon" type="image/png" sizes="64x64" href="favicon-64.png">
-<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="64x64" href="favicon-64.png?v=2">
+<link rel="apple-touch-icon" href="apple-touch-icon.png?v=2">
 <link rel="manifest" href="manifest.webmanifest">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -14,8 +14,8 @@
 <meta property="og:site_name" content="Afrodite Origins">
 <meta property="og:title" content="Afrodite Origins">
 <meta property="og:description" content="Teste o potencial de Afrodite contra Hefesto em mais uma provação enviada por Atena. Divirta-se abrindo baús e ganhando skins raras.">
-<meta property="og:url" content="https://isaacbcampos.github.io/afrodite-alpha/">
-<meta property="og:image" content="https://isaacbcampos.github.io/afrodite-alpha/og-origins.jpg">
+<meta property="og:url" content="https://afrodite-origins.github.io/">
+<meta property="og:image" content="https://afrodite-origins.github.io/og-origins.jpg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="Afrodite, de vestido vermelho e cetro de coração, ao lado do título Afrodite Origins">
@@ -23,7 +23,7 @@
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Afrodite Origins">
 <meta name="twitter:description" content="Teste o potencial de Afrodite contra Hefesto em mais uma provação enviada por Atena. Divirta-se abrindo baús e ganhando skins raras.">
-<meta name="twitter:image" content="https://isaacbcampos.github.io/afrodite-alpha/og-origins.jpg">
+<meta name="twitter:image" content="https://afrodite-origins.github.io/og-origins.jpg">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <style>
 /* VOICE: severo e mítico, estilo souls-like
@@ -429,6 +429,13 @@ html:not(#_) .pstI{margin:6px 0 8px;font:14px/1.45 Marcellus,serif!important;tex
 <audio id="bgm" src="forging_flames.mp3" loop preload="auto"></audio>
 <div id="player" hidden><button id="pp" aria-label="Pausar trilha"><svg viewBox="0 0 16 16" width="14" height="14"><path id="ppi" d="M4 3h3v10H4zM9 3h3v10H9z" fill="currentColor"/></svg></button><span class="eq" aria-hidden="true"><i></i><i></i><i></i></span><span class="tt">Forging Flames</span><small>Patrick Maney · CC-BY 3.0</small></div>
 <script src="analytics-config.js"></script>
+<script>
+// mudança de endereço: o link antigo manda o progresso do jogador no #migr=… e aqui ele é guardado
+(()=>{try{const h=location.hash;if(!h.startsWith('#migr='))return;const d=JSON.parse(decodeURIComponent(escape(atob(h.slice(6).replace(/-/g,'+').replace(/_/g,'/')))));let n=0;
+ const rich=v=>{try{const o=JSON.parse(v);return(o.own||[]).length*100+(o.coins||0)+(o.chests||0)*15}catch(e){return-1}};
+ for(const k in d){if(!/^afro/.test(k)||typeof d[k]!=='string')continue;const cur=localStorage.getItem(k);if(cur==null||(k==='afroLoja'&&rich(d[k])>rich(cur))){localStorage.setItem(k,d[k]);n++}}
+ history.replaceState(null,'',location.pathname+location.search);if(n)sessionStorage.setItem('afroMigr',String(n))}catch(e){}})();
+</script>
 <script>
 // v0.11.17: todo texto desenhado no canvas também sai em maiúsculas e na fonte do título
 (()=>{try{const P=CanvasRenderingContext2D.prototype,d=Object.getOwnPropertyDescriptor(P,'font');
@@ -2705,8 +2712,9 @@ function drawTears(){if(!S.tears||S.t>S.tears||S.over)return;if(S.t>(S.tearT||0)
 
 
 /* versão, últimas atualizações e reporte de bug */
-const VERSION='Alpha 0.11.41 (experimental)';const BUILD_TS='2026-11-27T01:21:35Z';
+const VERSION='Alpha 0.11.42 (experimental)';const BUILD_TS='2026-11-27T01:53:23Z';
 const PATCH=[
+ {v:'Alpha 0.11.42 (experimental)',d:'26/11/2026',it:['Novo endereço: afrodite-origins.github.io. Quem abrir o link antigo é levado para o novo com moedas, visuais e baús.','Ícone novo do aplicativo: Afrodite souls-like, de coroa de espinhos e olhos acesos diante de um eclipse carmesim.']},
  {v:'Alpha 0.11.41 (experimental)',d:'26/11/2026',it:['A pomba também anuncia itens lendários comprados na loja (“adquiriu o item lendário”).','Na loja, o botão “Tirar” virou “Usar o visual padrão”, com o aviso de que o item continua seu.']},
  {v:'Alpha 0.11.40 (experimental)',d:'26/11/2026',it:['A loja de cada jogador é diferente, e a raridade dos itens segue a mesma chance do baú (lendário na loja é tão raro quanto no baú).','Na tela inicial, de vez em quando passa uma pomba anunciando quem conseguiu um item lendário nos últimos dias.']},
  {v:'Alpha 0.11.39 (experimental)',d:'26/11/2026',it:['Corrigido: pular a cena do nascimento de Afrodite não trava mais.','Paladina na escolha de classe: mostra só a postura defensiva e um botão Mudança de Postura para ver as habilidades da ofensiva.','Na luta, o menu da Paladina mostra só a Mudança de Postura e as 3 habilidades da postura atual, com o nome da postura em cima.','Corrigido: parágrafos e descrições dos menus também saem com minúsculas.']},

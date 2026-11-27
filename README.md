@@ -2,9 +2,14 @@
 
 Teste o potencial de Afrodite contra Hefesto em mais uma provação enviada por Atena. Divirta-se abrindo baús e ganhando skins raras.
 
-**[Jogar](https://isaacbcampos.github.io/afrodite-alpha/)** · funciona no PC e no celular (na horizontal). No celular, abra o link e use “Adicionar à tela inicial” para jogar como aplicativo.
+**[Jogar](https://afrodite-origins.github.io/)** · funciona no PC e no celular (na horizontal). No celular, abra o link e use “Adicionar à tela inicial” para jogar como aplicativo.
 
 ## Últimas atualizações
+
+**Alpha 0.11.42 (experimental) · 26/11/2026**
+
+- Novo endereço: afrodite-origins.github.io. Quem abrir o link antigo é levado para o novo com moedas, visuais e baús.
+- Ícone novo do aplicativo: Afrodite souls-like, de coroa de espinhos e olhos acesos diante de um eclipse carmesim.
 
 **Alpha 0.11.41 (experimental) · 26/11/2026**
 
@@ -22,12 +27,6 @@ Teste o potencial de Afrodite contra Hefesto em mais uma provação enviada por 
 - Paladina na escolha de classe: mostra só a postura defensiva e um botão Mudança de Postura para ver as habilidades da ofensiva.
 - Na luta, o menu da Paladina mostra só a Mudança de Postura e as 3 habilidades da postura atual, com o nome da postura em cima.
 - Corrigido: parágrafos e descrições dos menus também saem com minúsculas.
-
-**Alpha 0.11.38 (experimental) · 26/11/2026**
-
-- Corrigido: frases e diálogos agora aparecem com minúsculas de verdade (fonte Marcellus) também dentro da luta.
-- Sons de acerto agora sobem (acorde maior) e os de erro descem, ainda graves, para o acerto soar como acerto.
-- Nova fala de Hefesto sobre a inveja das deusas.
 
 ## Controles
 | | PC | Controle |

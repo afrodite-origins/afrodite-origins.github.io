@@ -1,5 +1,10 @@
 # Últimas atualizações
 
+## Alpha 0.11.42 (experimental) · 26/11/2026
+
+- Novo endereço: afrodite-origins.github.io. Quem abrir o link antigo é levado para o novo com moedas, visuais e baús.
+- Ícone novo do aplicativo: Afrodite souls-like, de coroa de espinhos e olhos acesos diante de um eclipse carmesim.
+
 ## Alpha 0.11.41 (experimental) · 26/11/2026
 
 - A pomba também anuncia itens lendários comprados na loja (“adquiriu o item lendário”).
