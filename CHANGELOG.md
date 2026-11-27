@@ -2,6 +2,7 @@
 
 ## Alpha 0.13.2 (experimental) · 27/11/2026
 
+- Relatório (ajuste): a confiança das inferências passou a usar a margem de erro de 95% das decisões por luta (1,96 × desvio-padrão ÷ √n), não só o tamanho da amostra. Só entram jogadores com ≥ 3 lutas concluídas, ≥ 40 decisões e confiança ≥ 60%; os outros aparecem como amostra insuficiente, com o motivo.
 - Faixa de turnos maior no topo (bem maior no celular), sem invadir o tabuleiro.
 - “Novo” por item: na loja e na mochila, o aviso de novidade some do item assim que você toca nele, sem precisar fechar a aba.
 - Malandra: a Flecha do Cupido agora funciona de 1 a 6 casas, com +15% de dano por casa de distância (até +75%). O Voo Rasante tem um minitutorial e, ao acertar, já abre a mira do Recuo em Voo (dá para cancelar). Novos arcos cosméticos (5 épicos, um por conjunto); as adagas continuam na vaga de arma.
