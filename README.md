@@ -6,6 +6,11 @@ Teste o potencial de Afrodite contra Hefesto em mais uma provação enviada por 
 
 ## Últimas atualizações
 
+**Alpha 0.11.37 (experimental) · 26/11/2026**
+
+- Rankings explicados: passe o mouse (ou o cursor do controle) numa aba ou no Hall da Fama da tela inicial para ver o que ela mede.
+- Controle: nos golpes de desviar, apertar ○ (B no Xbox) no “AGORA!” já desvia para a casa segura, sem precisar segurar e escolher a direção antes.
+
 **Alpha 0.11.36 (experimental) · 26/11/2026**
 
 - Sons das reações e da conjuração mais graves, com tambores e metais baixos, para combinar com a música épica da luta.
@@ -18,16 +23,6 @@ Teste o potencial de Afrodite contra Hefesto em mais uma provação enviada por 
 
 - Paladina: nova habilidade Mudança de Postura (2 PA, com ícone próprio). Ela começa na defensiva e só usa as habilidades da postura em que está.
 - Novo menu de ações da Paladina com as 7 habilidades: defensivas à esquerda, ofensivas à direita e a Mudança de Postura embaixo; as da outra postura aparecem com cadeado.
-
-**Alpha 0.11.33 (experimental) · 26/11/2026**
-
-- Diálogos, cenas e descrições agora seguem as maiúsculas e minúsculas normais do português, na mesma fonte.
-- Ícone de Masoquismo (coração roxo com o número de acúmulos) bem visível na linha de turnos.
-- A guitarra saiu: agora os golpes de Hefesto e as notas de conjurar caem na batida da música da luta (120 BPM).
-- L1/R1 (LB/RB no Xbox, Q/E no teclado) trocam as abas do ranking, da loja e da mochila; na tela inicial trocam o ranking.
-- Na tela final dá para escolher “Menu principal” pelo controle.
-- Controle: R3 liga um cursor no analógico direito para passar por cima de Hefesto e do tabuleiro.
-- Passar o cursor em Hefesto mostra até onde ele pode andar no próximo turno.
 
 ## Controles
 | | PC | Controle |

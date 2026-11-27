@@ -1,5 +1,10 @@
 # Últimas atualizações
 
+## Alpha 0.11.37 (experimental) · 26/11/2026
+
+- Rankings explicados: passe o mouse (ou o cursor do controle) numa aba ou no Hall da Fama da tela inicial para ver o que ela mede.
+- Controle: nos golpes de desviar, apertar ○ (B no Xbox) no “AGORA!” já desvia para a casa segura, sem precisar segurar e escolher a direção antes.
+
 ## Alpha 0.11.36 (experimental) · 26/11/2026
 
 - Sons das reações e da conjuração mais graves, com tambores e metais baixos, para combinar com a música épica da luta.
