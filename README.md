@@ -6,6 +6,13 @@ Teste o potencial de Afrodite contra Hefesto em mais uma provação enviada por 
 
 ## Últimas atualizações
 
+**Alpha 0.14.1 (experimental) · 27/11/2026**
+
+- Correção (relato do jefferson12): quando a prótese quebrava no meio de um ataque do Hefesto, a cena da fase 2 entrava e, ao terminar, o evento de botão (F, Shift, Espaço) continuava de onde parou. Agora a cena espera o ataque terminar e só depois começa.
+- Correção (relato automático da Encanto Doce): retomar uma luta salva com uma Personalizada que tinha o antigo Corte Duplo travava o jogo. O Corte Duplo salvo vira o Falcão, e habilidades que não existem mais são ignoradas.
+- Controle (relato da veela Selvagem): apertar um botão do controle troca o jogo para o modo controle sozinho, e apertar uma tecla volta para o teclado. No menu principal, Start ou Select abrem as Configurações, onde dá para trocar o modo de jogo. O botão Afrodisíaco e a tela do Ranking Afrodisíaco também funcionam no controle.
+- Segurança extra: ataques do Hefesto nunca marcam casas fora do tabuleiro.
+
 **Alpha 0.14.0 (experimental) · 27/11/2026**
 
 - Ranking Afrodisíaco (1ª Temporada): um passe de temporada infinito, separado por classe, que só sobe com vitórias. Vitória manual vale 1; no automático, 4 vitórias valem 1. Libera com 2 vitórias manuais ou 4 lutas no automático, com um minitutorial que abre sozinho e pode ser revisto a qualquer momento.
