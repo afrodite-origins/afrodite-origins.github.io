@@ -1,5 +1,14 @@
 # Últimas atualizações
 
+## Alpha 0.11.44 (experimental) · 27/11/2026
+
+- Celular: na tela de reação, APARAR e PULAR ficaram maiores e bem afastados no polegar direito; as setas de desviar foram todas para o polegar esquerdo.
+- Celular: ao conjurar, as notas viram 4 botões grandes, 2 de cada lado da tela.
+- Paladina no celular: nas primeiras lutas os golpes avisam um pouco antes e a janela de reação é mais folgada.
+- Loja: a cada hora sorteia visuais de todas as classes, com o sigilo discreto da classe em cada item. Achar um lendário da sua classe favorita ficou raro.
+- Pontinho de aviso na Loja quando há rotação nova e na Mochila quando chega visual novo; some ao abrir a tela.
+- Novo Perfil (ícone ao lado da engrenagem): apelido, Afrodite com os visuais da classe favorita, maestria que evolui com lutas, vitórias e tempo, conquistas e estatísticas (vitórias, lutas, tempo jogado, melhor tempo e últimas partidas).
+
 ## Alpha 0.11.43 (experimental) · 26/11/2026
 
 - Ranking de Tempo corrigido: tempo parado registrado antes do desconto de AFK não conta mais.

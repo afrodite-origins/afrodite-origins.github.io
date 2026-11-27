@@ -6,6 +6,15 @@ Teste o potencial de Afrodite contra Hefesto em mais uma provação enviada por 
 
 ## Últimas atualizações
 
+**Alpha 0.11.44 (experimental) · 27/11/2026**
+
+- Celular: na tela de reação, APARAR e PULAR ficaram maiores e bem afastados no polegar direito; as setas de desviar foram todas para o polegar esquerdo.
+- Celular: ao conjurar, as notas viram 4 botões grandes, 2 de cada lado da tela.
+- Paladina no celular: nas primeiras lutas os golpes avisam um pouco antes e a janela de reação é mais folgada.
+- Loja: a cada hora sorteia visuais de todas as classes, com o sigilo discreto da classe em cada item. Achar um lendário da sua classe favorita ficou raro.
+- Pontinho de aviso na Loja quando há rotação nova e na Mochila quando chega visual novo; some ao abrir a tela.
+- Novo Perfil (ícone ao lado da engrenagem): apelido, Afrodite com os visuais da classe favorita, maestria que evolui com lutas, vitórias e tempo, conquistas e estatísticas (vitórias, lutas, tempo jogado, melhor tempo e últimas partidas).
+
 **Alpha 0.11.43 (experimental) · 26/11/2026**
 
 - Ranking de Tempo corrigido: tempo parado registrado antes do desconto de AFK não conta mais.
@@ -21,11 +30,6 @@ Teste o potencial de Afrodite contra Hefesto em mais uma provação enviada por 
 - A pomba também anuncia itens lendários comprados na loja (“adquiriu o item lendário”).
 - Na loja, o botão “Tirar” virou “Usar o visual padrão”, com o aviso de que o item continua seu.
 
-**Alpha 0.11.40 (experimental) · 26/11/2026**
-
-- A loja de cada jogador é diferente, e a raridade dos itens segue a mesma chance do baú (lendário na loja é tão raro quanto no baú).
-- Na tela inicial, de vez em quando passa uma pomba anunciando quem conseguiu um item lendário nos últimos dias.
-
 ## Controles
 | | PC | Controle |
 |---|---|---|
@@ -36,7 +40,7 @@ Teste o potencial de Afrodite contra Hefesto em mais uma provação enviada por 
 | Pular | Espaço | A |
 | Desviar | Shift + direção | B + direção |
 
-No celular: um toque mostra, o segundo confirma.
+No celular: um toque mostra, o segundo confirma. Na reação, aparar e pular ficam no polegar direito e desviar no esquerdo.
 
 ## Créditos
 Trilha: "Forging Flames", de Patrick Maney ([OpenGameArt](https://opengameart.org/content/forging-flames-cinematic-dark), CC-BY 3.0).
