@@ -501,20 +501,25 @@ body.clean #pick .rt{position:relative;z-index:2;font-size:clamp(13px,min(2.2vw,
 #skbN{font:600 16px Cinzel,serif;letter-spacing:.2em;text-transform:uppercase;color:var(--cc)}
 .skbAt{display:flex;gap:10px;flex-wrap:wrap;margin-top:4px}.skbAt span{display:flex;align-items:center;gap:5px;font:600 10px Cinzel,serif;letter-spacing:.12em;color:#8f8578}.skbAt i{display:flex;gap:2px}.skbAt i u{width:7px;height:7px;border-radius:1px;background:#2a241d}.skbAt i u.f{background:var(--cc)}
 .skbX{width:40px;height:40px;min-height:0;padding:0;border-radius:50%!important;border:1px solid #3a332b!important;background:none!important;color:#b8a888}
-.skbBody{display:flex;gap:14px;min-height:0;flex:1}
-.skbBoards{display:flex;gap:12px;flex:0 0 auto}
-.skbBd{background:#0b0907;border:1px solid #241f19;border-radius:6px;padding:8px;display:flex;flex-direction:column;align-items:center;gap:6px}
-.skbBd h4{margin:0;font:600 10px Cinzel,serif;letter-spacing:.22em;color:#8f8578;text-transform:uppercase}.skbBd h4.on{color:var(--pc)}
-.skbG{--u:clamp(40px,min(5.6vw,9.4vh),62px);position:relative;display:grid;grid-template-columns:repeat(5,var(--u));grid-template-rows:repeat(5,var(--u));gap:6px}
-.skbG svg.ln{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
-.skbN{position:relative;min-height:0;padding:0;display:grid;place-items:center;border-radius:5px!important;border:1px solid #3a3229!important;background:linear-gradient(#1a1612,#100d0a)!important;box-shadow:inset 0 0 0 2px #0a0806}
-.skbN img{width:78%;height:78%}
-.skbN.core{border-color:var(--cc)!important;border-radius:50%!important;overflow:hidden;padding:0}.skbN.core svg{width:100%;height:100%}
-.skbN.pas::after{content:'';position:absolute;inset:3px;border:1px dashed #6b5a3a;border-radius:3px;pointer-events:none}
-.skbN.dim img{opacity:.55;filter:grayscale(.5)}
+.skbBody{display:grid;grid-template-columns:auto minmax(0,1.2fr) minmax(0,1fr);gap:16px;min-height:0;flex:1}
+.skbCol{z-index:3;--u:clamp(42px,min(5.4vw,9vh),60px);position:relative;display:flex;flex-direction:column;align-items:center;gap:10px;padding:4px 6px}
+.skbCol::before{content:'';position:absolute;left:50%;top:calc(var(--u)/2);bottom:calc(var(--u)/2);border-left:2px dotted color-mix(in srgb,var(--cc) 45%,transparent);transform:translateX(-1px)}
+.skbN{position:relative;width:var(--u);height:var(--u);min-height:0;padding:0;display:grid;place-items:center;border-radius:6px!important;border:1px solid #3a3229!important;background:linear-gradient(#1a1612,#100d0a)!important;box-shadow:inset 0 0 0 2px #0a0806;flex:none}
+.skbN img{width:80%;height:80%}
+.skbN.top:not(.on)::after{content:'';position:absolute;inset:-5px;border-radius:50%;border:2px solid #ffd08a;animation:skbRing 1.4s ease-out infinite;pointer-events:none}@keyframes skbRing{from{opacity:.9;transform:scale(.9)}to{opacity:0;transform:scale(1.25)}}.skbN.top{border-radius:50%!important;border-color:color-mix(in srgb,var(--cc) 60%,#3a3229)!important}
 .skbN:hover,.skbN:focus-visible{border-color:#8a7350!important;outline:none}
-.skbN.on{border-color:var(--cc)!important;box-shadow:inset 0 0 0 2px #0a0806,0 0 14px color-mix(in srgb,var(--cc) 55%,transparent)}
-.skbN .k{position:absolute;bottom:-1px;right:2px;font:700 9px Cinzel,serif;color:#8f8578}
+.skbN.on{border-color:var(--cc)!important;box-shadow:inset 0 0 0 2px #0a0806,0 0 16px color-mix(in srgb,var(--cc) 60%,transparent)}
+.skbN .k{position:absolute;bottom:0;right:3px;font:700 9px Cinzel,serif;color:#8f8578}
+.skbN .tap{position:absolute;left:calc(100% + 8px);top:50%;transform:translateY(-50%);white-space:nowrap;font:600 9px Cinzel,serif;letter-spacing:.12em;text-transform:uppercase;color:#1a1208;background:#ffd08a;padding:3px 7px;border-radius:999px;animation:skbTap 1.2s ease-in-out infinite;pointer-events:none}
+.skbN .tap::before{content:'';position:absolute;left:-4px;top:50%;margin-top:-4px;border:4px solid transparent;border-right-color:#ffd08a;border-left:0}
+@keyframes skbTap{50%{transform:translate(4px,-50%)}}
+.skbN.top.spin img{animation:skbSpin .5s ease}@keyframes skbSpin{from{transform:rotateY(180deg)}}
+.skbChip{position:relative;z-index:1;font:600 9px Cinzel,serif;letter-spacing:.16em;text-transform:uppercase;padding:2px 8px;border-radius:999px;background:#0e0b08;border:1px solid currentColor}
+.skbPv{position:relative;min-width:0;border:1px solid #241f19;border-radius:8px;overflow:hidden;background:#0a0806}
+#skbCv{position:absolute;inset:0;width:100%;height:100%}
+.skbPvL.hint{color:#1a1208;background:#ffd08a;padding:3px 9px;border-radius:999px;animation:skbHint 1.2s ease-in-out infinite}@keyframes skbHint{50%{transform:translateX(-4px)}}.skbPvL{position:absolute;left:10px;top:8px;font:600 10px Cinzel,serif;letter-spacing:.18em;color:#8f8578;text-transform:uppercase}
+@media (max-height:520px){.skbCol{--u:clamp(32px,9.2vh,42px);gap:6px;padding:2px}.skbN .tap{font-size:8px;padding:2px 5px}.skbBody{gap:10px}}
+@media (max-width:700px){.skbBody{grid-template-columns:auto 1fr}.skbDet{grid-column:1/-1}}
 .skbDet{flex:1;min-width:0;overflow:auto;border-left:2px solid var(--cc);padding:4px 0 4px 14px;font:15px/1.4 "EB Garamond",Georgia,serif;color:#cfc4b4}
 .skbDet h3{margin:0 0 2px;font:600 15px Cinzel,serif;letter-spacing:.12em;color:#ffe2a0}
 .skbDet .tg{display:flex;flex-wrap:wrap;gap:6px;margin:4px 0 8px}.skbDet .tg span{font:600 10px Cinzel,serif;letter-spacing:.1em;padding:3px 8px;border:1px solid #3a332b;border-radius:999px;color:#b8a888}
@@ -548,7 +553,7 @@ body.clean #pick .rt{position:relative;z-index:2;font-size:clamp(13px,min(2.2vw,
 <div class="cInfo"><div class="cName" id="carN"></div><p id="carD"></p><button type="button" id="carSk"><svg class="ic" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3" aria-hidden="true"><rect x="6" y="1.5" width="4" height="4" rx=".8"/><rect x="1.5" y="10.5" width="4" height="4" rx=".8"/><rect x="10.5" y="10.5" width="4" height="4" rx=".8"/><path d="M8 5.5V8M3.5 10.5V8h9v2.5"/></svg> Ver habilidades</button></div>
 <div class="cBot"><div class="cRow" id="carRow" role="tablist"></div><button type="button" id="carSel">Selecionar</button></div></div>
 <div id="skB" hidden role="dialog" aria-modal="true" aria-labelledby="skbN"><div class="skbIn"><header class="skbH"><span class="skbSig" id="skbSig"></span><div><b id="skbN"></b><div class="skbAt" id="skbAt"></div></div><button type="button" class="skbX" id="skbX" aria-label="Fechar">✕</button></header>
-<div class="skbBody"><div class="skbBoards" id="skbBoards"></div><aside class="skbDet" id="skbDet"></aside></div>
+<div class="skbBody"><div class="skbCol" id="skbBoards"></div><div class="skbPv"><canvas id="skbCv" aria-hidden="true"></canvas><span class="skbPvL" id="skbPvL"></span></div><aside class="skbDet" id="skbDet"></aside></div>
 <footer class="skbF"><div class="skbCls" id="skbCls"></div><button type="button" id="skbSel">Selecionar</button></footer></div></div>
 <div class="rad" id="rad"><div class="rring"></div><div class="pprev rc"><canvas id="pkv" width="300" height="320" aria-label="Prévia da postura de Afrodite"></canvas><p id="pkn"></p></div><div id="cls"></div></div>
 <button id="bCustom" type="button" data-i="4" aria-label="Personalizada: monte sua própria Afrodite"></button>
@@ -1248,14 +1253,13 @@ function carDraw(){const cv=$('carCv');if(!cv)return;const r=cv.getBoundingClien
 setTimeout(()=>{$('carL').onclick=()=>carGo(pickI-1,-1);$('carR').onclick=()=>carGo(pickI+1,1);$('carSel').onclick=()=>choosePick();
  let sx=null;const st=$('carSt');st.addEventListener('pointerdown',e=>{if(e.target.closest('button'))return;sx=e.clientX});st.addEventListener('pointerup',e=>{if(sx==null)return;const d=e.clientX-sx;sx=null;if(Math.abs(d)>36)carGo(pickI+(d<0?1:-1),d<0?1:-1);else if(Math.abs(d)<8)choosePick()})},0);
 /* ===== painel de habilidades: tabuleiro em cruz, como uma árvore ===== */
-const SKB={k:null,sel:null,pi:0};
-const SKB_X={a:{n:'Arma',pa:3,sh:'Golpe básico com a arma da classe. Sempre disponível.'},stance:{n:'Mudança de Postura',pa:2,sh:'Troca entre a postura defensiva (escudo) e a ofensiva (lança em brasa). As três habilidades mudam junto.'}};
-function skbLayout(p,off){const sk=p.sk.map(id=>off?ALT[id]||id:id),N=[{id:'core',c:2,r:2},{id:sk[0],c:2,r:0,k:'1'},{id:sk[1],c:0,r:2,k:'2'},{id:sk[2],c:4,r:2,k:'3'},{id:'a',c:2,r:4,dim:1}];
- if(p.k==='protecao')N.push({id:'stance',c:4,r:4,dim:1});if(p.k==='persuasao')N.push({id:'masoq',c:0,r:4,pas:1});if(p.k==='atracao')N.push({id:'recuo',c:4,r:0,dim:1,from:1});return N}
-function skbGrid(p,off,col){const N=skbLayout(p,off),u=100/5,ctr=n=>[(n.c+.5)*u,(n.r+.5)*u];
- const lines=N.filter(n=>n.id!=='core').map(n=>{const a=ctr(n.from?N[n.from]:N[0]),b=ctr(n);return`<line x1="${a[0]}%" y1="${a[1]}%" x2="${b[0]}%" y2="${b[1]}%"/>`}).join('');
- return`<div class="skbG"><svg class="ln" aria-hidden="true"><g stroke="${col}" stroke-opacity=".35" stroke-width="2" stroke-dasharray="2 5">${lines}</g></svg>`+N.map(n=>n.id==='core'?`<button type="button" class="skbN core" style="grid-column:${n.c+1};grid-row:${n.r+1}" data-id="core" aria-label="${p.n}">${classSVG(p.k,0).replace('<svg ','<svg preserveAspectRatio="xMidYMid slice" ')}</button>`:
-  `<button type="button" class="skbN${n.dim?' dim':''}${n.pas?' pas':''}${SKB.sel===n.id?' on':''}" style="grid-column:${n.c+1};grid-row:${n.r+1}" data-id="${n.id}" aria-label="${(SKL[n.id]||SKB_X[n.id]||{}).n||n.id}"><img alt="" src="${iconURL(n.id,n.dim?'#b8a888':'#f0dca8')}">${n.k?`<i class="k">${n.k}</i>`:''}</button>`).join('')+'</div>'}
+const SKB={k:null,sel:null,pi:0,off:false,tapped:false,t0:0,raf:0};
+const SKB_X={a:{n:'Arma',pa:3,sh:'Golpe básico com a arma da classe. Sempre disponível.'},stance:{n:'Mudança de Postura',pa:2,sh:'Troca entre a postura defensiva (escudo) e a ofensiva (lança em brasa). As três habilidades abaixo mudam junto.'}};
+function skbList(p){const sk=p.sk.map(id=>SKB.off?ALT[id]||id:id),top=p.k==='protecao'?'stance':p.k==='persuasao'?'masoq':null;return{top,sk}}
+function skbCol(p){const{top,sk}=skbList(p);let h='';
+ if(top){h+=`<button type="button" class="skbN top${SKB.sel===top?' on':''}" data-id="${top}" aria-label="${(SKL[top]||SKB_X[top]).n}"><img alt="" src="${iconURL(top,'#f0dca8')}"></button>`;
+  h+=top==='stance'?`<span class="skbChip" style="color:${SKB.off?'#ff9a6a':'#7fb6ff'}">${SKB.off?'Ofensiva':'Defensiva'}</span>`:`<span class="skbChip" style="color:#b8a888">Passiva</span>`}
+ h+=sk.map((id,i)=>`<button type="button" class="skbN${SKB.sel===id?' on':''}" data-id="${id}" aria-label="${SKL[id].n}"><img alt="" src="${iconURL(id,'#f0dca8')}"><i class="k">${i+1}</i></button>`).join('');return h}
 function skbWithA(p,fn){const old={...A};try{AT.forEach(a=>A[a.k]=(p.at&&p.at[a.k])||1);return fn()}catch(e){return''}finally{Object.assign(A,old)}}
 function skbDet(){const p=PRESETS[SKB.pi],id=SKB.sel,T=TREES.find(x=>x.id===p.k);let h='';
  if(!id||id==='core'){h=`<h3>${p.n}</h3><div class="tg"><span>Árvore: ${T.n}</span><span>${T.st}</span></div><p class="sh">${CAR_D[p.k]||p.d}</p><p>Toque numa habilidade para ver o que ela faz. Os números 1, 2 e 3 são os atalhos na luta.</p>`}
@@ -1266,11 +1270,56 @@ function skbDet(){const p=PRESETS[SKB.pi],id=SKB.sel,T=TREES.find(x=>x.id===p.k)
 function skbRender(){const p=PRESETS[SKB.pi],T=TREES.find(x=>x.id===p.k),col=T.c;$('skB').querySelector('.skbIn').style.setProperty('--cc',col);
  $('skbSig').innerHTML=classSVG(p.k,SKB.pi).replace('<svg ','<svg preserveAspectRatio="xMidYMid slice" ');$('skbN').textContent=p.n;
  $('skbAt').innerHTML=AT.filter(a=>(p.at||{})[a.k]).sort((a,b)=>p.at[b.k]-p.at[a.k]).map(a=>`<span>${a.s}<i>${[1,2,3,4,5].map(n=>`<u class="${n<=p.at[a.k]?'f':''}"></u>`).join('')}</i></span>`).join('');
- const pal=p.k==='protecao';$('skbBoards').innerHTML=pal?`<div class="skbBd" style="--pc:#7fb6ff"><h4 class="on">Postura defensiva</h4>${skbGrid(p,false,col)}</div><div class="skbBd" style="--pc:#ff9a6a"><h4 class="on">Postura ofensiva</h4>${skbGrid(p,true,'#ff9a6a')}</div>`:`<div class="skbBd"><h4>Habilidades</h4>${skbGrid(p,false,col)}</div>`;
+ const L=skbList(p);if(!SKB.sel||(SKB.sel!==L.top&&!L.sk.includes(SKB.sel)))SKB.sel=L.top||L.sk[0];
+ $('skbBoards').innerHTML=skbCol(p);
  $('skbCls').innerHTML=PRESETS.filter(q=>q.k!=='custom').map(q=>{const i=PRESETS.indexOf(q);return`<button type="button" data-i="${i}" class="${i===SKB.pi?'on':''}" style="--c:${TREES.find(x=>x.id===q.k).c}" aria-label="${q.n}">${classSVG(q.k,i).replace('<svg ','<svg preserveAspectRatio="xMidYMid slice" ')}</button>`}).join('');
- $('skbBoards').querySelectorAll('.skbN').forEach(b=>{const go=()=>{SKB.sel=b.dataset.id;$('skbBoards').querySelectorAll('.skbN').forEach(x=>x.classList.toggle('on',x.dataset.id===SKB.sel));skbDet()};b.onclick=()=>{go();beep(700,.03,'triangle',.03)};b.onfocus=go;b.onmouseenter=()=>{if(SKB.sel!==b.dataset.id)go()}});
- $('skbCls').querySelectorAll('button').forEach(b=>b.onclick=()=>{SKB.pi=+b.dataset.i;SKB.sel=null;if(pickI!==SKB.pi)carGo(SKB.pi);skbRender()});skbDet()}
-function skbOpen(){const p=PRESETS[pickI];if(p.k==='custom'){SKB.pi=0}else SKB.pi=pickI;SKB.sel=null;$('skB').hidden=false;skbRender();try{TEL.ev('ver_habilidades',{c:PRESETS[SKB.pi].n})}catch(e){}setTimeout(()=>{try{$('skbBoards').querySelector('.skbN[data-id]:not(.core)').focus({preventScroll:true})}catch(e){}},50)}
+ $('skbBoards').querySelectorAll('.skbN').forEach(b=>{b.onclick=()=>{const id=b.dataset.id;if(id==='stance'){SKB.off=!SKB.off;SKB.tapped=true;PKST=SKB.off?'off':'def';try{clang(false)}catch(e){}SKB.sel='stance';SKB.t0=performance.now();skbRender();const t=$('skbBoards').querySelector('.skbN.top');if(t){t.classList.add('spin');t.focus({preventScroll:true})}return}
+   beep(700,.03,'triangle',.03);SKB.sel=id;SKB.t0=performance.now();$('skbBoards').querySelectorAll('.skbN').forEach(x=>x.classList.toggle('on',x.dataset.id===SKB.sel));skbDet()}});
+ $('skbCls').querySelectorAll('button').forEach(b=>b.onclick=()=>{SKB.pi=+b.dataset.i;SKB.sel=null;SKB.off=false;if(pickI!==SKB.pi)carGo(SKB.pi);skbRender()});skbDet()}
+/* prévia animada: Afrodite contra um boneco de treino */
+function skbDummy(c,x,y,hit,tint){c.save();c.translate(x,y);c.rotate(Math.sin(hit*30)*hit*.25);c.strokeStyle='#5a4128';c.lineWidth=5;c.lineCap='round';c.beginPath();c.moveTo(0,0);c.lineTo(0,-96);c.moveTo(-26,-70);c.lineTo(26,-70);c.stroke();
+ c.fillStyle=tint||'#a8885a';c.beginPath();c.ellipse(0,-58,20,30,0,0,7);c.fill();c.strokeStyle='#6b5434';c.lineWidth=1.5;for(const k of[-74,-58,-42]){c.beginPath();c.moveTo(-18,k);c.quadraticCurveTo(0,k+4,18,k);c.stroke()}
+ c.fillStyle=tint||'#b8986a';c.beginPath();c.arc(0,-104,13,0,7);c.fill();c.strokeStyle='#c23a2a';c.lineWidth=2;c.beginPath();c.arc(0,-58,9,0,7);c.stroke();c.beginPath();c.arc(0,-58,3,0,7);c.stroke();c.restore()}
+function skbHeart(c,x,y,r){c.beginPath();c.moveTo(x,y+r*.9);c.bezierCurveTo(x-r*1.6,y-r*.2,x-r*.8,y-r*1.3,x,y-r*.5);c.bezierCurveTo(x+r*.8,y-r*1.3,x+r*1.6,y-r*.2,x,y+r*.9);c.fill()}
+function skbPop(c,x,y,txt,col,p){if(p<0||p>1)return;c.save();c.globalAlpha=1-p;c.fillStyle=col;c.font='700 18px Cinzel,serif';c.textAlign='center';window.__NU=1;c.fillText(txt,x,y-p*30);window.__NU=0;c.restore()}
+function skbDraw(){if($('skB').hidden)return;SKB.raf=requestAnimationFrame(skbDraw);const cv=$('skbCv'),r=cv.getBoundingClientRect(),dpr=Math.min(2,devicePixelRatio||1)*(UIZ||1),W=Math.max(10,Math.round(r.width*dpr)),H=Math.max(10,Math.round(r.height*dpr));if(cv.width!==W||cv.height!==H){cv.width=W;cv.height=H}
+ const c=cv.getContext('2d'),p0=PRESETS[SKB.pi],cls=p0.k,col=TREES.find(x=>x.id===cls).c,id=SKB.sel||'a',T=(performance.now()-SKB.t0)/1000,D=2.6,ph=(T%D)/D,t=performance.now()/1000;
+ c.setTransform(1,0,0,1,0,0);c.clearRect(0,0,W,H);const k=Math.min(W/420,H/290);c.setTransform(k,0,0,k,(W-420*k)/2,(H-290*k)/2+10*k);
+ const bg=c.createRadialGradient(210,170,10,210,170,260);bg.addColorStop(0,col+'22');bg.addColorStop(1,'#00000000');c.fillStyle=bg;c.fillRect(-200,-100,820,500);
+ const G=250;c.strokeStyle='rgba(200,170,120,.10)';c.lineWidth=1;for(let i=0;i<7;i++){const x=40+i*56;c.beginPath();c.moveTo(x,G-18);c.lineTo(x-18,G+18);c.stroke()}c.beginPath();c.moveTo(0,G-18);c.lineTo(420,G-18);c.moveTo(-10,G+18);c.lineTo(420,G+18);c.stroke();
+ let ax=110,ay=G,dx=310,hit=0,tint=null,st=SKB.off?'off':'def';const E=x=>Math.max(0,Math.min(1,x)),ease=x=>x<.5?2*x*x:1-Math.pow(-2*x+2,2)/2,after=[];
+ const dash=(a0,a1,back)=>{const go=E((ph-a0)/(a1-a0)),bk=E((ph-back)/.2);ax=110+(dx-60-110)*ease(go)*(1-ease(bk))};
+ const proj=(a0,a1,draw)=>{const q=E((ph-a0)/(a1-a0));if(q>0&&q<1){const x=ax+30+(dx-ax-30)*q,y=G-90-Math.sin(q*Math.PI)*30;draw(x,y,q)}};
+ const hitAt=a=>{if(ph>a&&ph<a+.25)hit=1-(ph-a)/.25};
+ switch(id){
+  case 'stance':st=ph<.5?(SKB.off?'def':'off'):(SKB.off?'off':'def');after.push(()=>{const q=E((ph-.45)/.2);if(q>0&&q<1){c.strokeStyle=(SKB.off?'#ff9a6a':'#7fb6ff');c.globalAlpha=1-q;c.lineWidth=4;c.beginPath();c.ellipse(ax,G-70,30+q*60,60+q*40,0,0,7);c.stroke();c.globalAlpha=1}skbPop(c,ax,G-170,SKB.off?'OFENSIVA':'DEFENSIVA',SKB.off?'#ff9a6a':'#7fb6ff',E((ph-.5)/.5))});break;
+  case 'escudo':dash(.1,.3,.6);hitAt(.3);after.push(()=>{if(ph>.3&&ph<.9){for(let i=0;i<5;i++){const a=t*4+i*1.256;c.fillStyle='#ffe27a';c.beginPath();c.arc(dx+Math.cos(a)*22,G-120+Math.sin(a)*7,3,0,7);c.fill()}}skbPop(c,dx,G-140,'ATORDOADO','#ffe27a',E((ph-.32)/.5))});break;
+  case 'prece':after.push(()=>{for(let i=0;i<8;i++){const q=(ph*1.4+i/8)%1;c.globalAlpha=Math.sin(q*Math.PI);c.fillStyle='#ff7aa8';skbHeart(c,ax-40+((i*37)%80),G-20-q*150,5+(i%3)*2)}c.globalAlpha=1;skbPop(c,ax,G-160,'+18','#7fe0a0',E((ph-.2)/.6))});break;
+  case 'muralha':after.push(()=>{const pu=.5+.5*Math.sin(t*5);c.save();c.globalAlpha=.25+.25*pu;c.fillStyle=col;for(const[ox,oy]of[[0,0],[56,0],[0,-28],[56,-28]]){c.beginPath();c.moveTo(ax-50+ox,G+10+oy);c.lineTo(ax-22+ox,G-4+oy);c.lineTo(ax+6+ox,G+10+oy);c.lineTo(ax-22+ox,G+24+oy);c.closePath();c.fill()}c.restore();skbPop(c,ax+20,G-170,'APARA SOZINHA',col,E(ph/1))},'under');break;
+  case 'investida':dash(.08,.32,.62);hitAt(.32);after.push(()=>{for(let i=0;i<5;i++){const x=130+i*34;if(x>ax-10)continue;const f=.6+.4*Math.sin(t*12+i);c.fillStyle=`rgba(255,${120+i*15},40,${.7*f})`;c.beginPath();c.moveTo(x-8,G);c.quadraticCurveTo(x,G-26*f,x+8,G);c.fill()}skbPop(c,dx,G-140,'-28','#ff9a6a',E((ph-.34)/.5))});break;
+  case 'arremesso':case 'arco':case 'flecha':proj(.15,.45,(x,y,q)=>{c.save();c.translate(x,y);c.rotate(-Math.cos(q*Math.PI)*.35);if(id==='arco'){c.strokeStyle='#ff9ac8';c.lineWidth=2;c.beginPath();c.moveTo(-26,0);c.lineTo(6,0);c.stroke();c.fillStyle='#ff4a8a';skbHeart(c,10,2,5)}else{c.strokeStyle='#5a3a20';c.lineWidth=3;c.beginPath();c.moveTo(-34,0);c.lineTo(6,0);c.stroke();c.fillStyle='#ff7a3a';c.shadowColor='#ff7a3a';c.shadowBlur=10;c.beginPath();c.moveTo(14,0);c.lineTo(4,-4);c.lineTo(4,4);c.fill()}c.restore()});hitAt(.45);
+   after.push(()=>{if(ph>.45){for(let i=0;i<4;i++){const q=E((ph-.45-i*.05)/.3);c.globalAlpha=1-q;c.fillStyle=id==='arco'?'#ff7ab0':'#c0283a';c.beginPath();c.arc(dx+8+i*5,G-90+q*60,3,0,7);c.fill()}c.globalAlpha=1}skbPop(c,dx,G-140,id==='arco'?'ÊXTASE':'SANGRANDO',id==='arco'?'#ff9ac8':'#ff5a6a',E((ph-.47)/.5))});if(id==='arco')tint=ph>.45?'#d890b0':null;break;
+  case 'ceifa':hitAt(.35);after.push(()=>{const q=E((ph-.2)/.25);if(q>0&&q<1){c.strokeStyle='#ffd08a';c.lineWidth=5;c.globalAlpha=1-q;c.beginPath();c.ellipse(dx,G-8,70,16,0,Math.PI*(1-q),Math.PI*(1.3-q)+Math.PI*.8);c.stroke();c.globalAlpha=1}if(ph>.35){const f=.6+.4*Math.sin(t*12);c.fillStyle=`rgba(255,140,40,${.7*f})`;for(const o of[-20,0,20]){c.beginPath();c.moveTo(dx+o-9,G+4);c.quadraticCurveTo(dx+o,G-24*f,dx+o+9,G+4);c.fill()}}skbPop(c,dx,G-140,'−2 PM','#ffd08a',E((ph-.37)/.5))});break;
+  case 'chicote':hitAt(.38);after.push(()=>{const q=E((ph-.12)/.26),bk=E((ph-.55)/.2),L=q*(1-bk);if(L>0){c.strokeStyle='#c03cff';c.lineWidth=3;c.shadowColor='#c03cff';c.shadowBlur=8;c.beginPath();c.moveTo(ax+20,G-100);const ex=ax+20+(dx-ax-20)*L,ey=G-90;c.quadraticCurveTo((ax+ex)/2,G-160+60*L,ex,ey);c.stroke();c.shadowBlur=0}if(ph>.38&&ph<.6){c.fillStyle='#ffe2ff';for(let i=0;i<6;i++){const a=i*1.05;c.beginPath();c.arc(dx+Math.cos(a)*(ph-.38)*120,G-90+Math.sin(a)*(ph-.38)*120,2,0,7);c.fill()}}skbPop(c,dx,G-140,'-14','#ff5a6a',E((ph-.4)/.5))});break;
+  case 'extase':tint=ph>.3?'#e0a0c8':null;after.push(()=>{for(let i=0;i<6;i++){const a=t*3+i*1.05,q=E((ph-.1)/.3);c.globalAlpha=q;c.fillStyle='#ff6ac0';skbHeart(c,dx+Math.cos(a)*30*q+(1-q)*(ax-dx),G-110+Math.sin(a)*10,5)}c.globalAlpha=1;skbPop(c,dx,G-150,'SÓ A ARMA','#ff9ad8',E((ph-.35)/.5))});break;
+  case 'masoq':after.push(()=>{const n=Math.min(5,Math.floor(ph*7));for(let i=0;i<5;i++){c.fillStyle=i<n?'#ff3a6a':'#3a2a30';c.beginPath();c.arc(ax-40+i*20,G-180,6,0,7);c.fill()}const q=E((ph-.75)/.2);if(q>0&&q<1){c.globalAlpha=1-q;c.fillStyle='#ff3a6a';c.beginPath();c.arc(dx,G-70,20+q*80,0,7);c.fill();c.globalAlpha=1}if(ph>.75)hit=Math.max(0,1-(ph-.75)/.25);skbPop(c,dx,G-150,'EXPLOSÃO DE DOR','#ff5a8a',E((ph-.76)/.24))});break;
+  case 'diabrete':after.push(()=>{const go=E((ph-.1)/.3),bk=E((ph-.6)/.3),q=go*(1-bk),x=ax+30+(dx-40-ax-30)*q,y=G-150-Math.sin(q*Math.PI)*30+Math.sin(t*8)*4;c.save();c.translate(x,y);c.scale(.9,.9);try{impFig(c,t,false,ph>.4&&ph<.6,ph>.4&&ph<.6)}catch(e){}c.restore();if(ph>.4&&ph<.7){c.strokeStyle='#ff3a3a';c.lineWidth=3;for(const o of[-8,8]){c.beginPath();c.moveTo(dx+14+o,G-128);c.lineTo(dx+20+o,G-120);c.stroke()}}skbPop(c,dx,G-150,'PROVOCADO','#ff8a5a',E((ph-.42)/.4))});break;
+  case 'glifob':case 'glifod':after.push(()=>{const big=id==='glifob',R=big?70:44,q=E(ph/.5),pu=.5+.5*Math.sin(t*6),cc=big?'#2ee6d6':'#ff4a8a';c.save();c.globalAlpha=.3+.5*q;c.strokeStyle=cc;c.lineWidth=2;c.beginPath();c.ellipse(dx,G,R,R*.32,0,0,7);c.stroke();c.beginPath();c.ellipse(dx,G,R*.6,R*.19,0,0,7);c.stroke();for(let i=0;i<6;i++){const a=i*1.047+t;c.beginPath();c.arc(dx+Math.cos(a)*R*.8,G+Math.sin(a)*R*.26,2.5+pu,0,7);c.fill?0:0;c.fillStyle=cc;c.fill()}c.restore();
+    if(big){const e2=E((ph-.6)/.25);if(e2>0&&e2<1){c.globalAlpha=1-e2;c.fillStyle='#2ee6d6';c.beginPath();c.moveTo(dx-R,G);c.quadraticCurveTo(dx,G-160*e2,dx+R,G);c.fill();c.globalAlpha=1}}else if(ph>.5){c.strokeStyle='#ff4a8a';c.lineWidth=2;c.beginPath();c.arc(dx,G-58,24,0,7);c.stroke()}
+    skbPop(c,dx,G-150,big?'-24':'PRESO',cc,E((ph-.62)/.38))},'under');if(id==='glifob'&&ph>.6&&ph<.85)hit=1-(ph-.6)/.25;break;
+  case 'aracne':after.push(()=>{const q=E((ph-.1)/.4),x=ax+70;c.save();c.globalAlpha=.8;c.strokeStyle='#2ee6d6';c.lineWidth=2;for(let i=0;i<3;i++){c.beginPath();c.ellipse(x,G,18+i*10,6+i*3,0,t*2+i,t*2+i+4);c.stroke()}c.globalAlpha=q*.85;const gr=c.createLinearGradient(0,G-130,0,G);gr.addColorStop(0,'#bff8ff');gr.addColorStop(1,'#1aa0c0');c.fillStyle=gr;c.beginPath();c.ellipse(x,G-40*q,14,40*q,0,0,7);c.fill();c.beginPath();c.arc(x,G-90*q,10*q,0,7);c.fill();c.restore();skbPop(c,x,G-150,'NINFA','#7ff0ff',E((ph-.4)/.5))});break;
+  case 'voo':{const q=E((ph-.08)/.3),bk=E((ph-.55)/.3),m=q*(1-bk);ax=110+(dx-70-110)*m;ay=G-Math.sin(m*Math.PI)*60-(m>0&&m<1?30*Math.sin(q*Math.PI):0);hitAt(.38);after.push(()=>skbPop(c,dx,G-140,'-12','#7fe0a0',E((ph-.4)/.5)));break}
+  case 'corte':dash(.08,.28,.65);hitAt(.32);hit=Math.max(hit,ph>.45&&ph<.6?1-(ph-.45)/.15:0);after.push(()=>{for(const[a0,s]of[[.3,1],[.45,-1]]){const q=E((ph-a0)/.12);if(q>0&&q<1){c.strokeStyle='#7fffb0';c.lineWidth=4;c.globalAlpha=1-q;c.beginPath();c.moveTo(dx-26,G-110+s*-10);c.lineTo(dx+26,G-50+s*10);c.stroke();c.globalAlpha=1}}if(ph>.5){for(let i=0;i<4;i++){const q=(t*.8+i/4)%1;c.globalAlpha=1-q;c.fillStyle='#5ae08a';c.beginPath();c.arc(dx-12+i*8,G-80-q*40,3,0,7);c.fill()}c.globalAlpha=1}skbPop(c,dx,G-140,'ENVENENADO','#7fe0a0',E((ph-.5)/.5))});break;
+ }
+ after.filter(f=>false);
+ // camada de baixo (áreas no chão), boneco, Afrodite, efeitos
+ c.fillStyle='rgba(0,0,0,.4)';c.beginPath();c.ellipse(ax,G+2,34,7,0,0,7);c.fill();c.beginPath();c.ellipse(dx,G+2,26,6,0,0,7);c.fill();
+ skbDummy(c,dx,G,hit,tint);
+ try{drawAfro(c,ax,ay,.7,cls,t,cls==='protecao'?{stance:st}:{})}catch(e){}
+ after.forEach(f=>typeof f==='function'&&f());
+ const hint=p0.k==='protecao'&&!SKB.tapped,lb=$('skbPvL');lb.classList.toggle('hint',hint);lb.textContent=hint?'◀ toque para trocar a postura':id==='stance'?'Mudança de postura':(SKL[id]||SKB_X[id]||{}).n||''}
+
+function skbOpen(){const p=PRESETS[pickI];if(p.k==='custom'){SKB.pi=0}else SKB.pi=pickI;SKB.sel=null;SKB.off=PKST==='off';SKB.t0=performance.now();$('skB').hidden=false;skbRender();cancelAnimationFrame(SKB.raf);SKB.raf=requestAnimationFrame(skbDraw);try{TEL.ev('ver_habilidades',{c:PRESETS[SKB.pi].n})}catch(e){}setTimeout(()=>{try{$('skbBoards').querySelector('.skbN').focus({preventScroll:true})}catch(e){}},50)}
 function skbClose(){$('skB').hidden=true;try{$('carSk').focus({preventScroll:true})}catch(e){}}
 setTimeout(()=>{$('carSk').onclick=skbOpen;$('skbX').onclick=skbClose;$('skB').addEventListener('click',e=>{if(e.target.id==='skB')skbClose()});$('skB').addEventListener('keydown',e=>{if(e.key==='Escape'||e.key==='Backspace'){e.preventDefault();e.stopPropagation();skbClose()}});$('skbSel').onclick=()=>{skbClose();choosePick()}},0);
 /* ===== novo menu principal: Olimpo · Forja · Coliseu, com Ranking · Perfil · Loja ===== */
@@ -3291,8 +3340,9 @@ function drawTears(){if(!S.tears||S.t>S.tears||S.over)return;if(S.t>(S.tearT||0)
 
 
 /* versão, últimas atualizações e reporte de bug */
-const VERSION='Alpha 0.12.6 (experimental)';const BUILD_TS='2026-11-27T14:09:50Z';
+const VERSION='Alpha 0.12.7 (experimental)';const BUILD_TS='2026-11-27T14:28:48Z';
 const PATCH=[
+ {v:'Alpha 0.12.7 (experimental)',d:'27/11/2026',it:['HUD novo (teste): o painel “Ver habilidades” foi refeito. À esquerda ficam só os ícones, encadeados na ordem da árvore; no meio, uma prévia animada da habilidade (Afrodite contra um boneco de treino); à direita, a descrição.','Paladina: a Mudança de Postura fica no topo, com um aviso pulsando. Ao tocar, as três habilidades de baixo trocam entre a postura defensiva e a ofensiva. Sedutora: o Masoquismo aparece no topo como passiva.']},
  {v:'Alpha 0.12.6 (experimental)',d:'27/11/2026',it:['HUD novo (teste): na escolha de classe, a descrição virou um resumo geral de cada classe, com um botão “Ver habilidades”.','“Ver habilidades” abre um painel em tabuleiro: o brasão da classe no centro, as habilidades 1, 2 e 3 em volta, a arma embaixo e as extras (Masoquismo, Recuo em Voo, Mudança de Postura). A Paladina mostra as duas posturas lado a lado. Toque numa habilidade para ver custo, recarga, atributos e o que ela faz; troque de classe pelos retratos embaixo.']},
  {v:'Alpha 0.12.5 (experimental)',d:'27/11/2026',it:['HUD novo (teste): a escolha de classe virou um carrossel. A heroína aparece grande diante de um vitral na cor da classe, com as vizinhas apagadas dos lados, setas e arrastar para trocar, brasões embaixo e o botão Selecionar.','Menu principal: o botão agora diz “Loja e Mochila”, com os dois ícones, para deixar claro que as duas estão ali.']},
  {v:'Alpha 0.12.4 (experimental)',d:'27/11/2026',it:['HUD novo (teste): novo menu principal simétrico com três locais. A Forja de Hefesto (disponível, com um “?” contando por que ela existe), Caminho para o Olimpo e Coliseu (em breve).','Ranking, Perfil e Loja ficam numa barra embaixo do menu; o ranking abre direto da tela inicial.','Loja e Mochila viraram abas da mesma janela. No HUD novo a loja só vende; equipar é na mochila.','Botão “‹ Início” na escolha do caminho para voltar ao menu (Esc ou ○/B também voltam).']},

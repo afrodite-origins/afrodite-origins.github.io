@@ -6,6 +6,11 @@ Teste o potencial de Afrodite contra Hefesto em mais uma provação enviada por 
 
 ## Últimas atualizações
 
+**Alpha 0.12.7 (experimental) · 27/11/2026**
+
+- HUD novo (teste): o painel “Ver habilidades” foi refeito. À esquerda ficam só os ícones, encadeados na ordem da árvore; no meio, uma prévia animada da habilidade (Afrodite contra um boneco de treino); à direita, a descrição.
+- Paladina: a Mudança de Postura fica no topo, com um aviso pulsando. Ao tocar, as três habilidades de baixo trocam entre a postura defensiva e a ofensiva. Sedutora: o Masoquismo aparece no topo como passiva.
+
 **Alpha 0.12.6 (experimental) · 27/11/2026**
 
 - HUD novo (teste): na escolha de classe, a descrição virou um resumo geral de cada classe, com um botão “Ver habilidades”.
