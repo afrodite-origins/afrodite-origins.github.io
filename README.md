@@ -6,6 +6,11 @@ Teste o potencial de Afrodite contra Hefesto em mais uma provação enviada por 
 
 ## Últimas atualizações
 
+**Alpha 0.12.5 (experimental) · 27/11/2026**
+
+- HUD novo (teste): a escolha de classe virou um carrossel. A heroína aparece grande diante de um vitral na cor da classe, com as vizinhas apagadas dos lados, setas e arrastar para trocar, brasões embaixo e o botão Selecionar.
+- Menu principal: o botão agora diz “Loja e Mochila”, com os dois ícones, para deixar claro que as duas estão ali.
+
 **Alpha 0.12.4 (experimental) · 27/11/2026**
 
 - HUD novo (teste): novo menu principal simétrico com três locais. A Forja de Hefesto (disponível, com um “?” contando por que ela existe), Caminho para o Olimpo e Coliseu (em breve).
