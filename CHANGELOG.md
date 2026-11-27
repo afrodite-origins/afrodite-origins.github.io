@@ -1,5 +1,13 @@
 # Últimas atualizações
 
+## Alpha 0.12.3 (experimental) · 27/11/2026
+
+- Sem emojis na interface: moeda, baú, mochila, lojinha, ampulheta e medalhas viraram ícones próprios.
+- Piloto automático com um robozinho minimalista.
+- Ranking da Forja: pódio com coroa de louros e numeral romano, recompensas em linha discreta.
+- Câmera de reação (PC): o nome do golpe não aparece mais duas vezes, o nome Afrodite não fica cortado pela barra e o mapa do golpe não encosta nos botões.
+- HUD novo (teste): falas voltam a ser balões perto de quem fala, mais discretos; tela inicial mais limpa; apresentação da classe com seletor de postura e habilidades em ícones; árvore de habilidades só com ícones nos nós bloqueados.
+
 ## Alpha 0.12.2 (experimental) · 27/11/2026
 
 - HUD novo em teste (desligado por padrão): ordem de turnos numa faixa no topo, vida em segmentos sobre os personagens, falas como legenda sem balão, histórico de 3 linhas e piloto automático num botão redondo. Ative em Opções › HUD ou abrindo o link com ?hud=novo.
