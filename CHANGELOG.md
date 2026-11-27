@@ -1,5 +1,19 @@
 # Últimas atualizações
 
+## Alpha 0.12.0 (experimental) · 27/11/2026
+
+- Celular: na tela de reação, toque direto na nota. Sem setas: aparar à esquerda, pular no meio e desviar à direita, em pistas largas e afastadas.
+- Celular: ao conjurar, as 4 pistas ficam em dois blocos (um por polegar) e você toca na própria nota.
+- Aparar no celular ganhou uma janela de tempo extra.
+- Reações no estilo Expedition 33: anel que fecha no impacto, som próprio para cada golpe que vem, som de desvio e um choque de lâminas bem marcado ao aparar.
+- Paladina: postura defensiva dá +defesa e −ataque; a ofensiva dá +ataque e −defesa. Um ícone acima da cabeça mostra a postura.
+- Paladina ofensiva: Lança do Dragão (rugido, giro de 360° e fogo de dragão no chão), Presa do Dragão e Cauda do Dragão. Todas funcionam de perto.
+- Paladina: a Muralha de Afeto virou Aura Sádica (2 turnos, área 2×2): quem está nela apara sozinho.
+- Paladina: um escudo diferente para cada set da loja.
+- Sedutora: Masoquismo virou passivo, com no máximo 5 acúmulos; no 5º explode em % da vida do inimigo.
+- Sedutora: nova invocação Diabrete Travesso, que voa pelo mapa, provoca e faz careta para distrair Hefesto.
+- Personalizada: o cabelo da prévia segue a característica principal, e ao confirmar os atributos um coração se enche em cada um.
+
 ## Alpha 0.11.44 (experimental) · 27/11/2026
 
 - Celular: na tela de reação, APARAR e PULAR ficaram maiores e bem afastados no polegar direito; as setas de desviar foram todas para o polegar esquerdo.

@@ -6,6 +6,20 @@ Teste o potencial de Afrodite contra Hefesto em mais uma provação enviada por 
 
 ## Últimas atualizações
 
+**Alpha 0.12.0 (experimental) · 27/11/2026**
+
+- Celular: na tela de reação, toque direto na nota. Sem setas: aparar à esquerda, pular no meio e desviar à direita, em pistas largas e afastadas.
+- Celular: ao conjurar, as 4 pistas ficam em dois blocos (um por polegar) e você toca na própria nota.
+- Aparar no celular ganhou uma janela de tempo extra.
+- Reações no estilo Expedition 33: anel que fecha no impacto, som próprio para cada golpe que vem, som de desvio e um choque de lâminas bem marcado ao aparar.
+- Paladina: postura defensiva dá +defesa e −ataque; a ofensiva dá +ataque e −defesa. Um ícone acima da cabeça mostra a postura.
+- Paladina ofensiva: Lança do Dragão (rugido, giro de 360° e fogo de dragão no chão), Presa do Dragão e Cauda do Dragão. Todas funcionam de perto.
+- Paladina: a Muralha de Afeto virou Aura Sádica (2 turnos, área 2×2): quem está nela apara sozinho.
+- Paladina: um escudo diferente para cada set da loja.
+- Sedutora: Masoquismo virou passivo, com no máximo 5 acúmulos; no 5º explode em % da vida do inimigo.
+- Sedutora: nova invocação Diabrete Travesso, que voa pelo mapa, provoca e faz careta para distrair Hefesto.
+- Personalizada: o cabelo da prévia segue a característica principal, e ao confirmar os atributos um coração se enche em cada um.
+
 **Alpha 0.11.44 (experimental) · 27/11/2026**
 
 - Celular: na tela de reação, APARAR e PULAR ficaram maiores e bem afastados no polegar direito; as setas de desviar foram todas para o polegar esquerdo.
@@ -20,16 +34,6 @@ Teste o potencial de Afrodite contra Hefesto em mais uma provação enviada por 
 - Ranking de Tempo corrigido: tempo parado registrado antes do desconto de AFK não conta mais.
 - Relatório: o primeiro gráfico agora mostra quem mais joga, em barras.
 
-**Alpha 0.11.42 (experimental) · 26/11/2026**
-
-- Novo endereço: afrodite-origins.github.io. Quem abrir o link antigo é levado para o novo com moedas, visuais e baús.
-- Ícone novo do aplicativo: Afrodite souls-like, de coroa de espinhos e olhos acesos diante de um eclipse carmesim.
-
-**Alpha 0.11.41 (experimental) · 26/11/2026**
-
-- A pomba também anuncia itens lendários comprados na loja (“adquiriu o item lendário”).
-- Na loja, o botão “Tirar” virou “Usar o visual padrão”, com o aviso de que o item continua seu.
-
 ## Controles
 | | PC | Controle |
 |---|---|---|
@@ -40,7 +44,7 @@ Teste o potencial de Afrodite contra Hefesto em mais uma provação enviada por 
 | Pular | Espaço | A |
 | Desviar | Shift + direção | B + direção |
 
-No celular: um toque mostra, o segundo confirma. Na reação, aparar e pular ficam no polegar direito e desviar no esquerdo.
+No celular: um toque mostra, o segundo confirma. Na reação, toque direto na nota: aparar à esquerda, pular no meio, desviar à direita.
 
 ## Créditos
 Trilha: "Forging Flames", de Patrick Maney ([OpenGameArt](https://opengameart.org/content/forging-flames-cinematic-dark), CC-BY 3.0).
