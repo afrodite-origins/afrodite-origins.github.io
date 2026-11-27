@@ -6,6 +6,11 @@ Teste o potencial de Afrodite contra Hefesto em mais uma provação enviada por 
 
 ## Últimas atualizações
 
+**Alpha 0.12.6 (experimental) · 27/11/2026**
+
+- HUD novo (teste): na escolha de classe, a descrição virou um resumo geral de cada classe, com um botão “Ver habilidades”.
+- “Ver habilidades” abre um painel em tabuleiro: o brasão da classe no centro, as habilidades 1, 2 e 3 em volta, a arma embaixo e as extras (Masoquismo, Recuo em Voo, Mudança de Postura). A Paladina mostra as duas posturas lado a lado. Toque numa habilidade para ver custo, recarga, atributos e o que ela faz; troque de classe pelos retratos embaixo.
+
 **Alpha 0.12.5 (experimental) · 27/11/2026**
 
 - HUD novo (teste): a escolha de classe virou um carrossel. A heroína aparece grande diante de um vitral na cor da classe, com as vizinhas apagadas dos lados, setas e arrastar para trocar, brasões embaixo e o botão Selecionar.

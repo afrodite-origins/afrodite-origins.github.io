@@ -488,6 +488,42 @@ body.clean #pick .rt{position:relative;z-index:2;font-size:clamp(13px,min(2.2vw,
 #carSel{min-height:42px;padding:8px 42px;border-radius:4px!important;border:1px solid #c9a24a!important;background:linear-gradient(#3a2a14,#22180c)!important;color:#ffe2a0;font:600 14px Cinzel,serif;letter-spacing:.3em;text-transform:uppercase;box-shadow:0 0 22px #ffb03a22}
 #carSel:hover,#carSel:focus-visible{background:linear-gradient(#55391a,#2c1f0e)!important;outline:none;box-shadow:0 0 28px #ffb03a44}
 @media (max-height:520px){#car{padding-top:44px;gap:2px}body.clean #pick .rt{margin-top:10px}#carD{font-size:13px;min-height:2.6em;margin:0 0 4px}.cBot{flex-direction:row;gap:18px}.cT .gem{width:42px;height:42px}.cT .gem span{width:28px;height:28px}.cT{font-size:8px;gap:2px}#carSel{min-height:38px;padding:6px 26px}.cAr{width:44px;height:44px}}
+
+/* ===== painel de habilidades (HUD novo) ===== */
+#carSk{margin:0 auto 4px;min-height:34px;padding:4px 16px;display:inline-flex;align-items:center;gap:7px;border-radius:999px!important;border:1px solid #4a4034!important;background:rgba(14,11,9,.7)!important;color:#d8c8a8;font:600 11px Cinzel,serif;letter-spacing:.18em;text-transform:uppercase}
+#carSk:hover,#carSk:focus-visible{border-color:#c9a24a!important;color:#ffe2a0;outline:none}#carSk .ic{width:1.3em;height:1.3em}
+#carD{-webkit-line-clamp:3;min-height:0}
+#skB[hidden]{display:none!important}
+#skB{position:fixed;inset:0;z-index:6;display:grid;place-items:center;background:rgba(4,3,2,.86);padding:max(10px,env(safe-area-inset-top)) max(10px,env(safe-area-inset-right)) max(10px,env(safe-area-inset-bottom)) max(10px,env(safe-area-inset-left))}
+.skbIn{--cc:#c9a24a;width:min(100%,1040px);max-height:100%;display:flex;flex-direction:column;gap:10px;background:radial-gradient(ellipse at 30% 40%,color-mix(in srgb,var(--cc) 8%,#100d0a),#0a0806 70%);border:1px solid #2e2820;border-radius:10px;padding:14px 16px;color:#e8dcc8;overflow:hidden}
+.skbH,.skbDet{text-align:left}.skbH{display:flex;align-items:center;gap:12px}.skbH>div{flex:1;min-width:0}
+.skbSig{width:42px;height:42px;border-radius:50%;overflow:hidden;flex:none;box-shadow:0 0 0 1px var(--cc),0 0 16px color-mix(in srgb,var(--cc) 40%,transparent)}.skbSig svg{width:100%;height:100%}
+#skbN{font:600 16px Cinzel,serif;letter-spacing:.2em;text-transform:uppercase;color:var(--cc)}
+.skbAt{display:flex;gap:10px;flex-wrap:wrap;margin-top:4px}.skbAt span{display:flex;align-items:center;gap:5px;font:600 10px Cinzel,serif;letter-spacing:.12em;color:#8f8578}.skbAt i{display:flex;gap:2px}.skbAt i u{width:7px;height:7px;border-radius:1px;background:#2a241d}.skbAt i u.f{background:var(--cc)}
+.skbX{width:40px;height:40px;min-height:0;padding:0;border-radius:50%!important;border:1px solid #3a332b!important;background:none!important;color:#b8a888}
+.skbBody{display:flex;gap:14px;min-height:0;flex:1}
+.skbBoards{display:flex;gap:12px;flex:0 0 auto}
+.skbBd{background:#0b0907;border:1px solid #241f19;border-radius:6px;padding:8px;display:flex;flex-direction:column;align-items:center;gap:6px}
+.skbBd h4{margin:0;font:600 10px Cinzel,serif;letter-spacing:.22em;color:#8f8578;text-transform:uppercase}.skbBd h4.on{color:var(--pc)}
+.skbG{--u:clamp(40px,min(5.6vw,9.4vh),62px);position:relative;display:grid;grid-template-columns:repeat(5,var(--u));grid-template-rows:repeat(5,var(--u));gap:6px}
+.skbG svg.ln{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+.skbN{position:relative;min-height:0;padding:0;display:grid;place-items:center;border-radius:5px!important;border:1px solid #3a3229!important;background:linear-gradient(#1a1612,#100d0a)!important;box-shadow:inset 0 0 0 2px #0a0806}
+.skbN img{width:78%;height:78%}
+.skbN.core{border-color:var(--cc)!important;border-radius:50%!important;overflow:hidden;padding:0}.skbN.core svg{width:100%;height:100%}
+.skbN.pas::after{content:'';position:absolute;inset:3px;border:1px dashed #6b5a3a;border-radius:3px;pointer-events:none}
+.skbN.dim img{opacity:.55;filter:grayscale(.5)}
+.skbN:hover,.skbN:focus-visible{border-color:#8a7350!important;outline:none}
+.skbN.on{border-color:var(--cc)!important;box-shadow:inset 0 0 0 2px #0a0806,0 0 14px color-mix(in srgb,var(--cc) 55%,transparent)}
+.skbN .k{position:absolute;bottom:-1px;right:2px;font:700 9px Cinzel,serif;color:#8f8578}
+.skbDet{flex:1;min-width:0;overflow:auto;border-left:2px solid var(--cc);padding:4px 0 4px 14px;font:15px/1.4 "EB Garamond",Georgia,serif;color:#cfc4b4}
+.skbDet h3{margin:0 0 2px;font:600 15px Cinzel,serif;letter-spacing:.12em;color:#ffe2a0}
+.skbDet .tg{display:flex;flex-wrap:wrap;gap:6px;margin:4px 0 8px}.skbDet .tg span{font:600 10px Cinzel,serif;letter-spacing:.1em;padding:3px 8px;border:1px solid #3a332b;border-radius:999px;color:#b8a888}
+.skbDet p{margin:0 0 6px}.skbDet .sh{color:#e8dcc8}
+.skbF{display:flex;align-items:center;justify-content:space-between;gap:12px;border-top:1px solid #241f19;padding-top:10px}
+.skbCls{display:flex;gap:8px}.skbCls button{width:46px;height:46px;min-height:0;padding:0;border-radius:6px!important;overflow:hidden;border:1px solid #3a332b!important;background:#0b0907!important;filter:grayscale(.8) brightness(.7)}.skbCls button svg{width:100%;height:100%}.skbCls button.on{filter:none;border-color:var(--c)!important;box-shadow:0 0 12px color-mix(in srgb,var(--c) 50%,transparent)}
+#skbSel{min-height:40px;padding:6px 34px;border-radius:4px!important;border:1px solid #c9a24a!important;background:linear-gradient(#3a2a14,#22180c)!important;color:#ffe2a0;font:600 13px Cinzel,serif;letter-spacing:.3em;text-transform:uppercase}
+@media (max-height:520px){.skbIn{padding:8px 12px;gap:6px}.skbH .skbSig{width:32px;height:32px}#skbN{font-size:13px}.skbG{--u:clamp(28px,8.6vh,40px);gap:4px}.skbBd{padding:5px;gap:3px}.skbDet{font-size:13px;line-height:1.3}.skbDet h3{font-size:13px}.skbCls button{width:34px;height:34px}#skbSel{min-height:34px;padding:4px 22px}.skbX{width:34px;height:34px}.skbF{padding-top:6px}}
+@media (max-width:700px){.skbBody{flex-direction:column}.skbBoards{justify-content:center}}
 </style></head><body><div class="w">
 <div id="cons" hidden role="dialog" aria-modal="true" aria-labelledby="consT"><div class="mbox recb"><h2 id="consT">Antes de jogar</h2><div class="constx"><p>Este jogo está em teste. Para melhorá-lo, registramos <b>como você joga</b>: o apelido que você escolher, o modelo do aparelho e o navegador, o tempo em cada tela, as escolhas, os acertos e erros na luta, onde você toca ou clica na tela e o desempenho (FPS).</p><p>Não pedimos nome real, e-mail, telefone nem localização. Os dados ficam num banco do desenvolvedor e servem <b>só para ajustar o jogo</b>; nada é vendido nem compartilhado.</p><p class="consm">Você pode mudar isso a qualquer momento na engrenagem, dentro da luta. Para pedir que seus dados sejam apagados, use <b>Reportar bug</b> e informe o código <b id="consId"></b>.</p></div><div class="recbtns"><button id="consYes" class="rec1">Aceitar e jogar</button><button id="consNo">Jogar sem enviar dados</button></div></div></div>
 <div id="rec" hidden role="dialog" aria-modal="true" aria-labelledby="recT"><div class="mbox recb"><h2 id="recT">O jogo travou?</h2><p id="recWhy"></p><div class="recbtns"><button id="recGo" class="rec1">Destravar e continuar</button><button id="recBack">Voltar ao início do turno</button><button id="recNew">Recomeçar a luta</button><button id="recX" class="lnk">fechar</button></div></div></div>
@@ -509,8 +545,11 @@ body.clean #pick .rt{position:relative;z-index:2;font-size:clamp(13px,min(2.2vw,
 <button id="bHub" type="button" hidden aria-label="Voltar ao início">‹ <span>Início</span></button>
 <h1 class="rt">ESCOLHA O CAMINHO DE AFRODITE</h1>
 <div id="car" aria-label="Escolha a classe"><div class="cStage" id="carSt"><canvas id="carCv" aria-hidden="true"></canvas><button type="button" class="cAr l" id="carL" aria-label="Classe anterior"><svg viewBox="0 0 24 24"><path d="M15 4l-8 8 8 8"/></svg></button><button type="button" class="cAr r" id="carR" aria-label="Próxima classe"><svg viewBox="0 0 24 24"><path d="M9 4l8 8-8 8"/></svg></button></div>
-<div class="cInfo"><div class="cName" id="carN"></div><p id="carD"></p></div>
+<div class="cInfo"><div class="cName" id="carN"></div><p id="carD"></p><button type="button" id="carSk"><svg class="ic" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3" aria-hidden="true"><rect x="6" y="1.5" width="4" height="4" rx=".8"/><rect x="1.5" y="10.5" width="4" height="4" rx=".8"/><rect x="10.5" y="10.5" width="4" height="4" rx=".8"/><path d="M8 5.5V8M3.5 10.5V8h9v2.5"/></svg> Ver habilidades</button></div>
 <div class="cBot"><div class="cRow" id="carRow" role="tablist"></div><button type="button" id="carSel">Selecionar</button></div></div>
+<div id="skB" hidden role="dialog" aria-modal="true" aria-labelledby="skbN"><div class="skbIn"><header class="skbH"><span class="skbSig" id="skbSig"></span><div><b id="skbN"></b><div class="skbAt" id="skbAt"></div></div><button type="button" class="skbX" id="skbX" aria-label="Fechar">✕</button></header>
+<div class="skbBody"><div class="skbBoards" id="skbBoards"></div><aside class="skbDet" id="skbDet"></aside></div>
+<footer class="skbF"><div class="skbCls" id="skbCls"></div><button type="button" id="skbSel">Selecionar</button></footer></div></div>
 <div class="rad" id="rad"><div class="rring"></div><div class="pprev rc"><canvas id="pkv" width="300" height="320" aria-label="Prévia da postura de Afrodite"></canvas><p id="pkn"></p></div><div id="cls"></div></div>
 <button id="bCustom" type="button" data-i="4" aria-label="Personalizada: monte sua própria Afrodite"></button>
 <div id="volP" role="group" aria-label="Volume"><button type="button" id="vTog" aria-label="Som"><svg class="ic" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" aria-hidden="true"><path d="M2.8 6.2h2.4L8.6 3.4v9.2L5.2 9.8H2.8z" fill="currentColor"/><path d="M10.8 5.6c.9 1.3.9 3.5 0 4.8M12.6 4c1.8 2.4 1.8 5.6 0 8"/></svg></button><b>Ajuste o som</b><label><span>Música</span><input type="range" id="vMus" min="0" max="100" step="5"><i id="vMusN">50%</i></label><label><span>Efeitos</span><input type="range" id="vSfx" min="0" max="100" step="5"><i id="vSfxN">50%</i></label><button id="vTest" type="button">▶ Testar som</button></div>
@@ -1174,11 +1213,14 @@ async function showRank(){if(scr!=='fight'||!S||!S.over||S.hp<=0)return;const me
  try{TEL.ev('ranking_visto',{ded:P.ded,dev:P.dev,int:P.int,auto:!!(me&&me.auto)})}catch(e){}podBadge()}
 
 /* ===== carrossel de classes (HUD novo) ===== */
-const CAR_D={protecao:'Começa na defensiva com o escudo e, ao trocar de postura, ataca com a lança em brasa.',custom:'Monte a sua Afrodite: distribua atributos e combine habilidades de árvores diferentes.'};
+const CAR_D={protecao:'Aguenta a pancada com o escudo, cura e protege as aliadas; quando troca de postura, parte para cima com a lança em brasa.',
+ persuasao:'Usa chicotadas à distância, invoca um diabrete para desviar a atenção dos inimigos e causa dano massivo ao estourar sua passiva Masoquismo.',
+ paixao:'Controla o campo com glifos de água e desejo que explodem no turno inimigo, e invoca a Ninfa da Água para lutar ao seu lado.',
+ atracao:'Ágil e escorregadia: voa para golpear e fugir, envenena de perto e extasia de longe com a Flecha do Cupido.',custom:'Monte a sua Afrodite: distribua atributos e combine habilidades de árvores diferentes.'};
 const CAR={t:0,from:0,dir:0,k0:0,cv:null};
 function carOn(){return CLEAN&&!HUBON&&scr==='pick'}
 function carRender(){const p=PRESETS[pickI],T=TREES.find(x=>x.id===p.k),col=p.k==='custom'?'#d8b25a':T.c;
- $('carN').style.setProperty('--cc',col);$('carN').textContent=p.n;$('carD').textContent=CAR_D[p.k]||p.d||'';
+ $('carN').style.setProperty('--cc',col);$('carN').textContent=p.n;$('carD').textContent=CAR_D[p.k]||p.d||'';$('carSk').hidden=p.k==='custom';
  $('carRow').innerHTML=PRESETS.map((q,i)=>{const c=q.k==='custom'?'#d8b25a':TREES.find(x=>x.id===q.k).c;return`<button type="button" role="tab" class="cT${i===pickI?' on':''}" data-i="${i}" style="--c:${c}" aria-selected="${i===pickI}"><i class="gem"><span>${classSVG(q.k,i).replace('<svg ','<svg preserveAspectRatio="xMidYMid slice" ')}</span></i>${q.k==='custom'?'Livre':q.n.split(' ')[0]}</button>`}).join('');
  $('carRow').querySelectorAll('.cT').forEach(b=>b.onclick=()=>carGo(+b.dataset.i))}
 function carGo(i,dir){i=(i+PRESETS.length)%PRESETS.length;if(i===pickI)return;CAR.dir=dir||(i>pickI?1:-1);CAR.from=pickI;CAR.k0=performance.now();pickI=i;PKST='def';markPick();carRender()}
@@ -1205,6 +1247,32 @@ function carDraw(){const cv=$('carCv');if(!cv)return;const r=cv.getBoundingClien
  if(e<1){c.save();c.globalAlpha=(1-e)*.7;try{drawAfro(c,cx-CAR.dir*W*.3*e,base,sc,kOf(CAR.from),t,{})}catch(_){}c.restore()}}
 setTimeout(()=>{$('carL').onclick=()=>carGo(pickI-1,-1);$('carR').onclick=()=>carGo(pickI+1,1);$('carSel').onclick=()=>choosePick();
  let sx=null;const st=$('carSt');st.addEventListener('pointerdown',e=>{if(e.target.closest('button'))return;sx=e.clientX});st.addEventListener('pointerup',e=>{if(sx==null)return;const d=e.clientX-sx;sx=null;if(Math.abs(d)>36)carGo(pickI+(d<0?1:-1),d<0?1:-1);else if(Math.abs(d)<8)choosePick()})},0);
+/* ===== painel de habilidades: tabuleiro em cruz, como uma árvore ===== */
+const SKB={k:null,sel:null,pi:0};
+const SKB_X={a:{n:'Arma',pa:3,sh:'Golpe básico com a arma da classe. Sempre disponível.'},stance:{n:'Mudança de Postura',pa:2,sh:'Troca entre a postura defensiva (escudo) e a ofensiva (lança em brasa). As três habilidades mudam junto.'}};
+function skbLayout(p,off){const sk=p.sk.map(id=>off?ALT[id]||id:id),N=[{id:'core',c:2,r:2},{id:sk[0],c:2,r:0,k:'1'},{id:sk[1],c:0,r:2,k:'2'},{id:sk[2],c:4,r:2,k:'3'},{id:'a',c:2,r:4,dim:1}];
+ if(p.k==='protecao')N.push({id:'stance',c:4,r:4,dim:1});if(p.k==='persuasao')N.push({id:'masoq',c:0,r:4,pas:1});if(p.k==='atracao')N.push({id:'recuo',c:4,r:0,dim:1,from:1});return N}
+function skbGrid(p,off,col){const N=skbLayout(p,off),u=100/5,ctr=n=>[(n.c+.5)*u,(n.r+.5)*u];
+ const lines=N.filter(n=>n.id!=='core').map(n=>{const a=ctr(n.from?N[n.from]:N[0]),b=ctr(n);return`<line x1="${a[0]}%" y1="${a[1]}%" x2="${b[0]}%" y2="${b[1]}%"/>`}).join('');
+ return`<div class="skbG"><svg class="ln" aria-hidden="true"><g stroke="${col}" stroke-opacity=".35" stroke-width="2" stroke-dasharray="2 5">${lines}</g></svg>`+N.map(n=>n.id==='core'?`<button type="button" class="skbN core" style="grid-column:${n.c+1};grid-row:${n.r+1}" data-id="core" aria-label="${p.n}">${classSVG(p.k,0).replace('<svg ','<svg preserveAspectRatio="xMidYMid slice" ')}</button>`:
+  `<button type="button" class="skbN${n.dim?' dim':''}${n.pas?' pas':''}${SKB.sel===n.id?' on':''}" style="grid-column:${n.c+1};grid-row:${n.r+1}" data-id="${n.id}" aria-label="${(SKL[n.id]||SKB_X[n.id]||{}).n||n.id}"><img alt="" src="${iconURL(n.id,n.dim?'#b8a888':'#f0dca8')}">${n.k?`<i class="k">${n.k}</i>`:''}</button>`).join('')+'</div>'}
+function skbWithA(p,fn){const old={...A};try{AT.forEach(a=>A[a.k]=(p.at&&p.at[a.k])||1);return fn()}catch(e){return''}finally{Object.assign(A,old)}}
+function skbDet(){const p=PRESETS[SKB.pi],id=SKB.sel,T=TREES.find(x=>x.id===p.k);let h='';
+ if(!id||id==='core'){h=`<h3>${p.n}</h3><div class="tg"><span>Árvore: ${T.n}</span><span>${T.st}</span></div><p class="sh">${CAR_D[p.k]||p.d}</p><p>Toque numa habilidade para ver o que ela faz. Os números 1, 2 e 3 são os atalhos na luta.</p>`}
+ else{const k=SKL[id],x=SKB_X[id];if(x)h=`<h3>${x.n}</h3><div class="tg"><span>${x.pa} PA</span>${CD[id]?`<span>recarga ${CD[id]===1?'1 por turno':CD[id]+' turnos'}</span>`:''}</div><p class="sh">${x.sh}</p>`;
+  else if(k){const full=skbWithA(p,()=>typeof k.d==='function'?k.d():k.d||''),g=skbWithA(p,()=>GAIN[id]?GAIN[id]():'');
+   h=`<h3>${k.n}</h3><div class="tg">${id==='masoq'?'<span>passiva</span>':`<span>${k.pa} PA</span>`}${CD[id]&&id!=='masoq'?`<span>recarga ${CD[id]===1?'1 por turno':CD[id]+' turnos'}</span>`:''}${(k.sc||[]).map(a=>`<span>escala com ${a.toUpperCase()}</span>`).join('')}</div><p class="sh">${SHORT[id]||''}</p><p>${full}</p>`}}
+ $('skbDet').innerHTML=h}
+function skbRender(){const p=PRESETS[SKB.pi],T=TREES.find(x=>x.id===p.k),col=T.c;$('skB').querySelector('.skbIn').style.setProperty('--cc',col);
+ $('skbSig').innerHTML=classSVG(p.k,SKB.pi).replace('<svg ','<svg preserveAspectRatio="xMidYMid slice" ');$('skbN').textContent=p.n;
+ $('skbAt').innerHTML=AT.filter(a=>(p.at||{})[a.k]).sort((a,b)=>p.at[b.k]-p.at[a.k]).map(a=>`<span>${a.s}<i>${[1,2,3,4,5].map(n=>`<u class="${n<=p.at[a.k]?'f':''}"></u>`).join('')}</i></span>`).join('');
+ const pal=p.k==='protecao';$('skbBoards').innerHTML=pal?`<div class="skbBd" style="--pc:#7fb6ff"><h4 class="on">Postura defensiva</h4>${skbGrid(p,false,col)}</div><div class="skbBd" style="--pc:#ff9a6a"><h4 class="on">Postura ofensiva</h4>${skbGrid(p,true,'#ff9a6a')}</div>`:`<div class="skbBd"><h4>Habilidades</h4>${skbGrid(p,false,col)}</div>`;
+ $('skbCls').innerHTML=PRESETS.filter(q=>q.k!=='custom').map(q=>{const i=PRESETS.indexOf(q);return`<button type="button" data-i="${i}" class="${i===SKB.pi?'on':''}" style="--c:${TREES.find(x=>x.id===q.k).c}" aria-label="${q.n}">${classSVG(q.k,i).replace('<svg ','<svg preserveAspectRatio="xMidYMid slice" ')}</button>`}).join('');
+ $('skbBoards').querySelectorAll('.skbN').forEach(b=>{const go=()=>{SKB.sel=b.dataset.id;$('skbBoards').querySelectorAll('.skbN').forEach(x=>x.classList.toggle('on',x.dataset.id===SKB.sel));skbDet()};b.onclick=()=>{go();beep(700,.03,'triangle',.03)};b.onfocus=go;b.onmouseenter=()=>{if(SKB.sel!==b.dataset.id)go()}});
+ $('skbCls').querySelectorAll('button').forEach(b=>b.onclick=()=>{SKB.pi=+b.dataset.i;SKB.sel=null;if(pickI!==SKB.pi)carGo(SKB.pi);skbRender()});skbDet()}
+function skbOpen(){const p=PRESETS[pickI];if(p.k==='custom'){SKB.pi=0}else SKB.pi=pickI;SKB.sel=null;$('skB').hidden=false;skbRender();try{TEL.ev('ver_habilidades',{c:PRESETS[SKB.pi].n})}catch(e){}setTimeout(()=>{try{$('skbBoards').querySelector('.skbN[data-id]:not(.core)').focus({preventScroll:true})}catch(e){}},50)}
+function skbClose(){$('skB').hidden=true;try{$('carSk').focus({preventScroll:true})}catch(e){}}
+setTimeout(()=>{$('carSk').onclick=skbOpen;$('skbX').onclick=skbClose;$('skB').addEventListener('click',e=>{if(e.target.id==='skB')skbClose()});$('skB').addEventListener('keydown',e=>{if(e.key==='Escape'||e.key==='Backspace'){e.preventDefault();e.stopPropagation();skbClose()}});$('skbSel').onclick=()=>{skbClose();choosePick()}},0);
 /* ===== novo menu principal: Olimpo · Forja · Coliseu, com Ranking · Perfil · Loja ===== */
 let HUBON=false;
 const HUBTXT={olimpo:'<b>Caminho para o Olimpo</b> · a história de Afrodite: exploração, diálogos e escolhas, no estilo RPG. Nosso último passo.',forja:'<b>A Forja de Hefesto</b> · escolha o caminho de Afrodite e enfrente Hefesto.',coliseu:'<b>Coliseu</b> · coop contra chefes e PvP entre jogadores, com um Hall da Fama só do PvP.',q:'A Forja de Hefesto foi o primeiro passo: é aqui que estamos aprendendo e lapidando o combate antes do resto da jornada.'};
@@ -1372,7 +1440,7 @@ function renderPick(){try{carRender()}catch(e){}const P4=PRESETS.slice(0,4);$('c
  [...document.querySelectorAll('#cls .rn'),bc].forEach(b=>{b.onclick=()=>{pickI=+b.dataset.i;markPick(true);choosePick()};b.onpointerenter=e=>{if(e.pointerType==='mouse'&&pickI!==+b.dataset.i){pickI=+b.dataset.i;markPick()}}});radLayout()}
 function markPick(q){PICKSEEN.add(pickI);const bc=$('bCustom');if(bc)bc.classList.toggle('foc',pickI===4);document.querySelectorAll('#cls .rn').forEach(b=>b.classList.toggle('foc',+b.dataset.i===pickI));if(!q)beep(520,.025,'triangle',.03)}
 const PNAV={0:{right:1,down:3},1:{left:0,down:2},2:{up:1,left:3,right:4,down:4},3:{up:0,right:2,down:'bar'},4:{up:2,left:3,down:'bar'}};
-function pickKey(a){if(CLEAN&&!HUBON){if(a==='ok')return choosePick();if(a==='left')return carGo(pickI-1,-1);if(a==='right')return carGo(pickI+1,1);if(a==='down'){try{$('carSel').focus()}catch(e){}}return}if(a==='ok')return choosePick();const nx=(PNAV[pickI]||{})[a];if(typeof nx==='number'){pickI=nx;markPick()}}
+function pickKey(a){if(!$('skB').hidden){if(a==='ok'){const ae=document.activeElement;if(ae&&ae.tagName==='BUTTON')ae.click()}else try{padNav(a,[...$('skB').querySelectorAll('button')])}catch(e){}return}if(CLEAN&&!HUBON){if(a==='ok')return choosePick();if(a==='left')return carGo(pickI-1,-1);if(a==='right')return carGo(pickI+1,1);if(a==='down'){try{$('carSel').focus()}catch(e){}}return}if(a==='ok')return choosePick();const nx=(PNAV[pickI]||{})[a];if(typeof nx==='number'){pickI=nx;markPick()}}
 const SHORT={"escudo": "Bate com o escudo e pode atordoar o inimigo.", "prece": "Cura Afrodite e a aliada.", "muralha": "Aura 2×2 por 2 turnos: quem está nela apara sozinho.", "investida": "Giro de 360° que deixa fogo de dragão.", "arremesso": "Lança em brasa que faz sangrar, de perto ou de longe.", "ceifa": "Varre as pernas: −2 PM e fogo sob o inimigo.", "chicote": "Chicotada de longe: sangramento e +1 Masoquismo.", "extase": "Extasia o inimigo: só a arma, sem poderes, no próximo turno.", "masoq": "Passiva: até 5 acúmulos de dor que explodem sozinhos.", "diabrete": "Invoca um diabrete voador que provoca e distrai o inimigo.", "glifob": "Área 3×3 de maré que explode no turno inimigo.", "glifod": "Área 2×2 que marca e prende os inimigos.", "aracne": "Invoca a Ninfa da Água, que age sozinha: alterna dano de água com debuff e glifo de cura.", "voo": "Voa, golpeia e pode recuar voando.", "corte": "Dois cortes envenenados de perto.", "arco": "Flecha do amor de longe: extasia o inimigo."};
 function iconURL(k,col){const c=document.createElement('canvas');c.width=c.height=80;const G=g;g=c.getContext('2d');try{iconAct(k,40,40,52,col)}catch(e){}finally{g=G}return c.toDataURL()}
 function skRow(id,col){const s=SKL[id];return`<div class="sk"><img alt="" src="${iconURL(id,col)}"><div><b>${s.n}</b><small>${s.pa} PA${CD[id]?' · recarga '+(CD[id]===1?'1 por turno':CD[id]+' turnos'):''}</small><p>${SHORT[id]||''}</p></div></div>`}
@@ -3223,8 +3291,9 @@ function drawTears(){if(!S.tears||S.t>S.tears||S.over)return;if(S.t>(S.tearT||0)
 
 
 /* versão, últimas atualizações e reporte de bug */
-const VERSION='Alpha 0.12.5 (experimental)';const BUILD_TS='2026-11-27T14:02:12Z';
+const VERSION='Alpha 0.12.6 (experimental)';const BUILD_TS='2026-11-27T14:09:50Z';
 const PATCH=[
+ {v:'Alpha 0.12.6 (experimental)',d:'27/11/2026',it:['HUD novo (teste): na escolha de classe, a descrição virou um resumo geral de cada classe, com um botão “Ver habilidades”.','“Ver habilidades” abre um painel em tabuleiro: o brasão da classe no centro, as habilidades 1, 2 e 3 em volta, a arma embaixo e as extras (Masoquismo, Recuo em Voo, Mudança de Postura). A Paladina mostra as duas posturas lado a lado. Toque numa habilidade para ver custo, recarga, atributos e o que ela faz; troque de classe pelos retratos embaixo.']},
  {v:'Alpha 0.12.5 (experimental)',d:'27/11/2026',it:['HUD novo (teste): a escolha de classe virou um carrossel. A heroína aparece grande diante de um vitral na cor da classe, com as vizinhas apagadas dos lados, setas e arrastar para trocar, brasões embaixo e o botão Selecionar.','Menu principal: o botão agora diz “Loja e Mochila”, com os dois ícones, para deixar claro que as duas estão ali.']},
  {v:'Alpha 0.12.4 (experimental)',d:'27/11/2026',it:['HUD novo (teste): novo menu principal simétrico com três locais. A Forja de Hefesto (disponível, com um “?” contando por que ela existe), Caminho para o Olimpo e Coliseu (em breve).','Ranking, Perfil e Loja ficam numa barra embaixo do menu; o ranking abre direto da tela inicial.','Loja e Mochila viraram abas da mesma janela. No HUD novo a loja só vende; equipar é na mochila.','Botão “‹ Início” na escolha do caminho para voltar ao menu (Esc ou ○/B também voltam).']},
  {v:'Alpha 0.12.3 (experimental)',d:'27/11/2026',it:['Sem emojis na interface: moeda, baú, mochila, lojinha, ampulheta e medalhas viraram ícones próprios.', 'Piloto automático com um robozinho minimalista.', 'Ranking da Forja: pódio com coroa de louros e numeral romano, recompensas em linha discreta.', 'Câmera de reação (PC): o nome do golpe não aparece mais duas vezes, o nome Afrodite não fica cortado pela barra e o mapa do golpe não encosta nos botões.', 'HUD novo (teste): falas voltam a ser balões perto de quem fala, mais discretos; tela inicial mais limpa; apresentação da classe com seletor de postura e habilidades em ícones; árvore de habilidades só com ícones nos nós bloqueados.']},
