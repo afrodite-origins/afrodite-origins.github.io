@@ -1,5 +1,13 @@
 # Últimas atualizações
 
+## Alpha 0.13.0 (experimental) · 27/11/2026
+
+- Malandra: o Corte Duplo Envenenado saiu e entrou o Falcão Caçador. Ele voa só pelas bordas do tabuleiro e age sozinho, alternando Voo Cegante (arranha e testa DEX × SAB, cerca de 30% em Hefesto) e Beijo do Alcance (+1 de alcance em todos os ataques de Afrodite no turno seguinte).
+- Cegueira: no próximo turno Hefesto anda tateando e não ataca de longe; só acerta quem estiver a até 2 casas. As casas dessa zona brilham em dourado, e ele fica com venda, penas e “?” na cabeça. A placa mostra o teste e se funcionou, como no Diabrete.
+- Ninfa da Água redesenhada: cabelo de água corrente, saia de ondas com espuma, lótus na cabeça, olhos que piscam, peixinhos em órbita e falas em balão.
+- Balanceamento (simulações no automático com 70% de acerto nas reações): Paladina 6/6 vitórias em 5,2 rodadas; Malandra com o Falcão 4/4 em 5,5 rodadas (antes 6,7); Maga 5/6 em 7; Sedutora 6/6 em 8.
+- Relatório: coleção de itens adquiridos (baú e loja) ordenável por raridade, com o boneco do jogador vestindo o item; gráfico de maestria por classe; lista dos últimos que entraram e jogaram.
+
 ## Alpha 0.12.8 (experimental) · 27/11/2026
 
 - O HUD novo virou o padrão para todos: menu principal, carrossel de classes, painel de habilidades e combate mais limpo. O clássico continua em Opções › HUD ou pelo link com ?hud=velho.

@@ -40,6 +40,17 @@ details.more{margin-top:6px}details.more>summary{cursor:pointer;color:var(--acc)
 .kpi.lk b{color:#8ee0b3}body.locked .w>*:not(header){filter:blur(6px);pointer-events:none;user-select:none}body.locked #gmM{background:#0f1115}[hidden]{display:none!important}
 .obsg{display:grid;grid-template-columns:minmax(320px,2fr) 1fr;gap:14px;align-items:start}@media (max-width:860px){.obsg{grid-template-columns:1fr}}#obsC{width:100%;height:auto;background:#0b0907;border-radius:10px;border:1px solid var(--line)}
 .tabs{display:flex;gap:6px;align-items:center;flex-wrap:wrap;margin:0 0 12px;border-bottom:1px solid var(--line);padding-bottom:8px}.tabs button{font-weight:650;padding:8px 16px;border-radius:8px 8px 0 0;opacity:.6}.tabs button.on{opacity:1;border-color:var(--acc);color:var(--acc);background:var(--pan2,#1c212a)}.tabs button small{margin-left:4px;color:var(--mut);font-weight:400}.tabd{color:var(--mut);font-size:12px;margin-left:6px}
+
+.colF{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-bottom:12px}.colF label{font-size:12px;color:var(--mut);display:flex;gap:6px;align-items:center}
+.colG{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:10px}
+.cc{display:flex;gap:10px;background:var(--pan2);border:1px solid var(--line);border-left:3px solid var(--rc);border-radius:8px;padding:8px;align-items:center}
+.cc .dl{width:72px;height:88px;flex:none;border-radius:6px;background:#0c0a08;display:grid;place-items:center;overflow:hidden;color:var(--mut);font-size:10px;text-align:center}
+.cc .dl img{width:100%;height:100%;object-fit:cover}
+.cc b{display:block;font-size:13px;line-height:1.25}.cc .rr{display:inline-block;font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--rc);margin:2px 0}.cc small{display:block;color:var(--mut);font-size:11px;line-height:1.35}
+.mst{display:flex;flex-direction:column;gap:8px;margin-bottom:12px}.mst .r{display:grid;grid-template-columns:78px 1fr 44px;gap:8px;align-items:center;font-size:12px}
+.mst .sb{display:flex;height:16px;border-radius:4px;overflow:hidden;background:#0c0e12}.mst .sb i{display:block;height:100%}
+.mlg{display:flex;flex-wrap:wrap;gap:10px;font-size:11px;color:var(--mut);margin-bottom:10px}.mlg span{display:flex;align-items:center;gap:4px}.mlg i{width:10px;height:10px;border-radius:2px;display:inline-block}
+.now{display:inline-block;font-size:10px;font-weight:700;color:#0f1115;background:var(--ok);border-radius:999px;padding:1px 6px;margin-left:4px}
 </style></head><body><div class="w">
 <header><h1>Afrodite Alpha <small>análise dos testes</small></h1><span class="src" id="src">carregando…</span></header>
 <div class="filters"><label>Período <select id="fp"><option value="0">tudo</option><option value="0.0417">última hora</option><option value="1">últimas 24 h</option><option value="7">últimos 7 dias</option><option value="30">últimos 30 dias</option></select></label>
@@ -47,6 +58,7 @@ details.more{margin-top:6px}details.more>summary{cursor:pointer;color:var(--acc)
 <span style="flex:1"></span><button id="gmB" title="Entrar como GM para observar jogadores">🔑 GM</button><button id="reload">Atualizar</button><button id="csv">CSV (lutas)</button><button id="json">JSON</button></div>
 <div class="warn" id="openW" hidden style="margin:0 0 12px">⚠ O relatório ainda está aberto para qualquer pessoa com a chave pública: os dados vieram sem o login de GM. Rode o SQL novo do TELEMETRIA.md (parte “relatório só para GMs”) para fechar.</div>
 <div class="box" style="margin-bottom:14px"><h2>Quem mais joga <span class="per" id="topTimeSub"></span></h2><div id="topTime"></div><p class="note" style="margin:8px 0 0">Tempo de jogo somado por jogador no período e no dispositivo escolhidos (as duas abas juntas), já sem o tempo parado (AFK).</p></div>
+<div class="grid"><div class="box"><h2>Últimos que entraram <span class="per"></span></h2><div id="ultimos"></div></div><div class="box"><h2>Maestria dos jogadores <span class="per"></span></h2><div id="maest"></div></div></div>
 <div class="box live" style="margin-bottom:14px"><h2><span class="dot off" id="lvDot"></span>Ao vivo: jogando agora <span class="per" id="lvSub">conectando…</span></h2>
 <p class="note" style="margin:0 0 10px">Atualiza sozinho a cada 10 segundos. Cada jogador aparece com as decisões dos últimos 3 minutos ao redor: a mais recente fica mais forte e mais perto dele. As outras seções abaixo olham para o passado (escolha o período no filtro).</p>
 <div class="lvw"><div><svg class="lvsvg" id="lvSvg" viewBox="0 0 760 440"></svg></div><div><div id="lvList"></div><div id="lvAfk"></div><h3>Últimas decisões</h3><div class="feed" id="lvFeed"></div></div></div>
@@ -60,6 +72,7 @@ details.more{margin-top:6px}details.more>summary{cursor:pointer;color:var(--acc)
 <div class="grid"><div class="box"><h2>Precisão das reações</h2><div id="react"></div></div><div class="box"><h2>O que derrota os jogadores</h2><div id="kill"></div></div></div>
 <div class="grid"><div class="box"><h2>Ranking de jogadores</h2><div class="tw" id="rank"></div></div><div class="box"><h2>Classes</h2><div id="cls"></div></div></div>
 <div class="box" style="margin-bottom:14px"><h2>Lojinha: moedas, itens e baús <span class="per"></span></h2><div id="loja"></div></div>
+<div class="box" style="margin-bottom:14px"><h2>Coleção: itens adquiridos <span class="per"></span></h2><div id="colec"></div></div>
 <div class="box" style="margin-bottom:14px"><h2>Quando os jogadores fecham o jogo</h2><div id="quit"></div></div>
 <details class="more"><summary>Como jogam (comportamento, movimento, habilidades, telas e ritmo)</summary>
 <div class="box" style="margin-bottom:14px"><h2>Comportamento durante a luta</h2><div id="beh"></div></div>
@@ -94,6 +107,9 @@ const tbl=(head,rows,num)=>rows.length?`<table><tr>${head.map((h,i)=>`<th class=
 let MODE=(()=>{try{return localStorage.getItem('afroRelTab')==='aut'?'aut':'man'}catch(e){return'man'}})();let SES=[],BUGS=[],BSRC='',OPEN_WARN=false;
 function RHA(){const c=window.AFRO_ANALYTICS||{};return Object.assign({apikey:c.anonKey},/^eyJ/.test(c.anonKey)?{Authorization:'Bearer '+c.anonKey}:{})}
 async function RH(){const c=window.AFRO_ANALYTICS||{};let tk=null;try{tk=await GM.token()}catch(e){}return tk?{apikey:c.anonKey,Authorization:'Bearer '+tk}:RHA()}
+
+const DOLL={ready:null,cache:{}};
+function dollReady(){if(DOLL.ready)return DOLL.ready;DOLL.ready=new Promise(res=>{const f=document.createElement('iframe');f.src='index.html?render=1';f.setAttribute('aria-hidden','true');f.tabIndex=-1;f.style.cssText='position:fixed;left:-4000px;top:0;width:800px;height:500px;border:0;opacity:0;pointer-events:none';let n=0;const ck=()=>{let w=null;try{w=f.contentWindow}catch(e){}if(w&&w.__doll){try{w.__doll('paixao',{},'',8,8)}catch(e){}res(w.__doll)}else if(n++<150)setTimeout(ck,100);else res(null)};f.onload=()=>setTimeout(ck,50);document.body.appendChild(f)});return DOLL.ready}
 async function load(){const c=window.AFRO_ANALYTICS||{};let rows=[],src='dados locais (só este navegador)';
  if(c.provider==='supabase'&&c.url&&c.anonKey){try{const r=await fetch(c.url.replace(/\/$/,'')+'/rest/v1/'+(c.table||'afrodite_sessions')+'?select=*&order=started_at.desc&limit=5000',{headers:await RH()});if(!r.ok)throw new Error('HTTP '+r.status);rows=await r.json();src='Supabase · todos os jogadores · GM'
   if(!rows.length){try{const r2=await fetch(c.url.replace(/\/$/,'')+'/rest/v1/'+(c.table||'afrodite_sessions')+'?select=*&order=started_at.desc&limit=5000',{headers:RHA()});if(r2.ok){const x=await r2.json();if(x.length){rows=x;OPEN_WARN=true}}}catch(e){}}}catch(e){src='local · falha ao ler o Supabase ('+e.message+')'}}
@@ -111,6 +127,23 @@ function render(){const days=+$('fp').value,dev=$('fd').value,now=Date.now(),AUT
  const F=[];S.forEach(s=>s.fights.forEach(f=>{if(!!f.auto!==AUT)return;F.push({...f,who:who(s),vid:s.visitor_id,device:s.device,date:s.started_at})}));
  const done=F.filter(f=>f.res==='vitória'||f.res==='derrota'),wins=done.filter(f=>f.res==='vitória'),turns=F.flatMap(f=>f.turns||[]),tos=F.reduce((a,f)=>a+(f.timeouts||0),0);
  const R={};F.forEach(f=>Object.entries(f.react||{}).forEach(([k,v])=>{const x=R[k]=R[k]||{ok:0,fail:0,perfect:0};x.ok+=v.ok||0;x.fail+=v.fail||0;x.perfect+=v.perfect||0}));const rOk=Object.values(R).reduce((a,x)=>a+x.ok,0),rAll=Object.values(R).reduce((a,x)=>a+x.ok+x.fail,0);
+
+  // ---- últimos que entraram (mesmo sem ninguém jogando agora)
+ {const RS2={'vitória':'<span class="pill ok">vitória</span>','derrota':'<span class="pill bad">derrota</span>','abandono':'<span class="pill mid">abandono</span>'},dt=t=>new Date(t).toLocaleString('pt-BR',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'}),ago=t=>{const m=Math.round((now-t)/60000);return m<1?'agora':m<60?'há '+m+' min':m<1440?'há '+Math.round(m/60)+' h':'há '+Math.round(m/1440)+' d'};
+  const U={};[...S].sort((a,b)=>new Date(b.updated_at||b.started_at)-new Date(a.updated_at||a.started_at)).forEach(s=>{const id=s.visitor_id||who(s);const t=new Date(s.updated_at||s.started_at).getTime()||0;const u=U[id]=U[id]||{n:who(s),t,dev:s.device,ses:0,F:[],last:null};u.ses++;if(!u.last){u.last=s}(s.fights||[]).forEach(f=>u.F.push(f))});
+  const L=Object.values(U).sort((a,b)=>b.t-a.t).slice(0,20);
+  $('ultimos').innerHTML=L.length?`<div class="tw">${tbl(['Jogador','Última vez','Aparelho','Sessões','Lutas','Última luta'],L.map(u=>{const lf=(u.last.fights||[]).slice(-1)[0]||u.F.slice(-1)[0];const done=u.F.filter(f=>f.res&&f.res!=='abandono');return[esc(u.n)+(now-u.t<180000?'<span class="now">jogando</span>':''),`${ago(u.t)} <small style="color:var(--mut)">${dt(u.t)}</small>`,u.dev==='Mobile'?'celular':'PC',u.ses,done.length+(done.length?` <small style="color:var(--mut)">${done.filter(f=>f.res==='vitória').length}V</small>`:''),lf?`${esc(lf.cls||'')} ${RS2[lf.res]||'<span class="pill mid">em andamento</span>'}`:'<span style="color:var(--mut)">só menus</span>']}),[3,4])}</div><p class="note">Um jogador por linha, do mais recente para o mais antigo. "Jogando" = registro nos últimos 3 minutos.</p>`:'<div class="empty">Sem sessões no período.</div>'}
+  // ---- maestria: nível por classe de cada jogador (último registro)
+ {const TI=[['Iniciada',0,'#5a6170'],['Devota',12,'#4f8dff'],['Campeã',40,'#5bbf8a'],['Heroína',100,'#d4a85a'],['Divina',220,'#ff6a9a']],tierOf=p=>{let t=0;TI.forEach((x,i)=>{if(p>=x[1])t=i});return t};
+  const CN2={protecao:'Paladina',persuasao:'Sedutora',paixao:'Maga',atracao:'Malandra'},PM={};
+  S.forEach(s=>{if(!s.perfil)return;const id=s.visitor_id||who(s),t=new Date(s.updated_at||s.started_at).getTime()||0;if(!PM[id]||t>PM[id].t)PM[id]={n:who(s),t,p:s.perfil}});
+  const PLs=Object.values(PM).filter(x=>x.p&&(x.p.f||x.p.m));
+  if(!PLs.length){$('maest').innerHTML='<div class="empty">Ainda sem dados de maestria. Eles chegam com jogadores na versão 0.13.0 ou mais nova.</div>'}else{
+   const lvl=(x,k)=>x.p.m?tierOf(+x.p.m[k]||0):(x.p.fav===k?+x.p.t||0:null);
+   const rows=Object.keys(CN2).map(k=>{const c=[0,0,0,0,0];let n=0;PLs.forEach(x=>{const l=lvl(x,k);if(l==null)return;if(x.p.m&&!(+x.p.m[k]))return;c[l]++;n++});return{k,c,n}});
+   const mx=Math.max(1,...rows.map(r=>r.n));
+   $('maest').innerHTML=`<div class="mlg">${TI.map(t=>`<span><i style="background:${t[2]}"></i>${t[0]}</span>`).join('')}</div><div class="mst">${rows.map(r=>`<div class="r"><span>${CN2[r.k]}</span><div class="sb" style="width:${Math.max(6,100*r.n/mx)}%">${r.c.map((v,i)=>v?`<i title="${TI[i][0]}: ${v}" style="width:${100*v/r.n}%;background:${TI[i][2]}"></i>`:'').join('')}</div><span style="color:var(--mut);text-align:right">${r.n}</span></div>`).join('')}</div>
+   <div class="tw">${tbl(['Jogador',...Object.values(CN2),'Vitórias'],PLs.sort((a,b)=>(b.p.w||0)-(a.p.w||0)).slice(0,25).map(x=>[esc(x.n),...Object.keys(CN2).map(k=>{const l=lvl(x,k);if(l==null||(x.p.m&&!(+x.p.m[k])))return'<span style="color:var(--mut)">—</span>';return`<span style="color:${TI[l][2]};font-weight:650">${TI[l][0]}</span>${x.p.m?` <small style="color:var(--mut)">${x.p.m[k]}</small>`:''}`}),x.p.w||0]),[5])}</div><p class="note">Barra: quantos jogadores estão em cada nível de maestria por classe (quem nunca jogou a classe não conta). Pontos = lutas + 2 × vitórias + 1 a cada 2 min. Registros antigos só trazem a classe favorita.</p>`}}
   // ---- lojinha
  {const RN={comum:['Comum','#c8c2b8',50],incomum:['Incomum','#4fd18b',30],raro:['Raro','#4f8dff',14],epico:['Épico','#b05cff',5],lendario:['Lendário','#ffb030',1]},CN={protecao:'Paladina',atracao:'Malandra',persuasao:'Sedutora',paixao:'Maga'};
   const nm=e=>e.n||String(e.id||'?').replace(/^[a-z]_/,'').replace(/_/g,' '),rb=r=>{const x=RN[r]||[r||'?','#999'];return`<span style="color:${x[1]};font-weight:700">${esc(x[0])}</span>`};
@@ -131,7 +164,23 @@ function render(){const days=+$('fp').value,dev=$('fd').value,now=Date.now(),AUT
   <div class="grid" style="margin:0"><div><h2 style="margin-top:0">O que saiu dos baús</h2>${OPEN.length?bars(Object.keys(RN).map(r=>[RN[r][0]+' · '+RN[r][2]+'%',cnt[r]||0,'']),'',v=>v+' · '+Math.round(100*v/OPEN.length)+'%'):'<div class="empty">Nenhum baú aberto no período.</div>'}<p class="note">O número ao lado do nome é a chance esperada; à direita, o que saiu de verdade. Com poucos baús abertos a diferença ainda é sorte.</p></div>
   <div><h2 style="margin-top:0">Jogadores</h2><div class="tw">${tbl(['Jogador','Moedas agora','Ganhou','Gastou','Itens','Baús abertos','Repetidos','Lendários'],PL.map(p=>[esc(p.n),p.snap?p.snap.c:'—',p.gan,p.gas,p.snap?p.snap.i:p.itens,p.bau+(p.snap&&p.snap.b?` <small style="color:var(--mut)">+${p.snap.b} guardado${p.snap.b>1?'s':''}</small>`:''),p.rep,p.lend?`<b style="color:#ffb030">${p.lend}</b>`:0]),[1,2,3,4,5,6,7])}</div><p class="note">"Moedas agora" e "Itens" vêm do último registro do jogador; ganhos e gastos contam só o período filtrado.</p></div></div>
   <h2>Baús abertos</h2><div class="tw">${tbl(['Quando','Jogador','Tirou','Raridade','Classe','Resultado'],OPEN.slice(0,150).map(o=>[dt(o.when),esc(o.who),esc(nm(o)),rb(o.r),esc(CN[o.cls]||o.cls||''),o.dup?'repetido · +🪙'+(o.ganhou||'?'):'<span style="color:#8ee0b3">novo</span>']),[])}</div>
-  ${BUY.length?`<h2>Compras na loja</h2><div class="tw">${tbl(['Quando','Jogador','Item','Raridade','Classe','Preço'],BUY.slice(0,150).map(o=>[dt(o.when),esc(o.who),esc(nm(o)),rb(o.r),esc(CN[o.cls]||o.cls||''),o.p?'🪙'+o.p:'—']),[5])}</div>`:''}`}
+  ${BUY.length?`<h2>Compras na loja</h2><div class="tw">${tbl(['Quando','Jogador','Item','Raridade','Classe','Preço'],BUY.slice(0,150).map(o=>[dt(o.when),esc(o.who),esc(nm(o)),rb(o.r),esc(CN[o.cls]||o.cls||''),o.p?'🪙'+o.p:'—']),[5])}</div>`:''}`;
+  // ---- coleção: itens adquiridos, com o boneco do jogador vestindo o item
+  {const ACQ=[];OPEN.forEach(o=>{if(!o.dup)ACQ.push({...o,src:o.origem==='vitória'?'baú (vitória)':'baú'})});BUY.forEach(o=>ACQ.push({...o,src:'loja'}));
+   const eqOfP=nm=>{const p=Object.values(PJ).find(x=>x.n===nm);return p&&p.snap&&p.snap.eq||{}};
+   const RK=['lendario','epico','raro','incomum','comum'];window.COLST=window.COLST||{sort:'rar',src:'',cls:''};
+   window.__colRender=()=>{const st=window.COLST;let L=ACQ.filter(a=>(!st.src||a.src.startsWith(st.src))&&(!st.cls||a.cls===st.cls));
+    const ri=a=>{const i=RK.indexOf(a.r);return i<0?9:i};
+    L.sort(st.sort==='rar'?(a,b)=>ri(a)-ri(b)||b.when-a.when:st.sort==='rarAsc'?(a,b)=>ri(b)-ri(a)||b.when-a.when:st.sort==='who'?(a,b)=>a.who.localeCompare(b.who)||ri(a)-ri(b):st.sort==='cls'?(a,b)=>String(a.cls).localeCompare(String(b.cls))||ri(a)-ri(b):(a,b)=>b.when-a.when);
+    const sel=(id,opts,v)=>`<select id="${id}">${opts.map(([k,n])=>`<option value="${k}"${k===v?' selected':''}>${n}</option>`).join('')}</select>`;
+    const cnt={};ACQ.forEach(a=>cnt[a.r]=(cnt[a.r]||0)+1);
+    $('colec').innerHTML=!ACQ.length?'<div class="empty">Nenhum item novo adquirido no período.</div>':`<div class="colF"><label>Ordenar ${sel('colS',[['rar','raridade (maior primeiro)'],['rarAsc','raridade (menor primeiro)'],['rec','mais recentes'],['who','jogador'],['cls','classe']],st.sort)}</label><label>Origem ${sel('colO',[['','baú e loja'],['baú','só baús'],['loja','só loja']],st.src)}</label><label>Classe ${sel('colC',[['',"todas"],...Object.entries(CN)],st.cls)}</label><span style="font-size:12px;color:var(--mut)">${RK.filter(r=>cnt[r]).map(r=>`<b style="color:${RN[r][1]}">${cnt[r]}</b> ${RN[r][0].toLowerCase()}`).join(' · ')}</span></div>
+    <div class="colG">${L.slice(0,160).map((a,i)=>{const R=RN[a.r]||[a.r||'?','#999'];return`<div class="cc" style="--rc:${R[1]}"><div class="dl" data-i="${i}">${a.id?'…':'sem<br>prévia'}</div><div><b>${esc(nm(a))}</b><span class="rr">${esc(R[0])}</span><small>${esc(CN[a.cls]||a.cls||'')} · ${esc(a.src)}</small><small>${esc(a.who)} · ${dt(a.when)}</small></div></div>`}).join('')}</div>${L.length>160?`<p class="note">Mostrando 160 de ${L.length}.</p>`:''}<p class="note">O boneco usa a classe do item e o visual que o jogador estava usando no último registro, com o item vestido por cima.</p>`;
+    ['colS','colO','colC'].forEach((id,k)=>{const e=$(id);if(e)e.onchange=()=>{st[['sort','src','cls'][k]]=e.value;window.__colRender()}});
+    const boxes=[...document.querySelectorAll('#colec .dl[data-i]')].filter(b=>L[+b.dataset.i]&&L[+b.dataset.i].id);if(!boxes.length)return;
+    dollReady().then(fn=>{if(!fn){boxes.forEach(b=>b.innerHTML='prévia<br>indisponível');return}let j=0;const step=()=>{const t0=performance.now();while(j<boxes.length&&performance.now()-t0<24){const b=boxes[j++],a=L[+b.dataset.i];if(!b.isConnected)continue;const eq=(eqOfP(a.who)||{})[a.cls]||{},key=a.cls+'|'+a.id+'|'+JSON.stringify(eq);let u=DOLL.cache[key];if(!u){try{u=DOLL.cache[key]=fn(a.cls,eq,a.id,144,176)}catch(e){u=''}}b.innerHTML=u?`<img alt="" src="${u}">`:'—'}if(j<boxes.length)requestAnimationFrame(step)};step()})};
+   window.__colRender()}
+}
   // ---- saúde da coleta
  {const dv=d=>S.filter(s=>s.device===d),wf=a=>a.filter(s=>s.fights.length).length,last=S.reduce((m,s)=>Math.max(m,new Date(s.updated_at||s.started_at).getTime()||0),0),miss=S.filter(s=>s._fromScreens).length;
   const row=(n,a)=>[n,a.length,pct(a.length,S.length),wf(a)+' ('+pct(wf(a),a.length)+')',fmt(avg(a.map(s=>+s.total_ms||0)))];
