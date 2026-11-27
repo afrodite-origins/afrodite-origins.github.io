@@ -185,3 +185,54 @@ $$;
 revoke all on function public.afrodite_lendarios() from public;
 grant execute on function public.afrodite_lendarios() to anon, authenticated;
 ```
+
+## GM observando e presente de boas-vindas (versão 0.13.1)
+
+Cria o canal do GM para o jogo: quando você clica em **Observar** no relatório, o Zac aparece na lateral da luta daquele jogador; o botão **Presentear** arma o Gorrinho de Natal, que o jogador só recebe se vencer a luta sem o automático. Rode uma vez no **SQL Editor** (pode rodar de novo sem problema). Ele usa a função `afrodite_is_gm()` da parte 0.
+
+```sql
+-- Afrodite Origins · canal do GM (observar e presentear)
+create table if not exists public.afrodite_gm (
+  visitor_id text primary key,
+  session_id text,
+  observing boolean default false,
+  observer text default 'Zac',
+  gift boolean default false,
+  gift_at timestamptz,
+  gift_sent_at timestamptz,
+  updated_at timestamptz default now()
+);
+alter table public.afrodite_gm enable row level security;
+drop policy if exists "gm all" on public.afrodite_gm;
+create policy "gm all" on public.afrodite_gm for all to authenticated
+  using (public.afrodite_is_gm()) with check (public.afrodite_is_gm());
+revoke all on public.afrodite_gm from anon;
+grant select, insert, update on public.afrodite_gm to authenticated;
+
+-- o jogo só consulta o próprio estado (precisa saber o próprio visitor_id)
+create or replace function public.afrodite_gm_get(vid text)
+returns table(observing boolean, observer text, gift boolean, gift_at timestamptz)
+language sql stable security definer set search_path = public as $$
+  select (g.observing and g.updated_at > now() - interval '2 minutes') as observing,
+         g.observer, g.gift, g.gift_at
+  from public.afrodite_gm g where g.visitor_id = vid
+$$;
+-- o jogo confirma a entrega (uma vez por presente armado)
+create or replace function public.afrodite_gm_ack(vid text, at text)
+returns void language plpgsql security definer set search_path = public as $$
+begin
+  if at = 'local' then
+    update public.afrodite_gm set gift = false, gift_sent_at = now() where visitor_id = vid and gift;
+  else
+    update public.afrodite_gm set gift = false, gift_sent_at = now()
+    where visitor_id = vid and gift and gift_at = at::timestamptz;
+  end if;
+end $$;
+revoke all on function public.afrodite_gm_get(text) from public;
+revoke all on function public.afrodite_gm_ack(text, text) from public;
+grant execute on function public.afrodite_gm_get(text) to anon, authenticated;
+grant execute on function public.afrodite_gm_ack(text, text) to anon, authenticated;
+notify pgrst, 'reload schema';
+```
+
+**Como fica a segurança:** só o GM logado grava na tabela. O jogo não consegue listar nada: ele só pergunta pelo próprio `visitor_id` e só consegue desligar um presente que já está armado para ele. Enquanto o SQL não for rodado, o jogo simplesmente não mostra o Zac nem entrega presentes.

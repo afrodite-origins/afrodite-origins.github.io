@@ -6,6 +6,13 @@ Teste o potencial de Afrodite contra Hefesto em mais uma provação enviada por 
 
 ## Últimas atualizações
 
+**Alpha 0.13.1 (experimental) · 27/11/2026**
+
+- GM observando: quando o GM clica em Observar no relatório, o Zac (de terninho, óculos e cabelo cacheado) aparece na lateral da luta, fora do tabuleiro, com o selo “GM · Zac · observando”. Some quando o GM sai ou troca de jogador.
+- Presente de boas-vindas: o GM pode armar o presente pelo botão Presentear. Se o jogador vencer aquela luta sem usar o automático, além da recompensa normal ganha o Gorrinho de Natal, com a mensagem “O GM observou pessoalmente a sua luta, e lhe deu um presente de boas-vindas.” Entrega uma vez só por presente, mesmo se a página recarregar.
+- Nova raridade Exclusivo. O Gorrinho de Natal serve em todas as classes (é um chapéu, não mexe no escudo da Paladina) e não sai em baú nem na loja.
+- Relatório: botão Presentear no ao vivo e no Observar; itens da coleção agrupados por raridade (as prévias só abrem ao clicar); CSV de retenção por jogador; aba separada Big Five, fechada ao abrir o relatório, com confiança da amostra e evidências por jogador.
+
 **Alpha 0.13.0 (experimental) · 27/11/2026**
 
 - Malandra: o Corte Duplo Envenenado saiu e entrou o Falcão Caçador. Ele voa só pelas bordas do tabuleiro e age sozinho, alternando Voo Cegante (arranha e testa DEX × SAB, cerca de 30% em Hefesto) e Beijo do Alcance (+1 de alcance em todos os ataques de Afrodite no turno seguinte).
