@@ -1,5 +1,10 @@
 # Últimas atualizações
 
+## Alpha 0.11.34 (experimental) · 26/11/2026
+
+- Paladina: nova habilidade Mudança de Postura (2 PA, com ícone próprio). Ela começa na defensiva e só usa as habilidades da postura em que está.
+- Novo menu de ações da Paladina com as 7 habilidades: defensivas à esquerda, ofensivas à direita e a Mudança de Postura embaixo; as da outra postura aparecem com cadeado.
+
 ## Alpha 0.11.33 (experimental) · 26/11/2026
 
 - Diálogos, cenas e descrições agora seguem as maiúsculas e minúsculas normais do português, na mesma fonte.

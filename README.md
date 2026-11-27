@@ -6,6 +6,11 @@ Teste o potencial de Afrodite contra Hefesto em mais uma provação enviada por 
 
 ## Últimas atualizações
 
+**Alpha 0.11.34 (experimental) · 26/11/2026**
+
+- Paladina: nova habilidade Mudança de Postura (2 PA, com ícone próprio). Ela começa na defensiva e só usa as habilidades da postura em que está.
+- Novo menu de ações da Paladina com as 7 habilidades: defensivas à esquerda, ofensivas à direita e a Mudança de Postura embaixo; as da outra postura aparecem com cadeado.
+
 **Alpha 0.11.33 (experimental) · 26/11/2026**
 
 - Diálogos, cenas e descrições agora seguem as maiúsculas e minúsculas normais do português, na mesma fonte.
@@ -28,19 +33,6 @@ Teste o potencial de Afrodite contra Hefesto em mais uma provação enviada por 
 - Tela de recompensa do baú e ranking funcionam com o controle (DualSense e Xbox).
 - No PC, os menus crescem para ocupar a tela.
 - Masoquismo explicado: como os acúmulos sobem e quanto dano cada um dá, com tutorial no primeiro acúmulo.
-
-**Alpha 0.11.30 (experimental) · 26/11/2026**
-
-- Celular: ao conjurar, toque direto na pista da nota (sem as setas nas laterais).
-- Corrida da Forja: toque numa casa verde e confirme; Afrodite anda sozinha até lá.
-- Controle: DualSense/PlayStation mostra ✕ ○ □ △; controle de Xbox mostra A B X Y. A pausa e as janelas dão para navegar pelo controle.
-- No PC a luta ocupa a tela inteira e a seção “Controles” embaixo sumiu.
-- Engrenagem de configurações na tela das classes (trocar o modo de jogo, gráfico leve, FPS).
-- Cenas mais calmas: o texto espera o tempo de leitura antes de seguir.
-- Minitutoriais na primeira reação, na primeira Corrida da Forja e na primeira fuga (teste de Destreza no d20).
-- Reações com cores: APARAR azul, PULAR verde; “ACERTOU 1/3 · MAIS 2 GOLPES VINDO!” e aviso de tecla errada.
-- A Ninfa da Água age sozinha e alterna: um turno ataca com água (deixa Hefesto molhado), no outro grava o Glifo de Cura.
-- O ranking da tela inicial diz que é um ranking; a opção escolhida em Lutar / Voltar fica destacada; “Trocar de classe” virou “Menu principal”; a navegação entre as classes segue a posição delas.
 
 ## Controles
 | | PC | Controle |
