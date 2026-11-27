@@ -881,6 +881,8 @@ const RKS=[{k:'ded',cl:p=>p.mcls,n:'Dedicação',d:'quem mais jogou sem o autom�
  {k:'dev',cl:p=>p.mcls,n:'Devastação',d:'mais dano em menos tempo de luta',v:p=>p.dmg/(p.fms/60000),ok:p=>p.fms>=60000&&p.dmg>0,asc:false,f:p=>(p.dmg/(p.fms/1000)).toLocaleString('pt-BR',{minimumFractionDigits:1,maximumFractionDigits:1})+' DPS'},
  {k:'int',cl:p=>p.cls,n:'Intocável',d:'venceu Hefesto recebendo menos dano',v:p=>p.din*1e7+p.best,ok:p=>p.best>0,asc:true,f:p=>Math.round(p.best/1000)+'s'+(p.din?' · −'+Math.round(p.din)+' ❤':' · sem dano')},
  {k:'aut',cl:p=>p.acls,n:'Automático',auto:true,d:'Hall da Fama: as builds que vencem mais rápido no combate automático',v:p=>p.abest,ok:p=>p.abest>0,asc:true,f:p=>Math.round(p.abest/1000)+'s',t:p=>p.abuild}];
+// jogadores cujo tempo foi contado antes de existir o desconto de AFK (ficaram parados e subiram no ranking de tempo)
+const TIME_EXCL=['li'];
 async function rankLoad(){const c=(window.AFRO_ANALYTICS)||{};let rows=[];
  if(c.provider==='supabase'&&c.url&&c.anonKey){try{const r=await fetch(c.url.replace(/\/$/,'')+'/rest/v1/rpc/afrodite_ranking',{method:'POST',headers:Object.assign({apikey:c.anonKey,'Content-Type':'application/json'},/^eyJ/.test(c.anonKey)?{Authorization:'Bearer '+c.anonKey}:{}),body:'{}',cache:'no-store'});if(r.ok)rows=await r.json()}catch(e){}}
  if(!rows.length&&c.provider==='supabase'&&c.url&&c.anonKey){try{const r=await fetch(c.url.replace(/\/$/,'')+'/rest/v1/'+(c.table||'afrodite_sessions')+'?select=session_id,visitor_id,nick,fights,fb:screens->_fights,afk_ms:screens->_afk,total_ms,auto_ms,updated_at&order=updated_at.desc&limit=5000',{headers:Object.assign({apikey:c.anonKey},/^eyJ/.test(c.anonKey)?{Authorization:'Bearer '+c.anonKey}:{}),cache:'no-store'});if(r.ok)rows=await r.json()}catch(e){}}
@@ -888,7 +890,7 @@ async function rankLoad(){const c=(window.AFRO_ANALYTICS)||{};let rows=[];
  const bySes={};rows.forEach(r=>{const k=r.session_id||Math.random();const o=bySes[k];if(!o||(+r.total_ms||0)>=(+o.total_ms||0))bySes[k]=r});
  const P={};Object.values(bySes).forEach(r=>{let f=r.fights;if(typeof f==='string')try{f=JSON.parse(f)}catch(e){f=[]}if(!Array.isArray(f)||!f.length){let fb=r.fb;if(!fb){let sc=r.screens;if(typeof sc==='string')try{sc=JSON.parse(sc)}catch(e){sc={}}fb=sc&&sc._fights}if(typeof fb==='string')try{fb=JSON.parse(fb)}catch(e){fb=[]}f=Array.isArray(fb)?fb:[]}
   const id=r.visitor_id||r.nick;if(!id)return;const p=P[id]=P[id]||{vid:r.visitor_id,nick:'anônimo',best:0,din:1e9,cls:'',dmg:0,fms:0,ms:0,abest:0,abuild:'',acls:'',cc:{}};const nk=(r.nick||'').trim();if(nk&&p.nick==='anônimo')p.nick=nk;
-  p.ms+=Math.max(0,(+r.total_ms||0)-(+r.auto_ms||0)-(+r.afk_ms||+(r.screens&&r.screens._afk)||0));
+  if(!TIME_EXCL.includes((r.nick||'').trim().toLowerCase()))p.ms+=Math.max(0,(+r.total_ms||0)-(+r.auto_ms||0)-(+r.afk_ms||+(r.screens&&r.screens._afk)||0));
   f.forEach(x=>{if(x&&x.auto&&x.res==='vitória'&&x.dur_ms>5000&&(!p.abest||x.dur_ms<p.abest)){p.abest=x.dur_ms;p.acls=x.cls||'';p.abuild=(x.cls==='Personalizada'&&x.sk&&x.sk.length?x.sk.map(id=>(SKL[id]||{}).n||id).join(' + '):x.cls||'')}});
   f.forEach(x=>{if(!x||x.auto)return;if(x.cls)p.cc[x.cls]=(p.cc[x.cls]||0)+1;p.dmg+=+x.dmg_out||0;p.fms+=+x.dur_ms||0;if(x.res==='vitória'&&x.dur_ms>5000){const di=+x.dmg_in||0;if(!p.best||di<p.din||(di===p.din&&x.dur_ms<p.best)){p.din=di;p.best=x.dur_ms;p.cls=x.cls||''}}})});
  const all=Object.values(P),out={};all.forEach(p=>{p.mcls=Object.entries(p.cc).sort((a,b)=>b[1]-a[1]).map(x=>x[0])[0]||p.cls});RKS.forEach(R=>{out[R.k]=all.filter(R.ok).sort((a,b)=>R.asc?R.v(a)-R.v(b):R.v(b)-R.v(a))});return out}
@@ -2712,8 +2714,9 @@ function drawTears(){if(!S.tears||S.t>S.tears||S.over)return;if(S.t>(S.tearT||0)
 
 
 /* versão, últimas atualizações e reporte de bug */
-const VERSION='Alpha 0.11.42 (experimental)';const BUILD_TS='2026-11-27T01:53:23Z';
+const VERSION='Alpha 0.11.43 (experimental)';const BUILD_TS='2026-11-27T02:23:02Z';
 const PATCH=[
+ {v:'Alpha 0.11.43 (experimental)',d:'26/11/2026',it:['Ranking de Tempo corrigido: tempo parado registrado antes do desconto de AFK não conta mais.']},
  {v:'Alpha 0.11.42 (experimental)',d:'26/11/2026',it:['Novo endereço: afrodite-origins.github.io. Quem abrir o link antigo é levado para o novo com moedas, visuais e baús.','Ícone novo do aplicativo: Afrodite souls-like, de coroa de espinhos e olhos acesos diante de um eclipse carmesim.']},
  {v:'Alpha 0.11.41 (experimental)',d:'26/11/2026',it:['A pomba também anuncia itens lendários comprados na loja (“adquiriu o item lendário”).','Na loja, o botão “Tirar” virou “Usar o visual padrão”, com o aviso de que o item continua seu.']},
  {v:'Alpha 0.11.40 (experimental)',d:'26/11/2026',it:['A loja de cada jogador é diferente, e a raridade dos itens segue a mesma chance do baú (lendário na loja é tão raro quanto no baú).','Na tela inicial, de vez em quando passa uma pomba anunciando quem conseguiu um item lendário nos últimos dias.']},

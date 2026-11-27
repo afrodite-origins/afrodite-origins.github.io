@@ -1,5 +1,10 @@
 # Últimas atualizações
 
+## Alpha 0.11.43 (experimental) · 26/11/2026
+
+- Ranking de Tempo corrigido: tempo parado registrado antes do desconto de AFK não conta mais.
+- Relatório: o primeiro gráfico agora mostra quem mais joga, em barras.
+
 ## Alpha 0.11.42 (experimental) · 26/11/2026
 
 - Novo endereço: afrodite-origins.github.io. Quem abrir o link antigo é levado para o novo com moedas, visuais e baús.

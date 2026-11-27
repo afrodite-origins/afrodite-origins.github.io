@@ -6,6 +6,11 @@ Teste o potencial de Afrodite contra Hefesto em mais uma provação enviada por 
 
 ## Últimas atualizações
 
+**Alpha 0.11.43 (experimental) · 26/11/2026**
+
+- Ranking de Tempo corrigido: tempo parado registrado antes do desconto de AFK não conta mais.
+- Relatório: o primeiro gráfico agora mostra quem mais joga, em barras.
+
 **Alpha 0.11.42 (experimental) · 26/11/2026**
 
 - Novo endereço: afrodite-origins.github.io. Quem abrir o link antigo é levado para o novo com moedas, visuais e baús.
@@ -20,13 +25,6 @@ Teste o potencial de Afrodite contra Hefesto em mais uma provação enviada por 
 
 - A loja de cada jogador é diferente, e a raridade dos itens segue a mesma chance do baú (lendário na loja é tão raro quanto no baú).
 - Na tela inicial, de vez em quando passa uma pomba anunciando quem conseguiu um item lendário nos últimos dias.
-
-**Alpha 0.11.39 (experimental) · 26/11/2026**
-
-- Corrigido: pular a cena do nascimento de Afrodite não trava mais.
-- Paladina na escolha de classe: mostra só a postura defensiva e um botão Mudança de Postura para ver as habilidades da ofensiva.
-- Na luta, o menu da Paladina mostra só a Mudança de Postura e as 3 habilidades da postura atual, com o nome da postura em cima.
-- Corrigido: parágrafos e descrições dos menus também saem com minúsculas.
 
 ## Controles
 | | PC | Controle |
