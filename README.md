@@ -6,6 +6,10 @@ Teste o potencial de Afrodite contra Hefesto em mais uma provação enviada por 
 
 ## Últimas atualizações
 
+**Alpha 0.11.35 (experimental) · 26/11/2026**
+
+- Diálogos, cenas e descrições agora usam a fonte Marcellus, que tem minúsculas de verdade e o mesmo ar clássico; títulos e botões continuam em Cinzel.
+
 **Alpha 0.11.34 (experimental) · 26/11/2026**
 
 - Paladina: nova habilidade Mudança de Postura (2 PA, com ícone próprio). Ela começa na defensiva e só usa as habilidades da postura em que está.
@@ -25,14 +29,6 @@ Teste o potencial de Afrodite contra Hefesto em mais uma provação enviada por 
 
 - Corrigido: a Paladina travava o jogo ao abrir o menu de ações (descrição da troca de postura).
 - A tela “O jogo travou?” e o termo inicial agora funcionam com o controle.
-
-**Alpha 0.11.31 (experimental) · 26/11/2026**
-
-- Minitutoriais mais curtos, com imagem animada e os botões do seu modo (toque, teclado ou controle).
-- Guitarra funk nas reações: a base toca enquanto o golpe vem e cada acerto toca uma nota.
-- Tela de recompensa do baú e ranking funcionam com o controle (DualSense e Xbox).
-- No PC, os menus crescem para ocupar a tela.
-- Masoquismo explicado: como os acúmulos sobem e quanto dano cada um dá, com tutorial no primeiro acúmulo.
 
 ## Controles
 | | PC | Controle |

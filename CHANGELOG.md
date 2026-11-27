@@ -1,5 +1,9 @@
 # Últimas atualizações
 
+## Alpha 0.11.35 (experimental) · 26/11/2026
+
+- Diálogos, cenas e descrições agora usam a fonte Marcellus, que tem minúsculas de verdade e o mesmo ar clássico; títulos e botões continuam em Cinzel.
+
 ## Alpha 0.11.34 (experimental) · 26/11/2026
 
 - Paladina: nova habilidade Mudança de Postura (2 PA, com ícone próprio). Ela começa na defensiva e só usa as habilidades da postura em que está.

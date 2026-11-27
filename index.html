@@ -31,7 +31,7 @@
    PICTURE: o próprio jogo no canvas
    COLOUR/TYPE: carvão, ferro oxidado, bronze escurecido; brasa e roxo do encantamento como únicos acentos; Cinzel + EB Garamond
    LAYOUT: etapas (características → árvore → luta), depois o combate */
-@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700;800;900&family=EB+Garamond:wght@400;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700;800;900&family=Marcellus&family=EB+Garamond:wght@400;600;700&display=swap');
 :root{--bg:#0b0a09;--fg:#ddd4c6;--mut:#8f8578;--acc:#b08d4a;--pan:#16130f;--ln:#3a332b;--metal:#5f584f;--ember:#c2452a;--blood:#8e1c22;color-scheme:dark}
 *{box-sizing:border-box;min-width:0}
 html,body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.5 "EB Garamond",Georgia,serif}
@@ -353,7 +353,7 @@ body.fighting .w{padding:2px!important;margin:0 auto!important;max-width:none!im
 .chBt button:focus,.chBt button:focus-visible,#rankP .rkBt button:focus{outline:none;border-color:#ffd27a!important;box-shadow:0 0 0 2px #ffd27a,0 0 18px #ffb03a99;color:#fff2d8;background:#3a2a12}
 body.fighting #modal .mbox,body.fighting .chB,body.fighting #rankP .rkb{zoom:var(--fz,1)}body.fighting #modal .mbox{max-height:calc((100dvh - 12px)/var(--fz,1))}body.fighting #rankP .rkb{max-height:calc((100dvh - 16px)/var(--fz,1))}body.fighting .chB canvas{height:min(360px,calc(52vh/var(--fz,1)))}
 .recbtns button:focus,#cons button:focus{outline:none;border-color:#ffd27a!important;box-shadow:0 0 0 2px #ffd27a,0 0 18px #ffb03a99}
-body p,body li,body dd,body td,body textarea,body input,body .det,body .tip,body .sd,body .constx,body .note,body .tutL,body .tutS,body .tutS2,body .chTx small,body .rkTy,body .upd,body .ivEmpty small{text-transform:none!important}
+body p,body li,body dd,body td,body textarea,body input,body .det,body .tip,body .sd,body .constx,body .note,body .tutL,body .tutS,body .tutS2,body .chTx small,body .rkTy,body .upd,body .ivEmpty small{text-transform:none!important;font-family:Marcellus,'Cinzel',serif!important;letter-spacing:.01em!important}
 </style></head><body><div class="w">
 <div id="cons" hidden role="dialog" aria-modal="true" aria-labelledby="consT"><div class="mbox recb"><h2 id="consT">Antes de jogar</h2><div class="constx"><p>Este jogo está em teste. Para melhorá-lo, registramos <b>como você joga</b>: o apelido que você escolher, o modelo do aparelho e o navegador, o tempo em cada tela, as escolhas, os acertos e erros na luta, onde você toca ou clica na tela e o desempenho (FPS).</p><p>Não pedimos nome real, e-mail, telefone nem localização. Os dados ficam num banco do desenvolvedor e servem <b>só para ajustar o jogo</b>; nada é vendido nem compartilhado.</p><p class="consm">Você pode mudar isso a qualquer momento na engrenagem, dentro da luta. Para pedir que seus dados sejam apagados, use <b>Reportar bug</b> e informe o código <b id="consId"></b>.</p></div><div class="recbtns"><button id="consYes" class="rec1">Aceitar e jogar</button><button id="consNo">Jogar sem enviar dados</button></div></div></div>
 <div id="rec" hidden role="dialog" aria-modal="true" aria-labelledby="recT"><div class="mbox recb"><h2 id="recT">O jogo travou?</h2><p id="recWhy"></p><div class="recbtns"><button id="recGo" class="rec1">Destravar e continuar</button><button id="recBack">Voltar ao início do turno</button><button id="recNew">Recomeçar a luta</button><button id="recX" class="lnk">fechar</button></div></div></div>
@@ -423,7 +423,7 @@ body p,body li,body dd,body td,body textarea,body input,body .det,body .tip,body
 (()=>{try{const P=CanvasRenderingContext2D.prototype,d=Object.getOwnPropertyDescriptor(P,'font');
  const fix=v=>{const m=String(v).match(/^(.*?)(\d+(?:\.\d+)?px)(\/[\d.]+)?\s+(.+)$/);if(!m)return v;let pre=m[1].replace(/italic|oblique/g,' ').replace(/\bbold\b/,'700').replace(/\bnormal\b/g,' ').replace(/\s+/g,' ').trim();return(pre?pre+' ':'')+m[2]+' Cinzel,serif'};
  if(d&&d.set)Object.defineProperty(P,'font',{configurable:true,get(){return d.get.call(this)},set(v){d.set.call(this,fix(v))}});
- ['fillText','strokeText','measureText'].forEach(k=>{const o=P[k];P[k]=function(t,...a){return o.call(this,typeof t==='string'&&!window.__NU?t.toLocaleUpperCase('pt-BR'):t,...a)}})}catch(e){}})();
+ ['fillText','strokeText','measureText'].forEach(k=>{const o=P[k];P[k]=function(t,...a){if(typeof t!=='string')return o.call(this,t,...a);if(!window.__NU)return o.call(this,t.toLocaleUpperCase('pt-BR'),...a);const f0=d.get.call(this);d.set.call(this,f0.replace(/Cinzel,serif/,'Marcellus,serif').replace(/^(\d{3}) /,''));try{return o.call(this,t,...a)}finally{d.set.call(this,f0)}}});try{document.fonts&&document.fonts.load('16px Marcellus')}catch(e){}}catch(e){}})();
 {
 const $=id=>document.getElementById(id);
 const MUSMAX=.6;let AC,SFXV=(()=>{try{const v=localStorage.getItem('afroSfx2');return v==null?.25:+v}catch(e){return .25}})();const ac=()=>{if(!AC){AC=new AudioContext();AC.sfx=AC.createGain();AC.sfx.gain.value=SFXV;AC.sfx.connect(AC.destination);AC.mus=AC.createGain();AC.mus.gain.value=(typeof MUSV==='number'?MUSV:.5)*MUSMAX/.42;AC.mus.connect(AC.destination)}return AC};
@@ -2683,8 +2683,9 @@ function drawTears(){if(!S.tears||S.t>S.tears||S.over)return;if(S.t>(S.tearT||0)
 
 
 /* versão, últimas atualizações e reporte de bug */
-const VERSION='Alpha 0.11.34 (experimental)';const BUILD_TS='2026-11-27T00:24:10Z';
+const VERSION='Alpha 0.11.35 (experimental)';const BUILD_TS='2026-11-27T00:28:28Z';
 const PATCH=[
+ {v:'Alpha 0.11.35 (experimental)',d:'26/11/2026',it:['Diálogos, cenas e descrições agora usam a fonte Marcellus, que tem minúsculas de verdade e o mesmo ar clássico; títulos e botões continuam em Cinzel.']},
  {v:'Alpha 0.11.34 (experimental)',d:'26/11/2026',it:['Paladina: nova habilidade Mudança de Postura (2 PA, com ícone próprio). Ela começa na defensiva e só usa as habilidades da postura em que está.','Novo menu de ações da Paladina com as 7 habilidades: defensivas à esquerda, ofensivas à direita e a Mudança de Postura embaixo; as da outra postura aparecem com cadeado.']},
  {v:'Alpha 0.11.33 (experimental)',d:'26/11/2026',it:['Diálogos, cenas e descrições agora seguem as maiúsculas e minúsculas normais do português, na mesma fonte.','Ícone de Masoquismo (coração roxo com o número de acúmulos) bem visível na linha de turnos.','A guitarra saiu: agora os golpes de Hefesto e as notas de conjurar caem na batida da música da luta (120 BPM).','L1/R1 (LB/RB no Xbox, Q/E no teclado) trocam as abas do ranking, da loja e da mochila; na tela inicial trocam o ranking.','Na tela final dá para escolher “Menu principal” pelo controle.','Controle: R3 liga um cursor no analógico direito para passar por cima de Hefesto e do tabuleiro.','Passar o cursor em Hefesto mostra até onde ele pode andar no próximo turno.']},
  {v:'Alpha 0.11.32 (experimental)',d:'26/11/2026',it:['Corrigido: a Paladina travava o jogo ao abrir o menu de ações (descrição da troca de postura).','A tela “O jogo travou?” e o termo inicial agora funcionam com o controle.']},
