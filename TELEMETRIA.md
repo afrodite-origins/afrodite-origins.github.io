@@ -270,3 +270,101 @@ notify pgrst, 'reload schema';
 ```
 
 "Jogadores" = quem jogou pelo menos uma luta e aceitou compartilhar dados. Itens repetidos (o baú deu o que já tinha) também contam como "tem".
+
+## Contas dos jogadores (versão 0.15.0)
+
+Cria o login dos jogadores e o progresso na nuvem. Rode uma vez no **SQL Editor** (pode rodar de novo sem problema).
+
+**Antes de rodar:** troque `SEU-EMAIL-AQUI` pelo e-mail do seu usuário GM (o mesmo que você usa no relatório). Para mais de um GM, separe por vírgula: `('voce@x.com','amigo@y.com')`. Se esquecer de trocar, o script para com um aviso e nada muda.
+
+Por quê: com os jogadores criando contas, o GM passa a ser reconhecido pelo **id** do usuário, não só pelo e-mail. Assim ninguém vira GM criando uma conta com o e-mail de outra pessoa.
+
+```sql
+-- Afrodite Origins · contas dos jogadores (pode rodar quantas vezes quiser)
+
+-- 1) GMs pelo id do usuário (troque o e-mail abaixo)
+create table if not exists public.afrodite_gms (user_id uuid primary key);
+alter table public.afrodite_gms enable row level security;
+do $$ begin
+  insert into public.afrodite_gms (user_id)
+    select id from auth.users where lower(email) in (lower('SEU-EMAIL-AQUI'))
+  on conflict do nothing;
+  if (select count(*) from public.afrodite_gms) = 0 then
+    raise exception 'Troque SEU-EMAIL-AQUI pelo e-mail do seu usuário GM antes de rodar.';
+  end if;
+end $$;
+create or replace function public.afrodite_is_gm() returns boolean
+language sql stable security definer set search_path = public as $$
+  select exists (select 1 from public.afrodite_gms where user_id = auth.uid())
+$$;
+
+-- 2) progresso de cada conta
+create table if not exists public.afrodite_contas (
+  user_id uuid primary key references auth.users(id) on delete cascade
+);
+alter table public.afrodite_contas
+  add column if not exists email text,
+  add column if not exists nick text,
+  add column if not exists dados jsonb,
+  add column if not exists vids text[] default '{}',
+  add column if not exists versao text,
+  add column if not exists score int default 0,
+  add column if not exists created_at timestamptz default now(),
+  add column if not exists updated_at timestamptz default now();
+alter table public.afrodite_contas enable row level security;
+drop policy if exists "dono ou gm le" on public.afrodite_contas;
+create policy "dono ou gm le" on public.afrodite_contas for select to authenticated
+  using (user_id = auth.uid() or public.afrodite_is_gm());
+revoke all on public.afrodite_contas from anon, authenticated;
+grant select on public.afrodite_contas to authenticated;
+
+-- 3) ler o próprio progresso
+create or replace function public.afrodite_conta_ler()
+returns table(dados jsonb, updated_at timestamptz)
+language sql stable security definer set search_path = public as $$
+  select c.dados, c.updated_at from public.afrodite_contas c where c.user_id = auth.uid()
+$$;
+
+-- 4) salvar (recusa se outro aparelho salvou depois: o jogo junta os dois e tenta de novo)
+create or replace function public.afrodite_conta_salvar(p_dados jsonb, p_nick text, p_vid text, p_versao text, p_score int, p_base timestamptz)
+returns jsonb language plpgsql security definer set search_path = public as $$
+declare uid uuid := auth.uid(); cur public.afrodite_contas%rowtype; t timestamptz;
+begin
+  if uid is null then raise exception 'sem login'; end if;
+  if octet_length(p_dados::text) > 500000 then raise exception 'progresso grande demais'; end if;
+  select * into cur from public.afrodite_contas where user_id = uid for update;
+  if found and cur.dados is not null and (p_base is null or cur.updated_at > p_base) then
+    return jsonb_build_object('conflito', true, 'dados', cur.dados, 'updated_at', cur.updated_at);
+  end if;
+  insert into public.afrodite_contas as c (user_id, email, nick, dados, vids, versao, score, updated_at)
+  values (uid, auth.jwt() ->> 'email', left(coalesce(p_nick, ''), 24), p_dados,
+          case when p_vid is null then '{}'::text[] else array[left(p_vid, 40)] end, left(p_versao, 40), p_score, now())
+  on conflict (user_id) do update set
+    email = excluded.email, nick = excluded.nick, dados = excluded.dados,
+    vids = case when p_vid is null or p_vid = any(c.vids) then c.vids else (c.vids || left(p_vid, 40))[greatest(1, cardinality(c.vids) - 18):] end,
+    versao = excluded.versao, score = excluded.score, updated_at = now()
+  returning c.updated_at into t;
+  return jsonb_build_object('ok', true, 'updated_at', t);
+end $$;
+revoke all on function public.afrodite_conta_ler() from public;
+revoke all on function public.afrodite_conta_salvar(jsonb, text, text, text, int, timestamptz) from public;
+grant execute on function public.afrodite_conta_ler() to authenticated;
+grant execute on function public.afrodite_conta_salvar(jsonb, text, text, text, int, timestamptz) to authenticated;
+notify pgrst, 'reload schema';
+```
+
+### Configurações do login no painel do Supabase
+
+**Etapa 1 (agora, sem e-mail):**
+1. **Authentication → Sign In / Providers → Email**: deixe **ligado** e **desligue "Confirm email"**. Assim a conta funciona na hora, sem esperar e-mail.
+2. **Authentication → URL Configuration**: em **Site URL** coloque `https://afrodite-origins.github.io` e, em **Redirect URLs**, adicione `https://afrodite-origins.github.io/**`.
+
+**Etapa 2 (e-mails de verdade: "esqueci a senha"):**
+3. Crie uma conta num serviço de envio (por exemplo Brevo ou Resend, ambos com plano grátis) e pegue os dados de SMTP (servidor, porta, usuário, senha e o e-mail remetente).
+4. **Authentication → Emails → SMTP Settings**: ligue **Custom SMTP**, cole esses dados e salve. Sem isso, o Supabase só manda e-mail para os membros da equipe do projeto.
+5. Em **Authentication → Rate Limits**, confira o limite de e-mails por hora (começa em 30).
+6. Opcional: os textos dos e-mails ficam em **Authentication → Emails → Templates** (dá para traduzir "Reset Password" para português).
+
+**Entrar com Google (opcional):**
+7. No **Google Cloud Console** → APIs e serviços → Credenciais → Criar credenciais → **ID do cliente OAuth** → tipo **Aplicativo da Web**. Em **URIs de redirecionamento autorizados**, cole `https://hmbsiwpqxeketyamsbsq.supabase.co/auth/v1/callback`. Configure a tela de consentimento com o nome do jogo.
+8. No Supabase, **Authentication → Sign In / Providers → Google**: ligue, cole o **Client ID** e o **Client Secret** e salve. O botão "Entrar com Google" aparece sozinho no jogo.

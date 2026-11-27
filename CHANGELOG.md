@@ -1,5 +1,15 @@
 # Últimas atualizações
 
+## Alpha 0.15.0 (experimental) · 27/11/2026
+
+- Conta do jogador: dá para criar conta com e-mail e senha (ou entrar com Google, quando estiver ligado no Supabase) e continuar o progresso em qualquer celular ou PC. Moedas, itens, visuais equipados, maestria, conquistas, Ranking Afrodisíaco e apelido ficam salvos na nuvem.
+- Nada se perde: ao criar a conta, o que o jogador já tinha no aparelho sobe junto. Se entrar num aparelho que também tem progresso, o jogo junta os dois (fica o mais avançado e soma os itens).
+- O progresso é salvo sozinho a cada 20 segundos (quando algo mudou) e ao fechar o jogo. Se dois aparelhos salvarem ao mesmo tempo, o jogo junta os dois em vez de apagar um.
+- Onde fica: botão de conta no topo, ao lado da engrenagem (ponto verde = conectado), convite “Salve seu progresso” no menu principal depois de 3 lutas ou do primeiro item (dá para adiar) e a linha da conta no Perfil.
+- Esqueci a senha, trocar senha e sair da conta. Ao sair, o aparelho volta a jogar sem conta e o progresso continua guardado nela.
+- Segurança: o GM passa a ser reconhecido pelo id do usuário, não só pelo e-mail (SQL novo no TELEMETRIA.md).
+- Relatório: bloco Contas dos jogadores, com aparelhos por conta, lutas, itens, moedas, melhor classe no Afrodisíaco e quando salvou.
+
 ## Alpha 0.14.1 (experimental) · 27/11/2026
 
 - Correção (relato do jefferson12): quando a prótese quebrava no meio de um ataque do Hefesto, a cena da fase 2 entrava e, ao terminar, o evento de botão (F, Shift, Espaço) continuava de onde parou. Agora a cena espera o ataque terminar e só depois começa.
