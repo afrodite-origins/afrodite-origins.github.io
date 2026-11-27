@@ -1,5 +1,9 @@
 # Últimas atualizações
 
+## Alpha 0.12.2 (experimental) · 27/11/2026
+
+- HUD novo em teste (desligado por padrão): ordem de turnos numa faixa no topo, vida em segmentos sobre os personagens, falas como legenda sem balão, histórico de 3 linhas e piloto automático num botão redondo. Ative em Opções › HUD ou abrindo o link com ?hud=novo.
+
 ## Alpha 0.12.1 (experimental) · 27/11/2026
 
 - Escudos viraram itens próprios da Paladina (5 modelos, épicos), na loja e no baú, separados dos outros visuais.
