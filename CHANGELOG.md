@@ -1,5 +1,13 @@
 # Últimas atualizações
 
+## Alpha 0.12.8 (experimental) · 27/11/2026
+
+- O HUD novo virou o padrão para todos: menu principal, carrossel de classes, painel de habilidades e combate mais limpo. O clássico continua em Opções › HUD ou pelo link com ?hud=velho.
+- Paladina não troca mais de postura sozinha nas prévias: fica na defensiva, com o escudo na frente, e só gira a lança na postura ofensiva.
+- Prévia da Aura Sádica refeita: círculo trevoso no chão, fumaça e demônios rodando em volta dela, rindo.
+- Prévia do Masoquismo refeita: um demônio do amor em volta do inimigo por acúmulo; no 5º eles se juntam e explodem.
+- Prévia dos glifos da Maga: Afrodite conjura, o glifo se desenha no chão e só explode no turno de Hefesto.
+
 ## Alpha 0.12.7 (experimental) · 27/11/2026
 
 - HUD novo (teste): o painel “Ver habilidades” foi refeito. À esquerda ficam só os ícones, encadeados na ordem da árvore; no meio, uma prévia animada da habilidade (Afrodite contra um boneco de treino); à direita, a descrição.
