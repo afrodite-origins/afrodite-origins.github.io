@@ -1,5 +1,12 @@
 # Últimas atualizações
 
+## Alpha 0.11.39 (experimental) · 26/11/2026
+
+- Corrigido: pular a cena do nascimento de Afrodite não trava mais.
+- Paladina na escolha de classe: mostra só a postura defensiva e um botão Mudança de Postura para ver as habilidades da ofensiva.
+- Na luta, o menu da Paladina mostra só a Mudança de Postura e as 3 habilidades da postura atual, com o nome da postura em cima.
+- Corrigido: parágrafos e descrições dos menus também saem com minúsculas.
+
 ## Alpha 0.11.38 (experimental) · 26/11/2026
 
 - Corrigido: frases e diálogos agora aparecem com minúsculas de verdade (fonte Marcellus) também dentro da luta.

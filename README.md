@@ -6,6 +6,13 @@ Teste o potencial de Afrodite contra Hefesto em mais uma provação enviada por 
 
 ## Últimas atualizações
 
+**Alpha 0.11.39 (experimental) · 26/11/2026**
+
+- Corrigido: pular a cena do nascimento de Afrodite não trava mais.
+- Paladina na escolha de classe: mostra só a postura defensiva e um botão Mudança de Postura para ver as habilidades da ofensiva.
+- Na luta, o menu da Paladina mostra só a Mudança de Postura e as 3 habilidades da postura atual, com o nome da postura em cima.
+- Corrigido: parágrafos e descrições dos menus também saem com minúsculas.
+
 **Alpha 0.11.38 (experimental) · 26/11/2026**
 
 - Corrigido: frases e diálogos agora aparecem com minúsculas de verdade (fonte Marcellus) também dentro da luta.
@@ -20,10 +27,6 @@ Teste o potencial de Afrodite contra Hefesto em mais uma provação enviada por 
 **Alpha 0.11.36 (experimental) · 26/11/2026**
 
 - Sons das reações e da conjuração mais graves, com tambores e metais baixos, para combinar com a música épica da luta.
-
-**Alpha 0.11.35 (experimental) · 26/11/2026**
-
-- Diálogos, cenas e descrições agora usam a fonte Marcellus, que tem minúsculas de verdade e o mesmo ar clássico; títulos e botões continuam em Cinzel.
 
 ## Controles
 | | PC | Controle |
