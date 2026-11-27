@@ -2,6 +2,7 @@
 
 ## Alpha 0.13.2 (experimental) · 27/11/2026
 
+- Relatório (ajuste): organizado em blocos por utilidade (Jogadores & Atividade, Retenção & Moedas, Combate & Rankings, Itens & Raridades, Perfis & Inferências, Sessões), todos recolhidos; cada bloco e cada gráfico abre e fecha no clique. Na aba Big Five, matriz de correlação (Pearson/ponto-bisserial) entre a escolha de classe e cada traço, só com jogadores que passam no critério estatístico.
 - Relatório (ajuste): a confiança das inferências passou a usar a margem de erro de 95% das decisões por luta (1,96 × desvio-padrão ÷ √n), não só o tamanho da amostra. Só entram jogadores com ≥ 3 lutas concluídas, ≥ 40 decisões e confiança ≥ 60%; os outros aparecem como amostra insuficiente, com o motivo.
 - Faixa de turnos maior no topo (bem maior no celular), sem invadir o tabuleiro.
 - “Novo” por item: na loja e na mochila, o aviso de novidade some do item assim que você toca nele, sem precisar fechar a aba.

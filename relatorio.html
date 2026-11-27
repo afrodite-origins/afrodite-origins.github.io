@@ -67,6 +67,30 @@ details.more{margin-top:6px}details.more>summary{cursor:pointer;color:var(--acc)
 .b5t .tr s{position:absolute;top:2px;bottom:2px;border:1px solid rgba(255,255,255,.55);border-radius:3px;background:rgba(255,255,255,.08)}details.b5x{margin:0 0 12px;border:1px solid var(--line);border-radius:8px;background:var(--pan2)}details.b5x>summary{cursor:pointer;padding:8px 10px;font-size:13px;color:#e09a5a}details.b5x .tw{padding:0 10px 10px}
 .b5r{margin:2px 0 3px;font-size:12px;color:var(--tx)}
 details.ses{border:1px solid var(--line);border-radius:8px;margin-bottom:6px;background:var(--pan2)}details.ses>summary{cursor:pointer;padding:8px 10px;font-size:13px;list-style:none}details.ses>summary::-webkit-details-marker{display:none}details.ses>summary::before{content:'▸';display:inline-block;width:14px;color:var(--mut);transition:transform .15s}details.ses[open]>summary::before{transform:rotate(90deg)}details.ses .m{color:var(--mut);font-size:12px}details.ses .sesb{padding:0 10px 10px}details.ses .pill{padding:0 5px;margin-left:2px;font-size:10px}
+
+/* blocos por utilidade: tudo começa recolhido; clique no título abre/fecha */
+details.grp{margin:0 0 10px;border:1px solid var(--line);border-radius:10px;background:var(--pan)}
+details.grp>summary{cursor:pointer;list-style:none;display:flex;align-items:center;gap:10px;padding:12px 16px;font-size:16px;font-weight:650}
+details.grp>summary::-webkit-details-marker{display:none}
+details.grp>summary::before{content:'▸';color:var(--acc);transition:transform .15s;display:inline-block}
+details.grp[open]>summary::before{transform:rotate(90deg)}
+details.grp>summary small{font-weight:400;font-size:12px;color:var(--mut)}
+details.grp>summary .ga{margin-left:auto;font-size:11px;font-weight:500;padding:3px 9px}
+details.grp>.gb{padding:0 12px 12px}
+.gb .box{margin-bottom:10px!important}
+.gb .box>h2{cursor:pointer;user-select:none;margin-bottom:0}
+.gb .box>h2::before{content:'▸ ';color:var(--acc);display:inline-block;transition:transform .15s}
+.gb .box.open>h2::before{transform:rotate(90deg)}
+.gb .box.open>h2{margin-bottom:10px}
+.gb .box:not(.open)>*:not(h2){display:none!important}
+.gb .grid{margin-bottom:0;align-items:start}
+/* correlação classe × traço */
+.crm{display:grid;grid-template-columns:110px repeat(5,minmax(64px,1fr));gap:4px;font-size:12px;margin:6px 0}
+.crm>div{padding:8px 4px;text-align:center;border-radius:6px}
+.crm .h{color:var(--mut);font-weight:650;padding:4px}
+.crm .r{text-align:left;font-weight:650;padding:8px 6px}
+.crm .c b{display:block;font-size:14px;color:#fff}.crm .c small{color:rgba(255,255,255,.75);font-size:10px}
+.crl{display:flex;align-items:center;gap:8px;font-size:11px;color:var(--mut);margin:4px 0 8px}.crl i{display:inline-block;width:160px;height:8px;border-radius:4px;background:linear-gradient(90deg,#3a6ad8,#1c212a 50%,#e0803a)}
 </style></head><body><div class="w">
 <header><h1>Afrodite Alpha <small>análise dos testes</small></h1><span class="src" id="src">carregando…</span></header>
 <div class="filters"><label>Período <select id="fp"><option value="0">tudo</option><option value="0.0417">última hora</option><option value="1">últimas 24 h</option><option value="7">últimos 7 dias</option><option value="30">últimos 30 dias</option></select></label>
@@ -205,11 +229,19 @@ function render(){const days=+$('fp').value,dev=$('fd').value,now=Date.now(),AUT
    tr('E',[[rounds?`${Math.round(dmg/Math.max(1,rounds))} de dano por rodada`:null,rounds?clamp(dmg/rounds/40):null,2],[avD!=null?`fica em média a ${avD.toFixed(1)} casas de Hefesto`:null,avD!=null?1-clamp((avD-1)/4):null,2],[turns.length?`${fast} turno(s) rápido(s) (menos de 6 s) de ${turns.length}`:null,turns.length?clamp(fast/turns.length*2):null,1]]);
    tr('A',[[skT?`${pc(skS/skT)}% das habilidades usadas são de cura, proteção ou invocação`:null,skT?clamp(skS/skT*1.6):null,2],[`${supCls} de ${F.length} lutas com classes de suporte (Paladina, Maga)`,F.length?supCls/F.length:null,1]]);
    tr('N',[[`abandonou ${ab} de ${F.length} lutas`,F.length?clamp(ab/F.length*2):null,2],[u.lossSes?`saiu logo após perder em ${u.lastLoss} de ${u.lossSes} sessões com derrota`:null,u.lossSes?u.lastLoss/u.lossSes:null,2],[rAcc!=null?`errou ${pc(1-rAcc)}% das reações`:null,rAcc!=null?clamp((1-rAcc)*1.5):null,1],[turns.length?`${tos} tempo(s) esgotado(s)`:null,turns.length?clamp(tos/turns.length*4):null,1]]);
-   return{n:u.n,F:F.length,done:done.length,turns:turns.length,sm,T}}).sort((a,b)=>b.sm.conf-a.sm.conf);
+   const cs={};F.forEach(f=>{const k=/Paladina/.test(f.cls||'')?'Paladina':/Sedutora/.test(f.cls||'')?'Sedutora':/Maga/.test(f.cls||'')?'Maga':/Malandra/.test(f.cls||'')?'Malandra':'';if(k)cs[k]=(cs[k]||0)+1/F.length});
+   return{n:u.n,F:F.length,done:done.length,turns:turns.length,sm,T,cs}}).sort((a,b)=>b.sm.conf-a.sm.conf);
+
+  // correlação de Pearson entre a fração de lutas com cada classe e cada traço (com classe 0/1 vira ponto-bisserial)
+  const CLSN2=['Paladina','Sedutora','Maga','Malandra'],TK=['O','C','E','A','N'],pear=(x,y)=>{const n=x.length;if(n<3)return null;const mx=x.reduce((a,b)=>a+b,0)/n,my=y.reduce((a,b)=>a+b,0)/n;let sxy=0,sx=0,sy=0;for(let i=0;i<n;i++){sxy+=(x[i]-mx)*(y[i]-my);sx+=(x[i]-mx)**2;sy+=(y[i]-my)**2}return sx&&sy?sxy/Math.sqrt(sx*sy):null};
+  const nP=PL.length,crit=nP>=4?2/Math.sqrt(nP):1,rcol=r=>{if(r==null)return'#1c212a';const a=Math.min(1,Math.abs(r));return r>0?`rgba(224,128,58,${.15+.75*a})`:`rgba(58,106,216,${.15+.75*a})`};
+  const corrHtml=`<details class="b5x" open><summary style="color:var(--tx)">Correlação: escolha de classe × traços (${nP} jogador(es) com amostra suficiente)</summary><div style="padding:0 10px 10px">`+(nP<3?`<div class="empty">Precisa de pelo menos 3 jogadores que passaram no critério estatístico. Hoje: ${nP}.</div>`:
+   `<div class="crl">negativa <i></i> positiva · • = |r| ≥ ${crit<1?crit.toFixed(2):'—'} (≈ significativa a 5%)</div><div class="crm"><div class="h"></div>${TK.map(k=>`<div class="h" style="color:${INFO[k][1]}">${INFO[k][0]}</div>`).join('')}${CLSN2.map(c=>{const x=PL.map(p=>p.cs[c]||0),nC=x.filter(v=>v>0).length;return`<div class="r">${c}<br><small style="color:var(--mut);font-weight:400">${nC} jogou</small></div>`+TK.map(k=>{const y=PL.map(p=>p.T.find(t=>t.k===k).v),r=nC?pear(x,y):null;return`<div class="c" style="background:${rcol(r)}" title="${c} × ${INFO[k][0]}: r = ${r==null?'—':r.toFixed(2)} (n = ${nP})"><b>${r==null?'—':(r>0?'+':'')+r.toFixed(2)}${r!=null&&Math.abs(r)>=crit?' •':''}</b><small>n=${nP}</small></div>`}).join('')}).join('')}</div>`+
+   `<p class="note">Cada célula é a correlação de Pearson entre a fração das lutas manuais do jogador com aquela classe (0 a 1) e a nota do traço. Positiva (laranja): quem mais joga com a classe tende a ter o traço mais alto; negativa (azul): mais baixo. Com poucos jogadores as correlações oscilam muito; o • marca |r| ≥ 2/√n, um corte aproximado de significância. “—” = sem variação suficiente para calcular (todos com o mesmo valor). Amabilidade usa a fração de lutas com Paladina e Maga como evidência, então a correlação dela com essas classes é em parte esperada.</p>`)+`</div></details>`;
   const lab=v=>v>=.66?'alta':v<=.34?'baixa':'moderada',read=(t)=>t.v>=.66?INFO[t.k][3]:t.v<=.34?INFO[t.k][4]:'Equilíbrio entre os dois lados.',cc=c=>c>=.85?'#5bbf8a':c>=.7?'#d4a85a':'#e09a5a';
   const legend=`<div class="b5L">${Object.values(INFO).map(x=>`<div><b style="color:${x[1]}">${x[0]}</b> · ${x[2]}</div>`).join('')}</div><p class="note" style="margin:6px 0 12px"><b>Como a confiança é calculada:</b> para cada traço, o valor é medido em cada luta; a margem de erro de 95% é 1,96 × desvio-padrão ÷ √n. Confiança do traço = 1 − margem ÷ 0,35; a do jogador é a média dos cinco. Ela cai com poucas lutas e também quando as decisões variam muito de uma luta para outra. Só entram jogadores com ≥ ${ST_MIN_F} lutas concluídas, ≥ ${ST_MIN_D} decisões e confiança ≥ ${Math.round(ST_MIN_C*100)}%.</p>`;
   const insuf=OUT?`<details class="b5x"><summary>Amostra insuficiente: ${OUT} jogador(es), sem perfil</summary><div class="tw">${tbl(['Jogador','Lutas manuais','Concluídas','Decisões','Confiança','Por que ficou de fora'],OUTL.sort((a,b)=>b.st.conf-a.st.conf).map(x=>[esc(x.n),x.st.n,x.st.nd,x.st.d,Math.round(x.st.conf*100)+'%',esc(x.st.why.join(' · '))]),[1,2,3,4])}</div></details>`:'';
-  $('b5c').innerHTML=legend+insuf+(PL.length?`<div class="b5g">${PL.slice(0,40).map(p=>`<div class="b5p"><h3>${esc(p.n)}</h3><div class="cf">Confiança <b style="color:${cc(p.sm.conf)}">${pc(p.sm.conf)}%</b> · ${p.F} luta(s) manuais, ${p.sm.nd} concluídas, ${p.sm.d} decisões</div>${p.T.map(t=>`<div class="b5t"><div class="hd"><b>${INFO[t.k][0]}</b><span>${pc(t.v)} ± ${Math.round(p.sm.hw[t.k]*100)} · ${lab(t.v)}</span></div><div class="tr"><i style="width:${pc(t.v)}%;background:${INFO[t.k][1]}"></i><s style="left:${Math.max(0,pc(t.v-p.sm.hw[t.k]))}%;width:${Math.min(100,pc(t.v+p.sm.hw[t.k]))-Math.max(0,pc(t.v-p.sm.hw[t.k]))}%"></s></div><p class="b5r">${read(t)}</p><ul>${t.ev.map(e=>`<li>${esc(e)}</li>`).join('')||'<li>sem evidência suficiente</li>'}</ul></div>`).join('')}</div>`).join('')}</div>`:'<div class="empty">Nenhum jogador com amostra suficiente no período.</div>')}
+  $('b5c').innerHTML=legend+corrHtml+insuf+(PL.length?`<div class="b5g">${PL.slice(0,40).map(p=>`<div class="b5p"><h3>${esc(p.n)}</h3><div class="cf">Confiança <b style="color:${cc(p.sm.conf)}">${pc(p.sm.conf)}%</b> · ${p.F} luta(s) manuais, ${p.sm.nd} concluídas, ${p.sm.d} decisões</div>${p.T.map(t=>`<div class="b5t"><div class="hd"><b>${INFO[t.k][0]}</b><span>${pc(t.v)} ± ${Math.round(p.sm.hw[t.k]*100)} · ${lab(t.v)}</span></div><div class="tr"><i style="width:${pc(t.v)}%;background:${INFO[t.k][1]}"></i><s style="left:${Math.max(0,pc(t.v-p.sm.hw[t.k]))}%;width:${Math.min(100,pc(t.v+p.sm.hw[t.k]))-Math.max(0,pc(t.v-p.sm.hw[t.k]))}%"></s></div><p class="b5r">${read(t)}</p><ul>${t.ev.map(e=>`<li>${esc(e)}</li>`).join('')||'<li>sem evidência suficiente</li>'}</ul></div>`).join('')}</div>`).join('')}</div>`:'<div class="empty">Nenhum jogador com amostra suficiente no período.</div>')}
   // ---- retenção: 1ª luta, continuar depois de terminar e o provável motivo
  {const byV={};S0.forEach(s=>{const id=s.visitor_id||who(s),t0=new Date(s.started_at).getTime()||0;const L=byV[id]=byV[id]||[];(s.events||[]).forEach(e=>L.push({...e,at:t0+(+e.t||0)*1000}))});
   let n=0,conc=0,cont=0,win=0;const MOT={};
@@ -569,7 +601,7 @@ async function gmObsStart(sid){const r=(LV.rows||[]).find(x=>x.session_id===sid)
 function gmObsStop(){const vid=OB.vid,sid=OB.sid;OB.vid=null;if(!vid)return;gmSet(vid,sid,{observing:false}).catch(()=>{})}
 addEventListener('pagehide',()=>{const c=window.AFRO_ANALYTICS||{};if(!OB.vid||!GMH)return;try{fetch(c.url.replace(/\/$/,'')+'/rest/v1/afrodite_gm?on_conflict=visitor_id',{method:'POST',keepalive:true,headers:GMH,body:JSON.stringify({visitor_id:OB.vid,observing:false,updated_at:new Date().toISOString()})})}catch(e){}});
 setInterval(()=>{if(!OB.vid||document.hidden)return;gmFetchRows().then(obsGiftUi);if(Date.now()-OB.hb>45000){OB.hb=Date.now();gmSet(OB.vid,OB.sid,{observing:true,observer:'Zac'}).catch(()=>{})}},15000);
-function obsOpen(sid,nk){if(!GM.ok()){$('gmB').click();return}gmObsStart(sid);OB.sid=sid;OB.nk=nk;OB.fr=[];OB.ev=[];OB.play=0;$('obsW').hidden=false;$('obsT').textContent='Observando '+nk;$('obsS').textContent='carregando…';
+function obsOpen(sid,nk){if(!GM.ok()){$('gmB').click();return}try{openTo($('obsW'))}catch(e){}gmObsStart(sid);OB.sid=sid;OB.nk=nk;OB.fr=[];OB.ev=[];OB.play=0;$('obsW').hidden=false;$('obsT').textContent='Observando '+nk;$('obsS').textContent='carregando…';
  const tick=async()=>{try{await obsFetch()}catch(e){$('obsS').textContent='falha ao ler ('+e.message+')'}};clearInterval(OB.tm);tick();OB.tm=setInterval(()=>{if(!document.hidden)tick()},4000);
  cancelAnimationFrame(OB.raf);let lt=performance.now();const loop=n=>{const dt=n-lt;lt=n;obsStep(dt);OB.raf=requestAnimationFrame(loop)};OB.raf=requestAnimationFrame(loop);$('obsW').scrollIntoView({behavior:'smooth',block:'start'})}
 function obsClose(){gmObsStop();obsGiftUi();clearInterval(OB.tm);cancelAnimationFrame(OB.raf);OB.sid=null;$('obsW').hidden=true}
@@ -627,6 +659,30 @@ document.addEventListener('click',e=>{const gb=e.target.closest&&e.target.closes
 let lvTimer=0;function liveStart(){clearInterval(lvTimer);GM.ui();liveTick();lvTimer=setInterval(()=>{if(!document.hidden)liveTick()},10000)}
 document.addEventListener('visibilitychange',()=>{if(!document.hidden)liveTick()});
 ['fp','fd'].forEach(id=>$(id).onchange=render);$('tabs').onclick=e=>{const b=e.target.closest('button[data-m]');if(b&&b.dataset.m!==MODE){MODE=b.dataset.m;try{localStorage.setItem('afroRelTab',MODE)}catch(x){}render()}};$('b5B').onclick=()=>{document.body.classList.toggle('b5');$('b5B').classList.toggle('on',document.body.classList.contains('b5'));scrollTo(0,0)};$('b5X').onclick=()=>{document.body.classList.remove('b5');$('b5B').classList.remove('on')};$('obsX').onclick=obsClose;$('obsGift').onclick=()=>{if(OB.vid)gmGiftToggle(OB.vid,OB.sid,OB.nk||'o jogador')};$('obsLive').onclick=()=>{const F=OB.fr;if(F.length)OB.play=F[F.length-1].T-1500};$('reload').onclick=()=>{load();liveTick()};
+
+/* ===== organização por utilidade (acordeão): monta os blocos a partir das seções existentes ===== */
+(function grupos(){const W=document.querySelector('.w');if(!W||W.dataset.grp)return;W.dataset.grp=1;
+ const top=el=>{if(!el)return null;while(el.parentElement&&el.parentElement!==W)el=el.parentElement;return el.parentElement===W?el:null};
+ const unwrap=d=>{if(!d||d.tagName!=='DETAILS')return[d];const k=[...d.children].filter(x=>x.tagName!=='SUMMARY');return k};
+ const G=[['jog','Jogadores & Atividade','quem joga, últimos que entraram, maestria e ao vivo (Observar e Presentear)',['topTime','ultimos','lvDot']],
+  ['ret','Retenção & Moedas','conclusão da 1ª luta, quem continua e por quê, uso de moedas',['ret']],
+  ['com','Combate & Rankings','manual × automático, funil, turnos, reações, derrotas, ranking, classes, saídas e comportamento',['tabs','kpis','autoBox','funnel','react','rank','quit','beh']],
+  ['itm','Itens & Raridades','lojinha, baús e coleção por raridade (inclui Exclusivo)',['loja','colec']],
+  ['prf','Perfis & Inferências','perfis, grupos e constelação (só com amostra estatística suficiente)',['prof']],
+  ['ses','Sessões','sessões dobráveis, aparelhos, saúde da coleta, bugs e lutas',['tl']]];
+ const anchor=$('openW');let after=anchor;
+ G.forEach(([k,t,d,ids])=>{const det=document.createElement('details');det.className='grp';det.dataset.g=k;det.innerHTML=`<summary>${t} <small>${d}</small><button type="button" class="ga">abrir tudo</button></summary><div class="gb"></div>`;const gb=det.querySelector('.gb');
+  const seen=new Set();ids.forEach(id=>{const el=top($(id));if(!el||seen.has(el))return;seen.add(el);
+   // quem está dentro de um <details class="more"> vem junto com os irmãos
+   const parts=el.tagName==='DETAILS'?unwrap(el):[el];parts.forEach(p=>gb.appendChild(p));if(el.tagName==='DETAILS')el.remove()});
+  // seções vizinhas do mesmo grupo (ex.: Movimento, Ritmo) já vieram com o <details>
+  after.after(det);after=det});
+ // o que sobrou de <details class="more"> vazio sai
+ W.querySelectorAll(':scope>details.more').forEach(d=>{if(![...d.children].some(x=>x.tagName!=='SUMMARY'))d.remove()});
+ // cada caixa (gráfico/tabela) abre e fecha pelo título
+ W.querySelectorAll('.gb .box').forEach(b=>{const h=b.querySelector(':scope>h2');if(!h)return;h.addEventListener('click',e=>{if(e.target.closest('button,select,input,a'))return;b.classList.toggle('open')})});
+ W.querySelectorAll('details.grp .ga').forEach(btn=>btn.addEventListener('click',e=>{e.preventDefault();e.stopPropagation();const det=btn.closest('details.grp'),bx=[...det.querySelectorAll('.gb .box')],all=bx.every(b=>b.classList.contains('open'));det.open=true;bx.forEach(b=>b.classList.toggle('open',!all));btn.textContent=all?'abrir tudo':'fechar tudo'}))})();
+function openTo(el){let p=el;while(p){if(p.classList&&p.classList.contains('box'))p.classList.add('open');if(p.tagName==='DETAILS')p.open=true;p=p.parentElement}}
 (function gate(){const c=window.AFRO_ANALYTICS||{};if(!(c.provider==='supabase'&&c.url&&c.anonKey)||GM.ok()){load();liveStart();return}
  document.body.classList.add('locked');$('gmTitle').textContent='Relatório só para GMs';$('gmC').hidden=true;$('gmM').hidden=false;$('gmM').dataset.gate='1';setTimeout(()=>$('gmE').focus(),50)})();
 </script></body></html>
