@@ -6,6 +6,15 @@ Teste o potencial de Afrodite contra Hefesto em mais uma provação enviada por 
 
 ## Últimas atualizações
 
+**Alpha 0.12.1 (experimental) · 27/11/2026**
+
+- Escudos viraram itens próprios da Paladina (5 modelos, épicos), na loja e no baú, separados dos outros visuais.
+- Só a Lança do Dragão é de dragão: as outras ofensivas agora são Cometa Escarlate e Meia-Lua Rasteira.
+- Diabrete com animações exageradas: voa até a cara de Hefesto, faz a habilidade e volta. Hefesto passa por um teste (barra com a chance) e aparece FUNCIONOU! ou HEFESTO RESISTIU.
+- Hefesto provocado mostra marcas de raiva e uma mira no Diabrete; distraído, fica tonto. Os dois estados aparecem nos ícones dele.
+- Piloto automático: a cada 3 vitórias, um baú depois de derrotar Hefesto.
+- Aviso do piloto automático mais curto e minimalista.
+
 **Alpha 0.12.0 (experimental) · 27/11/2026**
 
 - Celular: na tela de reação, toque direto na nota. Sem setas: aparar à esquerda, pular no meio e desviar à direita, em pistas largas e afastadas.
@@ -28,11 +37,6 @@ Teste o potencial de Afrodite contra Hefesto em mais uma provação enviada por 
 - Loja: a cada hora sorteia visuais de todas as classes, com o sigilo discreto da classe em cada item. Achar um lendário da sua classe favorita ficou raro.
 - Pontinho de aviso na Loja quando há rotação nova e na Mochila quando chega visual novo; some ao abrir a tela.
 - Novo Perfil (ícone ao lado da engrenagem): apelido, Afrodite com os visuais da classe favorita, maestria que evolui com lutas, vitórias e tempo, conquistas e estatísticas (vitórias, lutas, tempo jogado, melhor tempo e últimas partidas).
-
-**Alpha 0.11.43 (experimental) · 26/11/2026**
-
-- Ranking de Tempo corrigido: tempo parado registrado antes do desconto de AFK não conta mais.
-- Relatório: o primeiro gráfico agora mostra quem mais joga, em barras.
 
 ## Controles
 | | PC | Controle |

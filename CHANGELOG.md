@@ -1,5 +1,14 @@
 # Últimas atualizações
 
+## Alpha 0.12.1 (experimental) · 27/11/2026
+
+- Escudos viraram itens próprios da Paladina (5 modelos, épicos), na loja e no baú, separados dos outros visuais.
+- Só a Lança do Dragão é de dragão: as outras ofensivas agora são Cometa Escarlate e Meia-Lua Rasteira.
+- Diabrete com animações exageradas: voa até a cara de Hefesto, faz a habilidade e volta. Hefesto passa por um teste (barra com a chance) e aparece FUNCIONOU! ou HEFESTO RESISTIU.
+- Hefesto provocado mostra marcas de raiva e uma mira no Diabrete; distraído, fica tonto. Os dois estados aparecem nos ícones dele.
+- Piloto automático: a cada 3 vitórias, um baú depois de derrotar Hefesto.
+- Aviso do piloto automático mais curto e minimalista.
+
 ## Alpha 0.12.0 (experimental) · 27/11/2026
 
 - Celular: na tela de reação, toque direto na nota. Sem setas: aparar à esquerda, pular no meio e desviar à direita, em pistas largas e afastadas.
