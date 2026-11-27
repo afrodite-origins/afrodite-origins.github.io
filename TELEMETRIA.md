@@ -236,3 +236,37 @@ notify pgrst, 'reload schema';
 ```
 
 **Como fica a segurança:** só o GM logado grava na tabela. O jogo não consegue listar nada: ele só pergunta pelo próprio `visitor_id` e só consegue desligar um presente que já está armado para ele. Enquanto o SQL não for rodado, o jogo simplesmente não mostra o Zac nem entrega presentes.
+
+## Raridade real dos itens (versão 0.13.4)
+
+O jogo mostra na descrição de cada item quantos % dos jogadores já têm aquele item ("Só você tem até agora", "3% dos jogadores têm"…). Ele lê só contagens por esta função; nada pessoal sai do banco. Rode uma vez no **SQL Editor**:
+
+```sql
+-- Afrodite Origins · quantos jogadores têm cada item (só contagens)
+create or replace function public.afrodite_item_stats()
+returns table(item text, owners bigint, players bigint)
+language sql stable security definer set search_path = public as $$
+  with ev as (
+    select s.visitor_id, e ->> 'id' as item
+    from public.afrodite_sessions s,
+         jsonb_array_elements(case when jsonb_typeof(coalesce(s.events, s.screens -> '_events')) = 'array'
+                                   then coalesce(s.events, s.screens -> '_events') else '[]'::jsonb end) e
+    where s.visitor_id is not null
+      and e ->> 'e' in ('bau_abriu', 'loja_comprou', 'presente_gm', 'presente_comunidade')
+      and e ->> 'id' is not null
+  ), pl as (
+    select count(distinct s.visitor_id) as n
+    from public.afrodite_sessions s
+    where s.visitor_id is not null
+      and jsonb_typeof(coalesce(s.fights, s.screens -> '_fights')) = 'array'
+      and jsonb_array_length(coalesce(s.fights, s.screens -> '_fights')) > 0
+  )
+  select ev.item, count(distinct ev.visitor_id) as owners, (select n from pl) as players
+  from ev group by ev.item
+$$;
+revoke all on function public.afrodite_item_stats() from public;
+grant execute on function public.afrodite_item_stats() to anon, authenticated;
+notify pgrst, 'reload schema';
+```
+
+"Jogadores" = quem jogou pelo menos uma luta e aceitou compartilhar dados. Itens repetidos (o baú deu o que já tinha) também contam como "tem".

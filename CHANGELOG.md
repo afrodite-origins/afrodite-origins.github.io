@@ -1,5 +1,11 @@
 # Últimas atualizações
 
+## Alpha 0.13.4 (experimental) · 27/11/2026
+
+- Baús: as chances mudaram para Comum 56% · Incomum 24% (Raro 14%, Épico 5% e Lendário 1% seguem iguais). Antes, como só há 5 roupas Incomuns, cada uma (como a Gala Dourada) saía mais que qualquer item Comum: 6% contra 5%. Agora cada Incomum é 4,8% e cada Comum 5,6%.
+- Na loja, na mochila e no baú, cada item mostra quantos % dos jogadores já têm (“Só você tem até agora”, “Ninguém tem ainda”, “3% dos jogadores têm”). Precisa do SQL novo do TELEMETRIA.md (raridade real dos itens).
+- Relatório: auditoria dos baús, com observado × esperado por item, o primeiro baú de cada jogador e o z-score quando há amostra suficiente.
+
 ## Alpha 0.13.3 (experimental) · 27/11/2026
 
 - Amigo da Comunidade: quem atinge o critério estatístico da análise (≥ 3 lutas concluídas, ≥ 40 decisões e confiança ≥ 60%, o mesmo cálculo do relatório) ganha um convite no menu principal para uma pesquisa de 4 perguntas rápidas: o que fazer primeiro (PvP, Co-op ou História), o que mais prendeu, o que faria jogar mais e um recado opcional pro GM.
