@@ -6,6 +6,11 @@ Teste o potencial de Afrodite contra Hefesto em mais uma provação enviada por 
 
 ## Últimas atualizações
 
+**Alpha 0.11.41 (experimental) · 26/11/2026**
+
+- A pomba também anuncia itens lendários comprados na loja (“adquiriu o item lendário”).
+- Na loja, o botão “Tirar” virou “Usar o visual padrão”, com o aviso de que o item continua seu.
+
 **Alpha 0.11.40 (experimental) · 26/11/2026**
 
 - A loja de cada jogador é diferente, e a raridade dos itens segue a mesma chance do baú (lendário na loja é tão raro quanto no baú).
@@ -23,11 +28,6 @@ Teste o potencial de Afrodite contra Hefesto em mais uma provação enviada por 
 - Corrigido: frases e diálogos agora aparecem com minúsculas de verdade (fonte Marcellus) também dentro da luta.
 - Sons de acerto agora sobem (acorde maior) e os de erro descem, ainda graves, para o acerto soar como acerto.
 - Nova fala de Hefesto sobre a inveja das deusas.
-
-**Alpha 0.11.37 (experimental) · 26/11/2026**
-
-- Rankings explicados: passe o mouse (ou o cursor do controle) numa aba ou no Hall da Fama da tela inicial para ver o que ela mede.
-- Controle: nos golpes de desviar, apertar ○ (B no Xbox) no “AGORA!” já desvia para a casa segura, sem precisar segurar e escolher a direção antes.
 
 ## Controles
 | | PC | Controle |

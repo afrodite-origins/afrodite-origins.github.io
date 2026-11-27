@@ -1,5 +1,10 @@
 # Últimas atualizações
 
+## Alpha 0.11.41 (experimental) · 26/11/2026
+
+- A pomba também anuncia itens lendários comprados na loja (“adquiriu o item lendário”).
+- Na loja, o botão “Tirar” virou “Usar o visual padrão”, com o aviso de que o item continua seu.
+
 ## Alpha 0.11.40 (experimental) · 26/11/2026
 
 - A loja de cada jogador é diferente, e a raridade dos itens segue a mesma chance do baú (lendário na loja é tão raro quanto no baú).

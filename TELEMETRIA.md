@@ -164,7 +164,8 @@ A tela inicial mostra uma pomba anunciando quem conseguiu um item lendário. Ela
 ```sql
 -- Afrodite Origins: anúncio dos itens lendários na tela inicial (a pomba)
 -- Rode no Supabase: SQL Editor → New query → cole tudo → Run.
--- Devolve só apelido, nome do item, classe e horário dos lendários novos dos últimos 14 dias.
+-- Devolve só apelido, nome do item, classe e horário dos lendários novos (do baú ou comprados na loja) dos últimos 14 dias.
+-- Versão 2 (0.11.41): também conta os lendários comprados na loja. Pode rodar por cima da anterior.
 create or replace function public.afrodite_lendarios()
 returns table(nick text, item text, cls text, at timestamptz)
 language sql stable security definer set search_path = public as $$
@@ -174,7 +175,7 @@ language sql stable security definer set search_path = public as $$
          s.started_at::timestamptz + coalesce((e ->> 't')::numeric, 0) * interval '1 second' as at
   from public.afrodite_sessions s,
        jsonb_array_elements(coalesce(s.events, s.screens -> '_events', '[]'::jsonb)) e
-  where e ->> 'e' = 'bau_abriu'
+  where e ->> 'e' in ('bau_abriu', 'loja_comprou')
     and e ->> 'r' = 'lendario'
     and coalesce((e ->> 'dup')::boolean, false) = false
     and s.updated_at > now() - interval '14 days'
