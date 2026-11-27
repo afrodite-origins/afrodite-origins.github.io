@@ -1,5 +1,9 @@
 # Últimas atualizações
 
+## Alpha 0.11.36 (experimental) · 26/11/2026
+
+- Sons das reações e da conjuração mais graves, com tambores e metais baixos, para combinar com a música épica da luta.
+
 ## Alpha 0.11.35 (experimental) · 26/11/2026
 
 - Diálogos, cenas e descrições agora usam a fonte Marcellus, que tem minúsculas de verdade e o mesmo ar clássico; títulos e botões continuam em Cinzel.

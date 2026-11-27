@@ -6,6 +6,10 @@ Teste o potencial de Afrodite contra Hefesto em mais uma provação enviada por 
 
 ## Últimas atualizações
 
+**Alpha 0.11.36 (experimental) · 26/11/2026**
+
+- Sons das reações e da conjuração mais graves, com tambores e metais baixos, para combinar com a música épica da luta.
+
 **Alpha 0.11.35 (experimental) · 26/11/2026**
 
 - Diálogos, cenas e descrições agora usam a fonte Marcellus, que tem minúsculas de verdade e o mesmo ar clássico; títulos e botões continuam em Cinzel.
@@ -24,11 +28,6 @@ Teste o potencial de Afrodite contra Hefesto em mais uma provação enviada por 
 - Na tela final dá para escolher “Menu principal” pelo controle.
 - Controle: R3 liga um cursor no analógico direito para passar por cima de Hefesto e do tabuleiro.
 - Passar o cursor em Hefesto mostra até onde ele pode andar no próximo turno.
-
-**Alpha 0.11.32 (experimental) · 26/11/2026**
-
-- Corrigido: a Paladina travava o jogo ao abrir o menu de ações (descrição da troca de postura).
-- A tela “O jogo travou?” e o termo inicial agora funcionam com o controle.
 
 ## Controles
 | | PC | Controle |
