@@ -6,6 +6,11 @@ Teste o potencial de Afrodite contra Hefesto em mais uma provação enviada por 
 
 ## Últimas atualizações
 
+**Alpha 0.11.40 (experimental) · 26/11/2026**
+
+- A loja de cada jogador é diferente, e a raridade dos itens segue a mesma chance do baú (lendário na loja é tão raro quanto no baú).
+- Na tela inicial, de vez em quando passa uma pomba anunciando quem conseguiu um item lendário nos últimos dias.
+
 **Alpha 0.11.39 (experimental) · 26/11/2026**
 
 - Corrigido: pular a cena do nascimento de Afrodite não trava mais.
@@ -23,10 +28,6 @@ Teste o potencial de Afrodite contra Hefesto em mais uma provação enviada por 
 
 - Rankings explicados: passe o mouse (ou o cursor do controle) numa aba ou no Hall da Fama da tela inicial para ver o que ela mede.
 - Controle: nos golpes de desviar, apertar ○ (B no Xbox) no “AGORA!” já desvia para a casa segura, sem precisar segurar e escolher a direção antes.
-
-**Alpha 0.11.36 (experimental) · 26/11/2026**
-
-- Sons das reações e da conjuração mais graves, com tambores e metais baixos, para combinar com a música épica da luta.
 
 ## Controles
 | | PC | Controle |

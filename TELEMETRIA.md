@@ -156,3 +156,31 @@ notify pgrst, 'reload schema';
 Se o relatório mostrar o aviso amarelo *"o relatório ainda está aberto"*, o SQL novo ainda não foi rodado.
 
 Chaves em `analytics-config.js`: URL da API do projeto (`https://SEU-PROJETO.supabase.co`) e a *publishable key*. Nunca coloque a *secret key* nem a senha do banco no site. Sem as chaves, os dados ficam só no navegador de cada jogador.
+
+## Pomba dos itens lendários (versão 0.11.40)
+
+A tela inicial mostra uma pomba anunciando quem conseguiu um item lendário. Ela lê só apelido, item, classe e horário por esta função (o resto das sessões continua só para GM):
+
+```sql
+-- Afrodite Origins: anúncio dos itens lendários na tela inicial (a pomba)
+-- Rode no Supabase: SQL Editor → New query → cole tudo → Run.
+-- Devolve só apelido, nome do item, classe e horário dos lendários novos dos últimos 14 dias.
+create or replace function public.afrodite_lendarios()
+returns table(nick text, item text, cls text, at timestamptz)
+language sql stable security definer set search_path = public as $$
+  select coalesce(nullif(trim(s.nick), ''), 'Alguém') as nick,
+         coalesce(e ->> 'n', e ->> 'id') as item,
+         e ->> 'cls' as cls,
+         s.started_at::timestamptz + coalesce((e ->> 't')::numeric, 0) * interval '1 second' as at
+  from public.afrodite_sessions s,
+       jsonb_array_elements(coalesce(s.events, s.screens -> '_events', '[]'::jsonb)) e
+  where e ->> 'e' = 'bau_abriu'
+    and e ->> 'r' = 'lendario'
+    and coalesce((e ->> 'dup')::boolean, false) = false
+    and s.updated_at > now() - interval '14 days'
+  order by at desc
+  limit 10
+$$;
+revoke all on function public.afrodite_lendarios() from public;
+grant execute on function public.afrodite_lendarios() to anon, authenticated;
+```

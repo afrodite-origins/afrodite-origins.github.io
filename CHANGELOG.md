@@ -1,5 +1,10 @@
 # Últimas atualizações
 
+## Alpha 0.11.40 (experimental) · 26/11/2026
+
+- A loja de cada jogador é diferente, e a raridade dos itens segue a mesma chance do baú (lendário na loja é tão raro quanto no baú).
+- Na tela inicial, de vez em quando passa uma pomba anunciando quem conseguiu um item lendário nos últimos dias.
+
 ## Alpha 0.11.39 (experimental) · 26/11/2026
 
 - Corrigido: pular a cena do nascimento de Afrodite não trava mais.
