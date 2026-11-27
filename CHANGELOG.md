@@ -1,5 +1,11 @@
 # Últimas atualizações
 
+## Alpha 0.11.38 (experimental) · 26/11/2026
+
+- Corrigido: frases e diálogos agora aparecem com minúsculas de verdade (fonte Marcellus) também dentro da luta.
+- Sons de acerto agora sobem (acorde maior) e os de erro descem, ainda graves, para o acerto soar como acerto.
+- Nova fala de Hefesto sobre a inveja das deusas.
+
 ## Alpha 0.11.37 (experimental) · 26/11/2026
 
 - Rankings explicados: passe o mouse (ou o cursor do controle) numa aba ou no Hall da Fama da tela inicial para ver o que ela mede.
