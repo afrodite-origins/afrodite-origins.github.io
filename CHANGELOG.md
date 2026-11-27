@@ -1,5 +1,14 @@
 # Últimas atualizações
 
+## Alpha 0.14.0 (experimental) · 27/11/2026
+
+- Ranking Afrodisíaco (1ª Temporada): um passe de temporada infinito, separado por classe, que só sobe com vitórias. Vitória manual vale 1; no automático, 4 vitórias valem 1. Libera com 2 vitórias manuais ou 4 lutas no automático, com um minitutorial que abre sozinho e pode ser revisto a qualquer momento.
+- Escada: Madeira, Ferro, Bronze, Prata, Ouro, Platina, Diamante, Esmeralda, Cristal, Celestial e Imortal, cada um com as divisões 4, 3, 2 e 1. Começa na Madeira 4 com 2 vitórias na classe e chega à Lenda com 230. Os primeiros degraus custam 2 a 3 vitórias; os do topo, 6 a 8. Depois da Lenda, o passe continua sem fim: um degrau a cada 12 vitórias, com baú e moedas (e prêmio dobrado a cada 5).
+- Tela nova no menu principal (botão Afrodisíaco): escolha da classe, elo atual, vitórias, barra até o próximo degrau, o próximo salto e o Hefesto que espera por você, e a trilha de degraus (Concluído, Atual, Próximo, Bloqueado, Ciclo infinito) com as recompensas e o botão Resgatar. Tocar numa recompensa mostra o que é, a origem e o botão Equipar/Desequipar.
+- Prêmios da 1ª Temporada: cor do nome e moldura do nome a cada elo (aparecem no ranking, no perfil e em combate), moldura do perfil (também na borda do botão Perfil), 6 animações rápidas de início de round, moedas e baús. Tudo se equipa e se tira no passe ou no Perfil, sem mexer em arma, escudo, arco, Gorrinho ou aura.
+- Promoção: a cada divisão ou elo novo, inclusive nos ciclos da Lenda, aparece um aviso curto no topo com o elo, o prêmio e o próximo Hefesto, sem travar o jogo.
+- Hefesto evolutivo: ele muda de material a cada elo (Madeira, Ferro, Bronze… até Lenda), com o nome no chão. Fica até 33% mais resistente, até 28% mais forte e reage mais rápido, e ganha ataques novos: Jato de Fole em Cruz (Bronze), Tenaz Dupla (Ouro), Martelo do Fim já na fase 1 (Diamante), sequências da fase 2 desde o começo (Cristal) e passo extra na fase 2 (Imortal). Na divisão 1 de cada elo você já enfrenta o Hefesto do próximo.
+
 ## Alpha 0.13.4 (experimental) · 27/11/2026
 
 - Baús: as chances mudaram para Comum 56% · Incomum 24% (Raro 14%, Épico 5% e Lendário 1% seguem iguais). Antes, como só há 5 roupas Incomuns, cada uma (como a Gala Dourada) saía mais que qualquer item Comum: 6% contra 5%. Agora cada Incomum é 4,8% e cada Comum 5,6%.
