@@ -368,3 +368,82 @@ notify pgrst, 'reload schema';
 **Entrar com Google (opcional):**
 7. No **Google Cloud Console** → APIs e serviços → Credenciais → Criar credenciais → **ID do cliente OAuth** → tipo **Aplicativo da Web**. Em **URIs de redirecionamento autorizados**, cole `https://hmbsiwpqxeketyamsbsq.supabase.co/auth/v1/callback`. Configure a tela de consentimento com o nome do jogo.
 8. No Supabase, **Authentication → Sign In / Providers → Google**: ligue, cole o **Client ID** e o **Client Secret** e salve. O botão "Entrar com Google" aparece sozinho no jogo.
+
+## Correio do GM e apelidos únicos (versão 0.15.1)
+
+Cria o **Correio** (cartas do GM com presente, enviadas pelo relatório) e a checagem de **apelido em uso**. Rode uma vez no **SQL Editor** (pode rodar de novo sem problema). Precisa da parte "Contas dos jogadores (versão 0.15.0)" já rodada.
+
+```sql
+-- Afrodite Origins · correio do GM e apelidos (pode rodar quantas vezes quiser)
+
+-- 1) cartas
+create table if not exists public.afrodite_correio (
+  id bigserial primary key
+);
+alter table public.afrodite_correio
+  add column if not exists vid text,
+  add column if not exists nick text,
+  add column if not exists de text default 'Zac · GM',
+  add column if not exists titulo text,
+  add column if not exists texto text,
+  add column if not exists premio jsonb,
+  add column if not exists motivo text,
+  add column if not exists created_at timestamptz default now(),
+  add column if not exists lida_em timestamptz,
+  add column if not exists resgatada_em timestamptz;
+create index if not exists afrodite_correio_vid on public.afrodite_correio (vid);
+alter table public.afrodite_correio enable row level security;
+drop policy if exists "gm tudo" on public.afrodite_correio;
+create policy "gm tudo" on public.afrodite_correio for all to authenticated
+  using (public.afrodite_is_gm()) with check (public.afrodite_is_gm());
+revoke all on public.afrodite_correio from anon;
+grant select, insert, update, delete on public.afrodite_correio to authenticated;
+grant usage, select on sequence public.afrodite_correio_id_seq to authenticated;
+
+-- 2) o jogo busca as cartas do aparelho (e, com login, de todos os aparelhos da conta)
+create or replace function public.afrodite_correio_get(p_vid text)
+returns table(id bigint, de text, titulo text, texto text, premio jsonb, created_at timestamptz)
+language sql stable security definer set search_path = public as $$
+  select c.id, c.de, c.titulo, c.texto, c.premio, c.created_at
+  from public.afrodite_correio c
+  where c.vid = p_vid
+     or (auth.uid() is not null and exists (
+          select 1 from public.afrodite_contas a where a.user_id = auth.uid() and c.vid = any(a.vids)))
+  order by c.created_at desc
+  limit 50
+$$;
+
+-- 3) marca lida / resgatada (para o relatório)
+create or replace function public.afrodite_correio_marcar(p_id bigint, p_vid text, p_acao text)
+returns void language sql security definer set search_path = public as $$
+  update public.afrodite_correio set
+    lida_em = coalesce(lida_em, now()),
+    resgatada_em = case when p_acao = 'resgatada' then coalesce(resgatada_em, now()) else resgatada_em end
+  where id = p_id and (vid = p_vid or exists (
+    select 1 from public.afrodite_contas a where a.user_id = auth.uid() and afrodite_correio.vid = any(a.vids)))
+$$;
+
+-- 4) apelido em uso? conta = já é de outra conta; sessao = outro aparelho já usou
+create or replace function public.afrodite_nick_livre(p_nick text, p_vid text)
+returns jsonb language sql stable security definer set search_path = public as $$
+  with n as (select lower(trim(p_nick)) as v),
+  mine as (select coalesce((select vids from public.afrodite_contas where user_id = auth.uid()), '{}'::text[]) as vids)
+  select jsonb_build_object(
+    'conta', exists (select 1 from public.afrodite_contas a, n
+                     where lower(trim(a.nick)) = n.v and a.user_id is distinct from auth.uid()),
+    'sessao', exists (select 1 from public.afrodite_sessions s, n, mine
+                      where lower(trim(s.nick)) = n.v and s.visitor_id is distinct from p_vid
+                        and not (s.visitor_id = any(mine.vids)))
+  )
+$$;
+
+revoke all on function public.afrodite_correio_get(text) from public;
+revoke all on function public.afrodite_correio_marcar(bigint, text, text) from public;
+revoke all on function public.afrodite_nick_livre(text, text) from public;
+grant execute on function public.afrodite_correio_get(text) to anon, authenticated;
+grant execute on function public.afrodite_correio_marcar(bigint, text, text) to anon, authenticated;
+grant execute on function public.afrodite_nick_livre(text, text) to anon, authenticated;
+notify pgrst, 'reload schema';
+```
+
+As cartas dos relatos corrigidos na 0.14.1 (jefferson12, veela Selvagem, Encanto Doce e Romance Sem Volta) já vêm dentro do jogo e chegam mesmo sem este SQL.

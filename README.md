@@ -6,6 +6,14 @@ Teste o potencial de Afrodite contra Hefesto em mais uma provação enviada por 
 
 ## Últimas atualizações
 
+**Alpha 0.15.1 (experimental) · 27/11/2026**
+
+- Correio: nova aba ao lado de Loja e Mochila, com cartas do GM e presentes para resgatar. Quando chega carta nova, aparece um aviso no menu principal e um ponto no botão Loja e Mochila.
+- Primeiras cartas: quem relatou os bugs corrigidos na 0.14.1 recebe um aviso do GM. jefferson12 e veela Selvagem ganham as Asas do Caçador de Bugs (Exclusivo), 300 moedas e 2 baús. Encanto Doce e Romance Sem Volta, que tiveram erros automáticos corrigidos, ganham 200 moedas e 1 baú.
+- Novo item exclusivo: Asas do Caçador de Bugs, para quem tiver um bug relatado e corrigido pelo GM.
+- Apelido: ao digitar, o jogo confere se o apelido está livre. Apelido de outra conta não pode ser usado; se outro jogador já usou, o jogo avisa, sugere opções e pede para tocar em JOGAR de novo se quiser usar mesmo assim.
+- Relatório: bloco Correio do GM para mandar cartas com moedas, baús e itens exclusivos, com a lista de cartas enviadas (lida, resgatada). Nos Bugs reportados, o botão Carta já preenche a carta de bug corrigido para aquele jogador.
+
 **Alpha 0.15.0 (experimental) · 27/11/2026**
 
 - Conta do jogador: dá para criar conta com e-mail e senha (ou entrar com Google, quando estiver ligado no Supabase) e continuar o progresso em qualquer celular ou PC. Moedas, itens, visuais equipados, maestria, conquistas, Ranking Afrodisíaco e apelido ficam salvos na nuvem.
