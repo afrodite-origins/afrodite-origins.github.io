@@ -447,3 +447,27 @@ notify pgrst, 'reload schema';
 ```
 
 As cartas dos relatos corrigidos na 0.14.1 (jefferson12, veela Selvagem, Encanto Doce e Romance Sem Volta) já vêm dentro do jogo e chegam mesmo sem este SQL.
+
+## Ranking do Cassino de Pandora (versão 0.17.0)
+
+O jogo já salva os recordes do cassino de cada jogador (lucro acumulado, maior aposta vencida, maior sequência). Este SQL liga o **placar geral** do Ranking do Cassino. Sem ele, cada jogador vê só os próprios recordes. Rode uma vez no **SQL Editor** (pode rodar de novo sem problema).
+
+```sql
+-- Afrodite Origins · ranking do cassino (pode rodar quantas vezes quiser)
+create or replace function public.afrodite_cassino_ranking()
+returns table(visitor_id text, nick text, lucro int, maxbet int, seq int, saldo int, apostas int)
+language sql stable security definer set search_path = public as $$
+  select distinct on (s.visitor_id) s.visitor_id, s.nick,
+    coalesce((s.screens -> '_cas' ->> 'net')::numeric, 0)::int,
+    coalesce((s.screens -> '_cas' ->> 'mbw')::numeric, 0)::int,
+    coalesce((s.screens -> '_cas' ->> 'bs')::numeric, 0)::int,
+    coalesce((s.screens -> '_cas' ->> 'sm')::numeric, 0)::int,
+    coalesce((s.screens -> '_cas' ->> 'n')::numeric, 0)::int
+  from public.afrodite_sessions s
+  where s.visitor_id is not null and s.screens ? '_cas'
+  order by s.visitor_id, s.updated_at desc nulls last
+$$;
+revoke all on function public.afrodite_cassino_ranking() from public;
+grant execute on function public.afrodite_cassino_ranking() to anon, authenticated;
+notify pgrst, 'reload schema';
+```

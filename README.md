@@ -6,6 +6,17 @@ Teste o potencial de Afrodite contra Hefesto em mais uma provação enviada por 
 
 ## Últimas atualizações
 
+**Alpha 0.17.0 (experimental) · 28/11/2026**
+
+- Cassino de Pandora: nova área sem lutas, com entrada própria no menu principal. É um alívio cômico com a Caixa de Pandora ao centro: aposte moedinhas para ganhar mais moedinhas ou baús, com Afrodite debochando a cada rodada.
+- Cena de entrada curta (Afrodite apresenta o cassino), com Avançar, Pular cena e "não mostrar de novo".
+- Roleta de Pandora: 24 números (Rosa e Ônix) e a casa verde da Caixa de Pandora. Apostas em cor, par/ímpar, faixa (1 a 8, 9 a 16, 17 a 24) ou na própria Caixa (paga 20× e pode soltar baú). O giro desacelera até parar.
+- Tigrinho da Afrodite: caça-níquel de 3 rolos com Moeda, Rosa, Cinto, Baú, Caixa de Pandora e o Tigrinho, que é curinga (dobra o prêmio) e paga 100× quando vem triplo. Os rolos param um de cada vez.
+- Flap Jack: 21 rápido com Pedir, Parar e Dobrar. A banca compra até 17, vitória paga 2×, Flap Jack (21 com 2 cartas) paga 2,5× e empate devolve.
+- Economia controlada: aposta de 1 a 50 moedinhas por rodada (nunca mais que o saldo), a casa tem uma leve vantagem e o cassino dá no máximo 2 baús por dia (o contador aparece no topo; depois disso o baú vira 5 moedinhas). Quem chega zerada ganha 5 moedinhas de consolo uma vez por dia.
+- Ranking do Cassino, separado do Ranking Afrodisíaco: lucro acumulado, saldo máximo, maior aposta vencida, maior prêmio, maior sequência de vitórias e placar geral (depois do SQL novo do TELEMETRIA.md).
+- Tudo fica salvo junto com o progresso (e vai com a conta). Funciona no toque, no mouse e no controle; o botão Sair e o voltar do celular fecham o cassino.
+
 **Alpha 0.16.1 (experimental) · 28/11/2026**
 
 - Relatório · Observar: nova visão Animada (padrão), que remonta a luta com os desenhos do próprio jogo: a classe e o visual equipado do jogador, o Hefesto do elo dele, o aliado (ninfa, diabrete ou falcão), fogo, bigornas, área do golpe e acertos. Fica uns 10 a 15 segundos atrasada, como uma novelinha. A visão Esquema antiga continua num botão ao lado.
