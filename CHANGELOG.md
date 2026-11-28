@@ -1,5 +1,12 @@
 # Últimas atualizações
 
+## Alpha 0.17.1 (experimental) · 28/11/2026
+
+- Cartaz de Novidades: depois de cada atualização, o menu principal mostra sozinho (uma vez) um cartaz com a grande novidade e um botão para ir direto até ela. Embaixo vem o resumo do que mudou e as atualizações anteriores. O cartaz fica sempre no botão Novidades, no topo do menu (com ponto verde enquanto há novidade não vista), no aviso "Última atualização há…" e em Configurações › Últimas atualizações. A lista de atualizações do jogo foi posta em dia até esta versão.
+- Relatório · Observar: agora dá para acompanhar o jogador dentro do Cassino de Pandora. Na visão Animada, a roleta girando, os rolos do Tigrinho e as cartas do Flap Jack aparecem com os desenhos do jogo, junto com o jogo, a aposta, o saldo e as falas da Afrodite. Nas Decisões aparece cada aposta (jogo, valor, onde apostou e se ganhou ou perdeu).
+- Relatório · Big Five: nova matriz que correlaciona o comportamento no cassino (apetite ao risco, perseguir perdas, busca de prêmio alto, impulsividade, ousadia no 21 e volume de apostas) com os traços OCEAN. Só entram jogadores que passaram no critério estatístico da análise e fizeram pelo menos 10 apostas.
+- O jogo passa a registrar o tempo entre as apostas e as cartas pedidas no Flap Jack, para essa análise.
+
 ## Alpha 0.17.0 (experimental) · 28/11/2026
 
 - Cassino de Pandora: nova área sem lutas, com entrada própria no menu principal. É um alívio cômico com a Caixa de Pandora ao centro: aposte moedinhas para ganhar mais moedinhas ou baús, com Afrodite debochando a cada rodada.
