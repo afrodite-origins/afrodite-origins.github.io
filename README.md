@@ -6,6 +6,13 @@ Teste o potencial de Afrodite contra Hefesto em mais uma provação enviada por 
 
 ## Últimas atualizações
 
+**Alpha 0.18.4 (experimental) · 28/11/2026**
+
+- Classe personalizada: não dá mais para ir à luta com menos de 3 habilidades. O botão mostra “Escolha mais X habilidade(s)” e, se tocado, explica o que falta. Na etapa de características, também é preciso gastar todos os pontos de atributo antes de seguir.
+- Mudança de Postura na classe personalizada: continua grátis (não ocupa um dos 3 espaços) e aparece quando a build tem qualquer habilidade da Paladina; a árvore agora avisa isso com “+ Mudança de Postura (brinde)”.
+- Fora do alcance: ao escolher Arma ou uma habilidade que não alcança Hefesto (ou mirar uma casa longe demais), se houver PM o jogo pergunta “Gastar X PM para andar até o alcance e já usar…?”. Confirmando, Afrodite anda pelo caminho mais curto (evitando o fogo quando possível) e usa a ação. Não aparece quando você está colada em Hefesto (aí sair exige o teste de fuga), nem no automático ou no tutorial guiado.
+- Baús: depois de abrir um baú, o botão “Abrir outro” usa o próximo baú da mochila; sem baús, vira “Abrir outro por 15 moedinhas” e pede confirmação antes de gastar.
+
 **Alpha 0.18.3 (experimental) · 28/11/2026**
 
 - Novidades: a tela inicial agora tem só um botão discreto, “Confira as últimas atualizações”, com um ponto verde de novidade que some quando o jogador abre. O cartaz não abre mais sozinho em lugar nenhum. O painel foi refeito: no topo, os dois grandes conteúdos novos (Cassino de Pandora e Mar de Caronte, com botão para ir direto ou o aviso de como liberar); embaixo, “Também mudou”, agrupado em Ranking e progresso, Equilíbrio do cassino, Interface e Correções; no fim, o histórico completo.
