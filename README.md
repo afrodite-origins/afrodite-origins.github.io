@@ -6,6 +6,15 @@ Teste o potencial de Afrodite contra Hefesto em mais uma provação enviada por 
 
 ## Últimas atualizações
 
+**Alpha 0.18.1 (experimental) · 28/11/2026**
+
+- Menu principal: o Mar de Caronte e o Cassino de Pandora entram no lugar do Caminho para o Olimpo e do Coliseu, como os dois locais ao lado da Forja. Um toque entra direto; Caronte mostra o cadeado até a primeira vitória contra Hefesto.
+- Tela do apelido: botões Criar conta e Entrar na minha conta (ou Minha conta, já conectado), com área de toque grande no celular.
+- Ranking: o ranking antigo (Vitórias, DPS, Intocável, Automático) saiu. O botão Ranking agora abre o Ranking Afrodisíaco por classe, com o elo de cada jogador, sua colocação, quantas vitórias faltam para o próximo degrau e um atalho para as recompensas do passe. O passe ganhou o botão Colocação e mostra sua posição em cada classe. Não precisa de SQL novo: o elo dos outros jogadores é calculado das vitórias já registradas.
+- Pomba: em vez de anunciar item lendário, parabeniza quem lidera cada classe (de Bronze para cima) e quem passou de Diamante. Agora aparece também no menu novo, discreta no topo.
+- Cassino mais enxuto: cabeçalho curto, abas Roleta / Tigrinho / Flap Jack, falas só em prêmio grande, baú e Flap Jack, e as tabelas de pagamento saíram da tela. Mini tutorial de cada jogo na primeira vez, que reabre no botão ?.
+- Cartaz de Novidades do Ranking Afrodisíaco.
+
 **Alpha 0.18.0 (experimental) · 28/11/2026**
 
 - O Mar de Caronte: chefe novo em mar aberto, com entrada própria no menu principal. Fica liberado depois de vencer Hefesto ao menos uma vez e não mexe na luta da Forja nem nos rankings.
