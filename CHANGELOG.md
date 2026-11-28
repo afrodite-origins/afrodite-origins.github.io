@@ -1,5 +1,16 @@
 # Últimas atualizações
 
+## Alpha 0.18.3 (experimental) · 28/11/2026
+
+- Novidades: a tela inicial agora tem só um botão discreto, “Confira as últimas atualizações”, com um ponto verde de novidade que some quando o jogador abre. O cartaz não abre mais sozinho em lugar nenhum. O painel foi refeito: no topo, os dois grandes conteúdos novos (Cassino de Pandora e Mar de Caronte, com botão para ir direto ou o aviso de como liberar); embaixo, “Também mudou”, agrupado em Ranking e progresso, Equilíbrio do cassino, Interface e Correções; no fim, o histórico completo.
+- Cassino: cena de entrada nova em tela cheia (cerca de 27 s, com Pausar e Pular). Afrodite atravessa um parque mágico à noite, prova a flor de lótus, cai na gargalhada e o mundo vira o Cassino de Pandora, onde ela passa pelas mesas, pelos crupiês e pelos convidados (Hermes, Dionísio, Ares, Eco, Narciso e Hebe) até a mesa de Pandora. Passa uma vez; dá para rever pelo botão ? do cassino.
+- Roleta: duas casas mágicas (roxas, com fechadura). Quando a bola cai nelas (cerca de 3,5% das rodadas), a crupiê vai até a roda, vira a roleta e o verso (relógio do País das Maravilhas) gira com prêmios raros: Chá Frio, Devolve, ×2, ×3, ×5, Baú e ×10.
+- Selos de prêmio pelo quanto voltou da aposta: Prêmio (até 2×), Prêmio Bom (2×), Top (4×), Épico (8×) e Lendário (20× ou mais), com brilho e som crescentes.
+- Cenas raras: Verso da Roleta, Tigrinho Solto, Caixa de Pandora aberta, Flap Jack na mão e Prêmio Lendário. A primeira vez de cada uma avisa “cena rara desbloqueada” e o contador ✦ fica no topo do cassino.
+- Equilíbrio do cassino (simulado): o retorno médio fica perto de 1 para 1, então o jogador ganha e perde o tempo todo e sai perto do empate. Tigrinho: Moeda 2×, Rosa 3×, Cinto 5×, Baú 8×, Pandora 15×; duas moedas devolvem a aposta; o bônus sai em ~3% dos giros (antes ~5,5%) e as rodadas grátis podem não pagar, com a última valendo ×2. Roleta: apostas de 2× acertam ~49%, de 3× ~33% e a Caixa de Pandora ~5%. Flap Jack com bem menos empurrão para o jogador. Quase-acertos aparecem como “Por um triz!” e “Por pouco!”.
+- Flap Jack: ao apostar, a personagem do jogador entra andando e senta no banquinho; quando sai da mesa, levanta e vai embora.
+- Observar no relatório: mostra a cena de entrada, a roleta virando e os novos eventos (selos e cenas raras).
+
 ## Alpha 0.18.2 (experimental) · 28/11/2026
 
 - Roleta ao vivo: Pandora é a crupiê (desenho próprio) e a roleta gira sem parar, em rodadas de apostas abertas (12 s), encerradas, giro e resultado. Dá para só assistir, entrar na rodada atual ou tocar em Entrar na próxima. Aparecem o AO VIVO com quantos estão assistindo, as fichas e apostas de outros jogadores da mesa, o relógio da rodada e o histórico. A aposta continua valendo se você trocar de jogo, e o resultado chega num aviso.
