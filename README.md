@@ -6,6 +6,15 @@ Teste o potencial de Afrodite contra Hefesto em mais uma provação enviada por 
 
 ## Últimas atualizações
 
+**Alpha 0.16.0 (experimental) · 27/11/2026**
+
+- Tutorial guiado no celular (primeira luta): a tela escurece e só a área destacada aceita toque, com um dedinho mostrando onde tocar. Passo a passo: andar até perto de Hefesto, atacar com a arma quando ele estiver no alcance e passar o turno quando não der para atacar. Nada de combos de habilidade: só o ciclo básico de aproximar, bater e reagir. O relógio do turno fica parado enquanto o tutorial guia, e o botão Pular tutorial fica sempre visível.
+- Primeiro ataque de Hefesto (celular): o golpe vem em câmera lenta e um aviso pede para esperar a nota descer até o anel. Toques adiantados não gastam a reação: o jogo só avisa "Calma! Espere a nota chegar".
+- Botão Voltar grande, no canto de baixo à esquerda (alcance do polegar), na escolha de classe e em todas as janelas (loja, mochila, correio, perfil, ranking, Ranking Afrodisíaco, conta, painel de habilidades). O botão voltar do celular também funciona: fecha a janela aberta, volta ao menu principal e, na luta, pausa.
+- Tela cheia e minimizar: ao voltar para o jogo (depois de minimizar, sair da tela cheia ou girar o celular), a tela, o zoom e o botão de tela cheia se realinham sozinhos.
+- Cenas: botão Pausar / Continuar no canto de cima, para ler a história com calma (no teclado, a tecla P). Com a cena pausada, tocar na tela não pula a cena.
+- Classe Personalizada: no celular, Características e Habilidades ficam em telas separadas, com botões maiores e a barra de ações sempre à mão. As habilidades não têm mais pré-requisito: escolha quaisquer 3, de qualquer árvore e em qualquer ordem (remover uma não leva as outras junto).
+
 **Alpha 0.15.1 (experimental) · 27/11/2026**
 
 - Correio: nova aba ao lado de Loja e Mochila, com cartas do GM e presentes para resgatar. Quando chega carta nova, aparece um aviso no menu principal e um ponto no botão Loja e Mochila.
