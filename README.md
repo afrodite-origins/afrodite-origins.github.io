@@ -6,6 +6,18 @@ Teste o potencial de Afrodite contra Hefesto em mais uma provação enviada por 
 
 ## Últimas atualizações
 
+**Alpha 0.18.0 (experimental) · 28/11/2026**
+
+- O Mar de Caronte: chefe novo em mar aberto, com entrada própria no menu principal. Fica liberado depois de vencer Hefesto ao menos uma vez e não mexe na luta da Forja nem nos rankings.
+- Mapa grande de 14 × 8 casas de águas do Estige. As correntezas (setas) empurram quem está em cima no fim da rodada e custam o dobro para nadar contra; as rochas bloqueiam o caminho. Na fase final o mar entra em fúria: as correntezas giram e ondas varrem fileiras inteiras.
+- Pseudo co-op: Eros (Cupido Caçador: Flecha do Desejo, Asas de Resgate e Paixão Ardente) e Psique (Alma Guardiã: Toque da Alma, Véu da Borboleta e Calmaria) lutam ao lado de Afrodite com IA própria. O botão Ordem diz se eles focam Caronte, limpam os esqueletos ou protegem Afrodite. As unidades são modulares (time, habilidades e IA), já pensando num co-op de verdade.
+- Afrodite vai com a classe escolhida (Paladina, Sedutora, Maga ou Malandra): anda uma vez e age uma vez por turno, com ataque ou o especial da classe.
+- Caronte rema longe a cada turno, invoca esqueletos e anuncia nas casas coloridas onde vai bater no próximo turno: Golpe de Remo (aparar), Onda do Estige (pular), Redemoinho (desviar), Moeda do Barqueiro (inevitável, só o véu de Psique protege) e Chamado dos Mortos. Os esqueletos também anunciam a garra. A reação é com anel: aperte quando ele encostar (cedo demais falha).
+- Fases: Fase 1, Fase 2, uma falsa vitória ("…achou que tinha acabado?") e a fase final com Caronte, o Barqueiro Eterno. Vencer dá 60 moedas e 1 baú (a primeira vitória dá 3 baús). Na derrota, dá para tentar de novo do zero.
+- Presente do GM: se o GM estiver observando e tiver armado o presente, ele também vale na vitória contra Caronte. Zac aparece no canto do mapa enquanto observa.
+- Relatório · Observar: dá para acompanhar a batalha contra Caronte na visão Animada (o mapa, os avisos, as unidades e as falas) ou na visão Esquema. As decisões da batalha aparecem na lista.
+- Cartaz de Novidades com o Mar de Caronte, com botão para navegar direto até ele.
+
 **Alpha 0.17.1 (experimental) · 28/11/2026**
 
 - Cartaz de Novidades: depois de cada atualização, o menu principal mostra sozinho (uma vez) um cartaz com a grande novidade e um botão para ir direto até ela. Embaixo vem o resumo do que mudou e as atualizações anteriores. O cartaz fica sempre no botão Novidades, no topo do menu (com ponto verde enquanto há novidade não vista), no aviso "Última atualização há…" e em Configurações › Últimas atualizações. A lista de atualizações do jogo foi posta em dia até esta versão.
