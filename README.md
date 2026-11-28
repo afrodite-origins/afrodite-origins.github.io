@@ -6,6 +6,18 @@ Teste o potencial de Afrodite contra Hefesto em mais uma provação enviada por 
 
 ## Últimas atualizações
 
+**Alpha 0.18.2 (experimental) · 28/11/2026**
+
+- Roleta ao vivo: Pandora é a crupiê (desenho próprio) e a roleta gira sem parar, em rodadas de apostas abertas (12 s), encerradas, giro e resultado. Dá para só assistir, entrar na rodada atual ou tocar em Entrar na próxima. Aparecem o AO VIVO com quantos estão assistindo, as fichas e apostas de outros jogadores da mesa, o relógio da rodada e o histórico. A aposta continua valendo se você trocar de jogo, e o resultado chega num aviso.
+- Flap Jack ao vivo: a crupiê dá as cartas sem parar. Sem aposta, você assiste a mão de outro jogador; com aposta, você senta, tem 15 s para decidir e vê a banca jogar. Cartas animadas saindo do sapato.
+- Tigrinho: bem mais fácil de ganhar (cerca de metade dos giros paga algo). Novos pagamentos: Moeda 2×, Rosa 3×, Cinto 4×, Baú 6× (+ baú), Pandora 10×, Tigrinho 20×. Três Tigrinhos soltam o Bônus Tigrinho Solto: tela de abertura com raios, fanfarra e chuva de moedas, 5 rodadas grátis que sempre pagam (multiplicador ×1, ×1, ×2, ×2, ×3) e uma contagem final do ganho.
+- Espetáculo do Tigrinho: barra Calor do Tigrinho que esquenta, olhos dos tigres acesos e suspense no 3º rolo (desacelera, rufar de tambor e brilho) quando aparecem Tigrinhos nos dois primeiros. É só cena: o resultado é sorteado antes de girar.
+- Roleta e Flap Jack pagam mais vezes: quem aposta acerta cerca de 60% nas apostas de 2×, 45% nas de 3× e 15% na Caixa de Pandora; no Flap Jack vêm mais mãos boas e a banca estoura mais.
+- Mini tutoriais reescritos para as versões ao vivo (aparecem de novo uma vez).
+- Observar no relatório: a roleta, a mesa e o bônus aparecem como o jogador vê, com a crupiê e as falas.
+- Tela de escolha do aparelho: o cartaz da última novidade aparece logo ali, e abre o cartaz completo.
+- O aviso de “Última atualização há…” usava uma data fixa antiga; agora usa a data em que o site foi publicado.
+
 **Alpha 0.18.1 (experimental) · 28/11/2026**
 
 - Menu principal: o Mar de Caronte e o Cassino de Pandora entram no lugar do Caminho para o Olimpo e do Coliseu, como os dois locais ao lado da Forja. Um toque entra direto; Caronte mostra o cadeado até a primeira vitória contra Hefesto.
