@@ -2219,8 +2219,8 @@ function drawSKA(){if(!S.ska||!S.ska.length)return;S.ska=S.ska.filter(v=>S.t-v.t
 
 /* ---------- v0.9.9: mini tutoriais, reação do boss ao dano, derrota com a prótese ---------- */
 const TUT=(()=>{try{return JSON.parse(localStorage.getItem('afroTut')||'{}')}catch(e){return{}}})();
-function tutOk(k,max=2){return(TUT[k]||0)<max}
-function tutSeen(k){try{TEL.ev('dica',{k})}catch(e){}TUT[k]=(TUT[k]||0)+1;try{localStorage.setItem('afroTut',JSON.stringify(TUT))}catch(e){}}
+function tutOk(k,max=2){if(window.__OBSV)return false;return(TUT[k]||0)<max}
+function tutSeen(k){try{TEL.ev('dica',{k})}catch(e){}TUT[k]=(TUT[k]||0)+1;if(!window.__RENDER)try{localStorage.setItem('afroTut',JSON.stringify(TUT))}catch(e){}}
 function tutBox(x,y,lines,arrow,al=1){window.__NU=1;try{tutBox0(x,y,lines,arrow,al)}finally{window.__NU=0}}
 function tutBox0(x,y,lines,arrow,al=1){g.save();g.globalAlpha=al;g.font='600 13px "EB Garamond",Georgia,serif';const w=Math.max(...lines.map(l=>g.measureText(l).width))+26,h=lines.length*18+14;
  g.fillStyle='rgba(14,10,8,.92)';g.strokeStyle='#c9a24a';g.lineWidth=1;rr(x,y,w,h,4);g.fill();g.stroke();g.fillStyle='#f0e0c0';g.textAlign='left';lines.forEach((l,i)=>g.fillText(l,x+13,y+21+i*18));
@@ -2598,7 +2598,7 @@ function modeChosen(m){setInput(m);beep(600,.05,'triangle',.05);$('modeS').hidde
 /* ---------- v0.10.7: destravar o jogo, voltar ao início do turno, continuar depois de fechar ---------- */
 let LASTFRAME=performance.now(),CRASHED=false,WDSIG='',WDT=performance.now();
 function snapS(){const o={};for(const k in S){const v=S[k];if(k==='q'||typeof v==='function')continue;o[k]=v}return JSON.parse(JSON.stringify(o,(k,v)=>typeof v==='function'||(v&&v.nodeType)?undefined:v))}
-function saveSnap(){try{if(!S||S.over||AUTO)return;localStorage.setItem('afroSave',JSON.stringify({t:Date.now(),ver:VERSION,A:{...A},build:[...build],pickI,snap:snapS()}))}catch(e){}}
+function saveSnap(){try{if(!S||S.over||AUTO||window.__RENDER)return;localStorage.setItem('afroSave',JSON.stringify({t:Date.now(),ver:VERSION,A:{...A},build:[...build],pickI,snap:snapS()}))}catch(e){}}
 function getSave(){try{const sv=JSON.parse(localStorage.getItem('afroSave')||'null');if(!sv||Date.now()-sv.t>6*3600e3)return null;return sv}catch(e){return null}}
 function clearSave(){try{localStorage.removeItem('afroSave')}catch(e){}}
 function restoreSave(sv){sv=sv||getSave();if(!sv)return false;hideRecover();AT.forEach(a=>A[a.k]=sv.A[a.k]||1);build=sv.build.map(x=>x==='masoq'?'diabrete':x==='corte'?'falcao':x).filter(x=>treeOf(x));pickI=sv.pickI||0;ORG_SEEN=true;startFight();
@@ -2935,7 +2935,7 @@ function showConsent(next){CONS_NEXT=next||null;$('consId').textContent=String(T
 /* ---------- pausa ---------- */
 let PAUSED=false,PSEL=0,FREEZE=false,OSEL=0;
 function unfreeze(){if(FREEZE){FREEZE=false;try{last=performance.now()}catch(e){}}}
-function tutShow(key,title,svg,line,sub){if(AUTO||TUT[key]||scr!=='fight')return false;TUT[key]=1;try{localStorage.setItem('afroTut',JSON.stringify(TUT))}catch(e){}FREEZE=true;showModal(title,`<div class="tut"><div class="tutI">${svg}</div><p class="tutL">${line}</p>${sub?`<p class="tutS">${sub}</p>`:''}</div>`,null,'Entendi');$('modal').querySelector('.mbox').classList.add('tutb');try{TEL.ev('tutorial',{k:key})}catch(e){}return true}
+function tutShow(key,title,svg,line,sub){if(AUTO||TUT[key]||scr!=='fight'||window.__OBSV)return false;TUT[key]=1;try{localStorage.setItem('afroTut',JSON.stringify(TUT))}catch(e){}FREEZE=true;showModal(title,`<div class="tut"><div class="tutI">${svg}</div><p class="tutL">${line}</p>${sub?`<p class="tutS">${sub}</p>`:''}</div>`,null,'Entendi');$('modal').querySelector('.mbox').classList.add('tutb');try{TEL.ev('tutorial',{k:key})}catch(e){}return true}
 function gk(letter){return INPUT==='pad'?`<span class="pg" style="--c:${PADC[letter]}">${PADSTYLE==='xbox'?letter:PSMAP[letter]}</span>`:''}
 function cap(t){return`<span class="cap">${t}</span>`}
 const TAP='<svg class="tap" viewBox="0 0 24 24"><path d="M9 11V5.5a1.5 1.5 0 0 1 3 0V10l5.2 1.1a2 2 0 0 1 1.6 2.3l-.9 5.1A2 2 0 0 1 15.9 20H11a2 2 0 0 1-1.6-.8L6 14.6a1.4 1.4 0 0 1 2.1-1.8z" fill="#fff2d8"/></svg>';
@@ -3740,7 +3740,7 @@ function drawReactBtns(){if(S.st!=='enemy'||S.over||AUTO)return;if(INPUT==='touc
 let UIB=[],PADUSE=false,MOUSEUSE=false,OX=0;
 function SIDE(dx,fn){g.save();g.translate(dx,0);const mm=mouse;if(mouse)mouse=[mouse[0]-dx,mouse[1]];try{return fn()}finally{mouse=mm;g.restore()}}
 const L_=fn=>SIDE(-OX,fn),R_=fn=>SIDE(OX,fn);
-function fitCanvas(){const par=cv.parentElement,aw=Math.max(320,(par&&par.clientWidth)||innerWidth),ah=Math.max(200,innerHeight-8),ar=Math.max(1.6,Math.min(2.25,aw/ah)),w=Math.round(600*ar/2)*2;
+function fitCanvas(){if(window.__OBSV){if(cv.width!==1100){cv.width=1100;cv.height=600}OX=70;return}const par=cv.parentElement,aw=Math.max(320,(par&&par.clientWidth)||innerWidth),ah=Math.max(200,innerHeight-8),ar=Math.max(1.6,Math.min(2.25,aw/ah)),w=Math.round(600*ar/2)*2;
  document.documentElement.style.setProperty('--ar',ar.toFixed(4));if(cv.width!==w){cv.width=w;OX=(w-960)/2}}
 addEventListener('resize',()=>setTimeout(fitCanvas,60));addEventListener('orientationchange',()=>setTimeout(fitCanvas,250));document.addEventListener('fullscreenchange',()=>setTimeout(fitCanvas,120));setTimeout(fitCanvas);
 function isFull(){return!!(document.fullscreenElement||document.webkitFullscreenElement)}
@@ -3900,6 +3900,12 @@ function drawOutro(){const C=S.cut,el=C.el;g.setTransform(1,0,0,1,OX,0);g.fillSt
 /* ---------- telemetria leve (localStorage + Supabase opcional via analytics-config.js) ---------- */
 
 /* ===== v0.11.12: observador — retratos compactos da tela, para o relatório "telar" o jogador ===== */
+function obsDev(){const u=navigator.userAgent||'';let os=/Android ([\d.]+)/.exec(u)?'Android '+/Android ([\d.]+)/.exec(u)[1]:/iPhone|iPad|iPod/.test(u)?(/iPad/.test(u)?'iPad':'iPhone')+(/OS (\d+)_/.exec(u)?' iOS '+/OS (\d+)_/.exec(u)[1]:''):/Windows NT/.test(u)?'Windows':/Mac OS X/.test(u)?'Mac':/CrOS/.test(u)?'Chromebook':/Linux/.test(u)?'Linux':'?';
+ const br=/SamsungBrowser/.test(u)?'Samsung Internet':/Edg\//.test(u)?'Edge':/OPR\//.test(u)?'Opera':/Firefox\//.test(u)?'Firefox':/CriOS|Chrome\//.test(u)?'Chrome':/Safari\//.test(u)?'Safari':'navegador';
+ let mdl='';try{const m=/Android [\d.]+; ([^;)]+)/.exec(u);if(m&&m[1]&&m[1].length>1&&m[1]!=='K')mdl=m[1].trim()}catch(e){}
+ return{os,br,mdl,w:screen.width,h:screen.height,in:INPUT,lite:LITE?1:0,full:isFull()?1:0}}
+function obsInfo(){const inF=scr==='fight'&&S,p=PRESETS[pickI]||{},pz=inF?S.pz:p.k,ck=CLS4.includes(pz)?pz:pickCls(),bd=(inF||scr==='build')?build:(p.sk||[]),P0=PF.P||{},bc=(P0.byCls||{})[ck]||{};let raf='';try{const ix=rafIdx(ck);raf=ix>=0?rafName(rafStep(ix)):'';}catch(e){}
+ return{nk:TEL.getNick()||'',v:VERSION,pz,ck,cn:inF?(S.pz==='custom'||!CLS4.includes(S.pz)?'Personalizada':CLSN[S.pz]):(p.n||''),sk:bd.filter(x=>SKL[x]).map(x=>[x,SKL[x].n]),at:{...A},w:P0.wins|0,f:P0.fights|0,wc:bc.w|0,fc:bc.f|0,raf,rafv:(()=>{try{return rafPts(ck)}catch(e){return 0}})(),cos:{...((LOJA.eqc||{})[ck]||{})},cosn:Object.values((LOJA.eqc||{})[ck]||{}).map(id=>{const it=SHOPI(id);return it?[it.n,it.r]:null}).filter(Boolean),hn:inF?S.hname||'':'',dev:obsDev(),co:LOJA.coins|0,it:(LOJA.own||[]).length,acc:(()=>{try{return CONTA.me()?1:0}catch(e){return 0}})()}}
 const OBS=(()=>{const fr=[];let taps=[],keys=[];
  const cell=o=>o?[o.c,o.r]:null;
  function snap(){try{const f={T:Date.now(),s:scr};
@@ -3916,6 +3922,8 @@ const OBS=(()=>{const fr=[];let taps=[],keys=[];
    else if(vis('invP')){f.ui='mochila';f.lj={cl:INV.cls}}
    else if(vis('rankP'))f.ui='ranking';
    if(f.ui)f.co=LOJA.coins|0}catch(e){}
+  if(scr==='fight'&&S&&S.ally)f.al=[S.ally.k,S.ally.c,S.ally.r];if(S&&scr==='fight'&&S.stance)f.sn=S.stance;
+  if((OBS._n=(OBS._n||0)+1)%8===0||!OBS._i0){OBS._i0=1;try{f.i=obsInfo()}catch(e){}}
   f.fps=Math.round(FPSV||0);try{const id=Math.round(idleMs()/1000);if(id>=20)f.idle=id}catch(e){}if(taps.length)f.tp=taps;if(keys.length)f.ky=keys;taps=[];keys=[];fr.push(f);if(fr.length>90)fr.shift()}catch(e){}}
  setInterval(snap,250);
  return{frames:()=>fr.slice(-44),tap(x,y){if(isFinite(x)&&isFinite(y)&&taps.length<8)taps.push([Math.round(x),Math.round(y)])},key(k){if(keys.length<8)keys.push(k)}}})();
@@ -4057,7 +4065,7 @@ function drawTears(){if(!S.tears||S.t>S.tears||S.over)return;if(S.t>(S.tearT||0)
 
 
 /* versão, últimas atualizações e reporte de bug */
-const VERSION='Alpha 0.16.0 (experimental)';const BUILD_TS='2026-11-27T19:02:27Z';
+const VERSION='Alpha 0.16.1 (experimental)';const BUILD_TS='2026-11-27T19:02:27Z';
 const PATCH=[
  {v:'Alpha 0.13.4 (experimental)',d:'27/11/2026',it:['Baús: as chances mudaram para Comum 56% · Incomum 24% (Raro 14%, Épico 5% e Lendário 1% seguem iguais). Antes, como só há 5 roupas Incomuns, cada uma (como a Gala Dourada) saía mais que qualquer item Comum: 6% contra 5%. Agora cada Incomum é 4,8% e cada Comum 5,6%.','Na loja, na mochila e no baú, cada item mostra quantos % dos jogadores já têm (“Só você tem até agora”, “Ninguém tem ainda”, “3% dos jogadores têm”). Precisa do SQL novo do TELEMETRIA.md (raridade real dos itens).','Relatório: auditoria dos baús, com observado × esperado por item, o primeiro baú de cada jogador e o z-score quando há amostra suficiente.']},
  {v:'Alpha 0.13.3 (experimental)',d:'27/11/2026',it:['Amigo da Comunidade: quem atinge o critério estatístico da análise (≥ 3 lutas concluídas, ≥ 40 decisões e confiança ≥ 60%, o mesmo cálculo do relatório) ganha um convite no menu principal para uma pesquisa de 4 perguntas rápidas: o que fazer primeiro (PvP, Co-op ou História), o que mais prendeu, o que faria jogar mais e um recado opcional pro GM.','Ao enviar, ganha na hora a Aura Sayajin do Amor (Exclusivo): “O GM te presenteou pessoalmente e te considera oficial co-fundador desse projeto.” Aura de energia rosa com chamas, faíscas e raios, em vaga própria (não mexe em arma, escudo, arco nem no Gorrinho), para todas as classes; equipe ou tire na mochila.','Relatório: novo bloco Comunidade com quem atingiu o critério e quem respondeu, resumo PvP × Co-op × História, o que mais prendeu e o que mais falta, e as respostas individuais com os recados. A aura aparece na coleção Exclusivo com prévia. As respostas não entram na lista de bugs.']},
@@ -4477,6 +4485,25 @@ function bakeLayers(){const key=OX+'|'+LITE;if(BGL&&BGLK===key)return;BGLK=key;c
  if(NOISE&&!LITE){x.globalAlpha=.07;x.fillStyle=NOISE;x.fillRect(-OX-8,0,W,600);x.globalAlpha=1}}
 const NOISE=(()=>{try{const c=document.createElement('canvas');c.width=c.height=128;const x=c.getContext('2d'),d=x.createImageData(128,128);for(let i=0;i<d.data.length;i+=4){const v=Math.random()*255|0;d.data[i]=d.data[i+1]=d.data[i+2]=v;d.data[i+3]=255}x.putImageData(d,0,0);return g.createPattern(c,'repeat')}catch(e){return null}})();
 function draw(){try{draw0()}finally{try{drawVC()}catch(e){}}}
+/* ===== reprodução para o observador do relatório (index.html?render=1&obs=1) ===== */
+window.__obsPlay=(()=>{let ready=false,key='',errs=0,lastJ='',lastD='',lt=0;
+ function setup(i){i=i||{};const k=JSON.stringify([i.pz,(i.sk||[]).map(x=>x[0]),i.at,i.cos]);if(k===key&&ready)return true;key=k;ready=false;window.__ACCLOCK=true;
+  try{const a=ac();a.sfx.gain.value=0;a.mus.gain.value=0;a.suspend()}catch(e){}try{const b=$('bgm');b.muted=true;b.pause()}catch(e){}try{MENU.stop(0)}catch(e){}
+  AUTO=false;try{INPUT='kb';SHOWFPS=false}catch(e){}window.__OBSV=true;let pi=PRESETS.findIndex(p=>p.k===i.pz);if(pi<0)pi=PRESETS.findIndex(p=>p.k==='custom');if(pi<0)pi=0;pickI=pi;
+  AT.forEach(a=>A[a.k]=(i.at&&i.at[a.k])||((PRESETS[pi].at||{})[a.k])||1);build=(i.sk||[]).map(x=>x[0]).filter(x=>SKL[x]);if(!build.length)build=[...(PRESETS[pi].sk||[])];
+  LOJA.eqc={};if(i.cos&&i.ck)LOJA.eqc[i.ck]=i.cos;try{startFight()}catch(e){errs++}fitCanvas();try{if(S&&S.cut)endCut()}catch(e){}try{S.st='watch';S.tl=null;S.q=[]}catch(e){}ready=!!S;lt=performance.now();return ready}
+ function frame(f,nx,k){if(!ready||!S||!f||f.s!=='fight')return;try{const tw=(a,b)=>a&&b&&k>0?[a[0]+(b[0]-a[0])*k,a[1]+(b[1]-a[1])*k]:a;
+  if(f.me){S.me={c:f.me[0],r:f.me[1]};const m=tw(f.me,nx&&nx.me);const p=P(m[0],m[1]);H[0]+=(p[0]-H[0])*.25;H[1]+=(p[1]-H[1])*.25}
+  if(f.he){S.he={c:f.he[0],r:f.he[1]};const m=tw(f.he,nx&&nx.he);const p=P(m[0],m[1]);HE[0]+=(p[0]-HE[0])*.2;HE[1]+=(p[1]-HE[1])*.2}
+  if(f.hp!=null)S.hp=Math.max(0,S.mhp*f.hp/100);if(f.eh!=null)S.eh=Math.max(0,S.meh*f.eh/100);S.pa=f.pa??S.pa;S.pm=f.pm??S.pm;S.round=f.rd||S.round;S.phase=f.ph||1;if(f.sn)S.stance=f.sn;
+  S.fire=(f.f||[]).map(([c,r])=>({c,r,ttl:2,t:S.t-.5}));S.anv=(f.an||[]).map(([c,r])=>({c,r,h:0,t:S.t-1}));
+  if(f.al){if(!S.ally||S.ally.k!==f.al[0])S.ally={k:f.al[0],c:f.al[1],r:f.al[2],hp:10,mhp:10,t0:S.t-2,hf:-9,turn:0};S.ally.c=f.al[1];S.ally.r=f.al[2]}else S.ally=null;
+  if(f.k&&!f.k.rs&&f.k.z){if(!S.atk||S.atk.id!==f.k.id||S.atk.res)S.atk={id:f.k.id,name:f.k.n,type:f.k.ty,zone:f.k.z,dur:1.2,t0:S.t,beats:[],bi:0,hits:[],res:null};S.atk.zone=f.k.z;S.atk.t0=S.t-Math.min(1.1,f.k.p)*S.atk.dur}else S.atk=null;
+  S.st=f.st==='enemy'?'enemy':'watch';
+  if(f.j&&f.j!==lastJ){lastJ=f.j;try{pop(H[0],H[1]-110,f.j,/PERFECT/.test(f.j)?'#ffe27a':/ACERTOU/.test(f.j)?'#8ee0b3':'#ff7a6a')}catch(e){}}
+  if(f.ov&&!S.over){S.over=f.ov;S.winT=S.t}else if(!f.ov&&S.over){S.over=null}}catch(e){errs++}}
+ function render(c2,w,h){if(!ready||!S)return false;const n=performance.now(),dt=Math.min(.08,(n-lt)/1000);lt=n;try{S.t+=dt;const due=S.q.filter(o=>S.t>=o.t);S.q=S.q.filter(o=>S.t<o.t);due.forEach(o=>{try{o.fn()}catch(e){}});S.hpG=S.hp;S.ehG=S.eh;draw();if(c2)c2.drawImage(cv,0,0,w||cv.width,h||cv.height);return true}catch(e){errs++;return false}}
+ return{setup,frame,render,ok:()=>ready&&errs<40,errs:()=>errs}})();
 function draw0(){
  g.setTransform(1,0,0,1,OX,0);if(S.shake>S.t)g.setTransform(1,0,0,1,OX+(Math.random()-.5)*10,(Math.random()-.5)*8);
  const FPF=fpOn()&&fpAmt()>=.99;if(FPF){/* o fundo da câmera cobre a tela toda */}else{
@@ -4536,7 +4563,7 @@ function drawPreview(dt){pvT+=dt;const pz=posture(),T=TREES.find(x=>x.id===pz);p
  drawAfro(pg,120,206,.92,pz,pvT);$('pzl').innerHTML=`Postura: <b style="color:${T.c}">${T.arch}</b>${build.length?'':' (pela característica principal)'}`}
 let last=performance.now();
 function loop(n){LASTFRAME=performance.now();try{loop0(n)}catch(e){console.error(e);try{g.setTransform(1,0,0,1,OX,0)}catch(_){}showRecover('erro no jogo',e);requestAnimationFrame(loop)}}
-function loop0(n){const raw=n-last,dt=Math.min(.08,raw/1e3);last=n;if(scr==='fight')perfTick(raw);pad();try{FUNK.tick()}catch(e){}if(scr!==ZS){ZS=scr;uiZoom()}
+function loop0(n){const raw=n-last,dt=Math.min(.08,raw/1e3);last=n;if(window.__OBSV){requestAnimationFrame(loop);return}if(scr==='fight')perfTick(raw);pad();try{FUNK.tick()}catch(e){}if(scr!==ZS){ZS=scr;uiZoom()}
  if(scr==='build')drawPreview(dt);
  if(scr==='pick'){if(CLEAN&&!HUBON&&$('modal').hidden)carDraw();if(!CLEAN||!$('modal').hidden)drawPickPreview(dt)}
  

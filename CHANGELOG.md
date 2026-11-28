@@ -1,5 +1,11 @@
 # Últimas atualizações
 
+## Alpha 0.16.1 (experimental) · 28/11/2026
+
+- Relatório · Observar: nova visão Animada (padrão), que remonta a luta com os desenhos do próprio jogo: a classe e o visual equipado do jogador, o Hefesto do elo dele, o aliado (ninfa, diabrete ou falcão), fogo, bigornas, área do golpe e acertos. Fica uns 10 a 15 segundos atrasada, como uma novelinha. A visão Esquema antiga continua num botão ao lado.
+- Ficha do jogador ao lado da tela: boneco com o visual dele, apelido, classe, elo no Ranking Afrodisíaco, aparelho (sistema, navegador, modelo do celular quando disponível, tamanho da tela e modo de controle), vitórias no total e com a classe, posição no ranking (geral e da classe), habilidades em uso, atributos, itens equipados, moedas e o Hefesto que está enfrentando.
+- O jogo passa a mandar essa ficha junto com os retratos da tela (a cada 2 segundos), então a ficha aparece para quem estiver na 0.16.1 ou mais nova.
+
 ## Alpha 0.16.0 (experimental) · 27/11/2026
 
 - Tutorial guiado no celular (primeira luta): a tela escurece e só a área destacada aceita toque, com um dedinho mostrando onde tocar. Passo a passo: andar até perto de Hefesto, atacar com a arma quando ele estiver no alcance e passar o turno quando não der para atacar. Nada de combos de habilidade: só o ciclo básico de aproximar, bater e reagir. O relógio do turno fica parado enquanto o tutorial guia, e o botão Pular tutorial fica sempre visível.
